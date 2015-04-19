@@ -1,0 +1,58 @@
+/*
+ * ==========================================================================%%#
+ * EasyPmd
+ * ===========================================================================%%
+ * Copyright (C) 2009 - 2015 Gianluca Costa
+ * ===========================================================================%%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/gpl-3.0.html>.
+ * ==========================================================================%##
+ */
+package info.gianlucacosta.easypmd7.ide.options.profiles;
+
+import info.gianlucacosta.easypmd7.ide.Injector;
+import info.gianlucacosta.easypmd7.ide.options.Options;
+import info.gianlucacosta.easypmd7.ide.options.OptionsFactory;
+import org.openide.util.lookup.ServiceProvider;
+
+/**
+ * Default implementation of ProfileConfigurationFactory.
+ */
+@ServiceProvider(service = ProfileConfigurationFactory.class)
+public class DefaultProfileConfigurationFactory implements ProfileConfigurationFactory {
+
+    private static final String defaultProfileName = "Default profile";
+    private final OptionsFactory optionsFactory;
+
+    public DefaultProfileConfigurationFactory() {
+        this.optionsFactory = Injector.lookup(OptionsFactory.class);
+    }
+
+    @Override
+    public ProfileConfiguration createDefaultProfileConfiguration() {
+        Options defaultOptions = optionsFactory.createDefaultOptions();
+        Profile defaultProfile = new DefaultProfile(defaultOptions);
+
+        ProfileMap defaultProfiles = new DefaultProfileMap();
+
+        try {
+            defaultProfiles.setProfile(defaultProfileName, defaultProfile);
+        } catch (ProfileException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return new DefaultProfileConfiguration(defaultProfiles, defaultProfileName);
+    }
+
+}
