@@ -4,7 +4,7 @@
 
     <groupId>info.gianlucacosta.easypmd</groupId>
     <artifactId>easypmd</artifactId>
-    <version>7.5</version>
+    <version>7.6</version>
     <packaging>nbm</packaging>
 
 
@@ -294,6 +294,7 @@
                 <extensions>true</extensions>
 
                 <configuration>
+                    <author>Gianluca Costa</author>                                        
                     <keystore>${jar.signing.keystore.path}</keystore>
                     <keystorepassword>${jar.signing.keystore.password}</keystorepassword>                    
                     <keystorealias>${jar.signing.key.alias}</keystorealias>                    
