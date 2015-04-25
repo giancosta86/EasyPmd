@@ -78,6 +78,21 @@ Alternatively, you can download the **.nbm** files from GitHub or from the NetBe
 
 
 
+## Special thanks
+
+
+Special thanks to (ordered by surname):
+
+* *Ross Goldberg*
+* *Matthew Harrison*
+* *Thomas Kellerer*
+* *Wes McKean*
+* *Jeremy Pyman*
+* *Toru Takahashi*
+* *Thomas Wolf*
+
+
+
 ## Further references
 
 * [PMD](http://pmd.sourceforge.net/)
