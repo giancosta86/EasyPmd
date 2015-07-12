@@ -4,7 +4,7 @@
 
     <groupId>info.gianlucacosta.easypmd</groupId>
     <artifactId>easypmd</artifactId>
-    <version>7.6</version>
+    <version>8.0</version>
     <packaging>nbm</packaging>
 
 
@@ -90,7 +90,7 @@
         <dependency>
             <groupId>net.sourceforge.pmd</groupId>
             <artifactId>pmd-core</artifactId>
-            <version>5.3.0</version>            
+            <version>5.3.2</version>            
 
             <exclusions>
                 <exclusion>
@@ -109,7 +109,7 @@
         <dependency>
             <groupId>net.sourceforge.pmd</groupId>
             <artifactId>pmd-java</artifactId>
-            <version>5.3.0</version>
+            <version>5.3.2</version>
 
             <exclusions>
                 <exclusion>
@@ -216,7 +216,7 @@
                                 <file>${jks_signing_params_file}</file>                                
                             </files>
                             
-                            <quiet>true</quiet>
+                            <quiet>true</quiet>                            
                         </configuration>
                     </execution>
                 </executions>

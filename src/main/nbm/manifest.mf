@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
-OpenIDE-Module-Localizing-Bundle: info/gianlucacosta/easypmd7/Bundle.properties
-OpenIDE-Module-Layer: info/gianlucacosta/easypmd7/layer.xml
+OpenIDE-Module-Localizing-Bundle: info/gianlucacosta/easypmd/Bundle.properties
+OpenIDE-Module-Layer: info/gianlucacosta/easypmd/layer.xml
 OpenIDE-Module-Java-Dependencies: Java > 1.8

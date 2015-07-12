@@ -1,0 +1,347 @@
+<!--
+  ==========================================================================%%#
+  EasyPmd
+  ===========================================================================%%
+  Copyright (C) 2009 - 2015 Gianluca Costa
+  ===========================================================================%%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/gpl-3.0.html>.
+  ==========================================================================%##
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+        <title>EasyPmd - Options</title>
+
+        <link rel="stylesheet" href="nbdocs:/org/netbeans/modules/usersguide/ide.css" type="text/css"/>
+        <link rel="stylesheet" href="easypmd.css" type="text/css"/>
+
+    </head>
+    <body>
+        <div class="options">
+            <h1>EasyPmd options</h1>
+
+
+            <section>
+                <h2>Profiles</h2>
+
+                <p>
+                    EasyPmd includes <i>Profiles</i>:
+                    a profile is simply a named configuration for EasyPmd -
+                    you can therefore change the values of any set of options
+                    simply by selecting another profile.
+                </p>
+
+                <p>
+                    EasyPmd comes with a default profile: by duplicating it,
+                    you can create new profiles, having different values for
+                    any options, as needed.
+                </p>
+
+                <p>
+                    Using profiles is quite straightforward, but a few notes
+                    are due:
+                </p>
+
+                <ul>
+                    <li>
+                        When editing EasyPmd's options, they are temporarily but
+                        constantly saved into the active profile - the one selected
+                        in the <i>Profile</i> drop-down list: if you select another
+                        profile, its options are immediately applied to all the
+                        controls in the dialog and you can start editing the new
+                        profile. If you re-select the previous profile, you
+                        will be able to edit its options again.
+                    </li>
+
+                    <li>
+                        Changes to the profiles, including the active profile,
+                        are saved to disk only if you confirm the options dialog
+                        by pressing OK; this will also apply the new set of
+                        options to the internal PMD scanner.
+                        Consequently, if you cancel the dialog, no change will
+                        be saved - not even into memory.
+                    </li>
+
+                    <li>
+                        The initial profile can be deleted, if you wish: the
+                        only constraint is the fact that at least one profile
+                        must be present in the system - EasyPmd will just prevent
+                        you from removing the last profile.
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2><em>General</em> options</h2>
+
+                <p>This group of options determines how PMD should read your source files, in particular what the code structure
+                    is (determined by the <em>Java version</em>), which <em>encoding</em> should be used and what lines should
+                    be ignored.</p>
+
+                <ul>
+                    <li>
+                        <em>Target Java version</em>: this parameter is used by PMD's parser in order to determine the structure
+                        of source files. At the moment of this writing, the latest Java version is "1.7".
+                    </li>
+
+                    <li>
+                        <em>Source file encoding</em>: the encoding used to read source files when scanning them with PMD.
+                    </li>
+
+                    <li>
+                        <em>Suppress marker</em>: the marker comment used to prevent PMD checks for a specific line. Please
+                        refer to PMD's manual.
+                    </li>
+
+                    <li>
+                        <em>Minimum priority</em>: PMD will output violations only for rules having at least the selected
+                        priority.
+                    </li>
+                </ul>
+            </section>
+
+
+            <section>
+                <h2><em>Additional classpath</em> options</h2>
+
+                <p>
+                    The additional classpath tells PMD where to look for additional, that is custom, rulesets.
+                    If you just want to use the standard rulesets provided by PMD, you can leave this list empty.
+                </p>
+
+                <ul>
+                    <li><em>Add Jar...</em>: shows a file dialog to let the user choose a jar file, so as to add it to PMD's
+                        classpath.
+                    </li>
+                    <li><em>Add custom URL...</em>: allows the user to add a custom URL to PMD's classpath.</li>
+                    <li><em>Move up</em>: moves the selected URLs up.</li>
+                    <li><em>Move down</em>: moves the selected URLs down.</li>
+                    <li><em>Remove</em>: removes the selected URLs from the list.</li>
+                </ul>
+            </section>
+
+
+            <section>
+                <h2><em>Rulesets</em> options</h2>
+
+                <p>
+                    A ruleset defines a set of rules which have to be considered by PMD during a scan.
+                </p>
+
+                <p>
+                    You can use PMD's standard rulesets, or you can define your own ones, as well as your own rules; for further
+                    information on creating your custom rulesets,
+                    please refer to the related article on my website.
+                </p>
+
+                <ul>
+                    <li><em>Add standard...</em>: shows a dialog reporting PMD's default rulesets. The user can choose one of
+                        them in order to add it to the list.
+                    </li>
+                    <li><em>Add custom...</em>: allows the user to add a custom ruleset to the list.</li>
+                    <li><em>Move up</em>: moves the selected rulesets up.</li>
+                    <li><em>Move down</em>: moves the selected rulesets down.</li>
+                    <li><em>Remove</em>: removes the selected rulesets from the list.</li>
+                </ul>
+            </section>
+
+
+            <section>
+                <h2><em>Cache</em> options</h2>
+
+                <p>
+                    EasyPmd can provide an internal cache, which stores all the scan results; as long as your source files are
+                    unchanged, EasyPmd will look for the cache content
+                    instead of executing PMD again.
+                    EasyPmd's cache is persisted on disk, which means that it will be used even after you restart NetBeans.
+                </p>
+
+                <p>
+                    In addition to this, it's important to notice that the cache is <em>not</em> entirely reloaded in memory
+                    when you start NetBeans: EasyPmd loads cache items in memory only
+                    when they are required by the scanning engine.
+                    For example, if you set the scanning context - in the <em>Action Items</em> window of NetBeans - to show
+                    tasks only for the current file, the scan results will be loaded
+                    from the on-disk cache into the in-memory cache only for the files that you open.
+                </p>
+
+                <p>
+                    <strong>WARNING: </strong> please, remember that the cache is entirely cleared whenever you change any
+                    option <em>and</em> confirm the Options dialog.
+                </p>
+
+                <ul>
+                    <li><em>Activate EasyPmd cache</em>: when this checkbox is checked, EasyPmd will store the scan output into
+                        its cache, which resides both in memory and on disk.
+                    </li>
+                    <li><em>Clear the cache</em>: removes every cache entry, both in memory and on disk.
+                        This can be very useful because EasyPmd stores its cache on disk too, in the directory <em>HOME_DIR/.EasyPmd{major
+                            version}/cache</em>. Should this directory grow too big, you can delete it, either manually or by
+                        clicking this button (which also empties the in-memory cache).
+                    </li>
+                </ul>
+            </section>
+
+
+            <section>
+                <h2><em>Reporting</em> options</h2>
+
+                <p>
+                    These options simply affect how EasyPmd reports the results of the scans performed by PMD.
+                </p>
+
+                <ul>
+                    <li>
+                        <em>Show rule priority in tasks</em>: when it's active, you can easily sort violations in the <em>Action
+                            Items</em> window just by clicking the <em>Description</em> column header.
+                    </li>
+
+                    <li>
+                        <em>Show violation description in tasks</em>: shows, in the <em>Action Items</em> window, the
+                        description associated with each violation.
+                    </li>
+
+
+                    <li>
+                        <em>Show rule in tasks</em>: shows, in the <em>Action Items</em> window, which rule caused each
+                        violation.
+                    </li>
+
+
+                    <li>
+                        <em>Show ruleset in tasks</em>: shows, in the <em>Action Items</em> window, which ruleset caused each
+                        violation.
+                    </li>
+
+
+                    <li>
+                        <em>Show annotations in the code editor</em>: if checked, it will cause the editor
+                        to display a glyph next to each line associated with an EasyPmd message.
+
+                        <p><strong>NOTE: </strong> the process of creating annotations appears to take about 60% of EasyPmd's
+                            scan time. Therefore, you might want to consider disabling this option if you are concerned about
+                            scan speed.</p>
+                    </li>
+
+
+                    <li>
+                        <em>Show all messages in guarded sections</em>: if unchecked, EasyPmd will NOT show annotations or tasks
+                        for violations in lines protected by a guarded section.
+                    </li>
+                </ul>
+            </section>
+
+
+            <section>
+                <h2>Path filtering</h2>
+
+                <div>
+                    EasyPmd supports <em>path filtering</em>, which means that you can make EasyPmd scan only some files in your
+                    project, and you can at the same time exclude other files.
+
+                    There are some important concepts that should be kept in mind when setting path filters for EasyPmd:
+
+                    <ol>
+                        <li>You can choose which paths have to be <em>filtered</em> (that is, included or excluded) by inserting
+                            one or more <strong>regular expressions</strong></li>
+
+                        <li>Regular expressions are, by default, <strong>case sensitive</strong>, therefore on all operating
+                            systems, including Windows, a regular expression will match a file only if the path components have
+                            the correct case.
+                            Of course, you can create a <em>case-insensitive</em> regular expression, either manually or by
+                            using the related feature provided by EasyPmd
+                        </li>
+
+                        <li>To decide whether a file should be scanned, its <strong>absolute path</strong> is considered and
+                            matched against your set of regular expressions
+                        </li>
+
+                        <li><strong>Always use "/" to separate path components:</strong> it will be automatically replaced by
+                            the regex-compatible form of the separator used by your system, if possible (in particular, it
+                            should work on Windows, Linux and Unix-like systems)
+                        </li>
+
+                        <li>If you need some examples, consider adding some <a href="#predefinedRegexes"><strong>predefined
+                                    regular expressions</strong></a></li>
+                    </ol>
+                </div>
+
+
+                <section>
+                    <h3>Scanning algorithm</h3>
+
+                    EasyPmd observes the following rules when determining if PMD should scan a file:
+
+                    <ol>
+                        <li>If the <em>absolute path</em> matches <em>at least one</em> of the regular expressions in the list
+                            of <em>included</em> patterns, or if this list is empty, consider the next step, otherwise the file
+                            is not scanned
+                        </li>
+                        <li>Then, if the <em>absolute path</em> does not match <em>any</em> pattern in the <em>excluded
+                                patterns</em> list, or if this list is empty, scan the file
+                        </li>
+                    </ol>
+                </section>
+
+
+                <section>
+                    <a id="predefinedRegexes"><h3>Predefined regular expressions</h3></a>
+
+                    <p>
+                        Regular expressions are not always easy to write, and they might easily become tedious and error-prone
+                        if you have to write them frequently to cope with common cases - for example, filtering by file
+                        extension.
+                    </p>
+
+                    <p>
+                        Therefore, EasyPmd provides some <em>predefined regular expressions</em>, which will be automatically
+                        generated by EasyPmd according to some information you will be asked for (e.g: the file extension).
+                        Predefined regular expressions are available for both included and excluded paths, and can be added by
+                        clicking on one of the <em>Add predefined...</em> buttons in the <em>Path filtering</em> panel.
+                    </p>
+                </section>
+            </section>
+
+
+            <section>
+                <h2>Miscellaneous</h2>
+
+                <ul>
+                    <li>
+                        <em>Auxiliary classpath</em>: the auxiliary classpath employed by PMD. Please refer to PMD's
+                        documentation
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Commands</h2>
+                <ul>
+                    <li>
+                        <em>Reset settings</em>: restores all the settings in the dialog to their original values, but you have
+                        to confirm the dialog in order to save them.
+                    </li>
+
+                    <li>
+                        <em>Verify settings</em>: performs a first-level check on the options in the dialog, telling if they
+                        seem correct
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </body>
+</html>
