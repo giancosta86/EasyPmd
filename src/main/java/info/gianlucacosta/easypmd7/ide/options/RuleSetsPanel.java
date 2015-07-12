@@ -28,21 +28,24 @@ import info.gianlucacosta.easypmd7.pmdscanner.StandardRuleSetsCatalog;
 import info.gianlucacosta.helios.conversions.CollectionToArrayConverter;
 import info.gianlucacosta.helios.product.ProductInfoService;
 import info.gianlucacosta.helios.swing.jlist.AdvancedSelectionListModel;
+import java.io.File;
 import net.sourceforge.pmd.RuleSet;
 
 import javax.swing.*;
 import java.util.Collection;
+import javax.swing.filechooser.FileFilter;
 
 /**
  * Panel dedicated to editing rulesets
  */
 public class RuleSetsPanel extends JPanel {
 
-    private static final CollectionToArrayConverter<RuleSetWrapper> rulesetsArrayConverter = new CollectionToArrayConverter<>(RuleSetWrapper.class);
+    private static final CollectionToArrayConverter<RuleSetWrapper> ruleSetsArrayConverter = new CollectionToArrayConverter<>(RuleSetWrapper.class);
     private final AdvancedSelectionListModel<String> ruleSetsModel = new AdvancedSelectionListModel<>();
     private final DialogService dialogService;
     private final ProductInfoService pluginInfoService;
     private final StandardRuleSetsCatalog standardRulesetsCatalog;
+    private final JFileChooser ruleSetsFileChooser = new JFileChooser();
 
     public RuleSetsPanel() {
         initComponents();
@@ -52,6 +55,23 @@ public class RuleSetsPanel extends JPanel {
         standardRulesetsCatalog = Injector.lookup(StandardRuleSetsCatalog.class);
 
         ruleSetsList.setModel(ruleSetsModel);
+
+        ruleSetsFileChooser.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                return f.isDirectory()
+                        || (f.isFile()
+                        && f.getName().endsWith(".xml"));
+            }
+
+            @Override
+            public String getDescription() {
+                return "Ruleset descriptor (*.xml)";
+            }
+        });
+
+        ruleSetsFileChooser.setMultiSelectionEnabled(true);
+        ruleSetsFileChooser.setDialogTitle("Add rulesets...");
     }
 
     /**
@@ -68,6 +88,7 @@ public class RuleSetsPanel extends JPanel {
         ruleSetsList = new info.gianlucacosta.helios.swing.jlist.AdvancedSelectionJList();
         buttonsPanel = new javax.swing.JPanel();
         addStandardRuleSetButton = new javax.swing.JButton();
+        addFileRuleSetsButton = new javax.swing.JButton();
         addCustomRuleSetButton = new javax.swing.JButton();
         moveUpButton = new javax.swing.JButton();
         moveDownButton = new javax.swing.JButton();
@@ -101,6 +122,19 @@ public class RuleSetsPanel extends JPanel {
         gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         buttonsPanel.add(addStandardRuleSetButton, gridBagConstraints);
 
+        addFileRuleSetsButton.setText(org.openide.util.NbBundle.getMessage(RuleSetsPanel.class, "RuleSetsPanel.addFileRuleSetsButton.text")); // NOI18N
+        addFileRuleSetsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addFileRuleSetsButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        buttonsPanel.add(addFileRuleSetsButton, gridBagConstraints);
+
         addCustomRuleSetButton.setText(org.openide.util.NbBundle.getMessage(RuleSetsPanel.class, "RuleSetsPanel.addCustomRuleSetButton.text")); // NOI18N
         addCustomRuleSetButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,7 +143,7 @@ public class RuleSetsPanel extends JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         buttonsPanel.add(addCustomRuleSetButton, gridBagConstraints);
@@ -122,7 +156,7 @@ public class RuleSetsPanel extends JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         buttonsPanel.add(moveUpButton, gridBagConstraints);
@@ -135,7 +169,7 @@ public class RuleSetsPanel extends JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         buttonsPanel.add(moveDownButton, gridBagConstraints);
@@ -148,7 +182,7 @@ public class RuleSetsPanel extends JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
@@ -170,7 +204,7 @@ public class RuleSetsPanel extends JPanel {
                 pluginInfoService.getName(),
                 JOptionPane.PLAIN_MESSAGE,
                 null,
-                rulesetsArrayConverter.convert(standardRuleSetWrappers),
+                ruleSetsArrayConverter.convert(standardRuleSetWrappers),
                 null);
 
         if (userChoice == null) {
@@ -210,8 +244,19 @@ public class RuleSetsPanel extends JPanel {
         ruleSetsList.moveDownSelection();
     }//GEN-LAST:event_moveDownButtonActionPerformed
 
+    private void addFileRuleSetsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFileRuleSetsButtonActionPerformed
+        ruleSetsFileChooser.setSelectedFiles(null);
+
+        if (ruleSetsFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            for (File ruleSetFile : ruleSetsFileChooser.getSelectedFiles()) {
+                ruleSetsModel.addElement(ruleSetFile.getAbsolutePath());
+            }
+        }
+    }//GEN-LAST:event_addFileRuleSetsButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCustomRuleSetButton;
+    private javax.swing.JButton addFileRuleSetsButton;
     private javax.swing.JButton addStandardRuleSetButton;
     private javax.swing.JPanel buttonsPanel;
     private javax.swing.JButton moveDownButton;

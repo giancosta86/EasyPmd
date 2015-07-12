@@ -46,14 +46,14 @@ class LinkedPmdScanningStrategy implements PmdScannerStrategy {
 
         ClassLoader pmdBasedClassLoader = PmdBasedClassLoader.create(options.getAdditionalClassPathUrls());
 
-        RuleSetFactory rulesetFactory = new RuleSetFactory();
+        RuleSetFactory ruleSetFactory = new RuleSetFactory();
 
         String ruleSetsString = buildRuleSetsString(options.getRuleSets());
 
         try {
-            rulesetFactory.setClassLoader(pmdBasedClassLoader);
-            rulesetFactory.setMinimumPriority(options.getMinimumPriority());
-            ruleSets = rulesetFactory.createRuleSets(ruleSetsString);
+            ruleSetFactory.setClassLoader(pmdBasedClassLoader);
+            ruleSetFactory.setMinimumPriority(options.getMinimumPriority());
+            ruleSets = ruleSetFactory.createRuleSets(ruleSetsString);
         } catch (RuleSetNotFoundException ex) {
             throw new RuntimeException(ex);
         }
