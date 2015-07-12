@@ -83,6 +83,7 @@ Alternatively, you can download the **.nbm** files from GitHub or from the NetBe
 
 Special thanks to (ordered by surname):
 
+* *Christian Funder*
 * *Ross Goldberg*
 * *Matthew Harrison*
 * *Thomas Kellerer*
