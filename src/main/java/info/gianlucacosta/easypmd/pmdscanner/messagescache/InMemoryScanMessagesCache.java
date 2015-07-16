@@ -22,15 +22,15 @@
 package info.gianlucacosta.easypmd.pmdscanner.messagescache;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * In-memory scan messages cache
  */
 class InMemoryScanMessagesCache extends AbstractScanMessagesCache {
 
-    private final Map<String, ScanMessagesCacheItem> cacheItems = new HashMap<>();
+    private final Map<String, ScanMessagesCacheItem> cacheItems = new WeakHashMap<>();
 
     @Override
     protected ScanMessagesCacheItem getItem(File scannedFile) {
