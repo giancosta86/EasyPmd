@@ -4,7 +4,7 @@
 
     <groupId>info.gianlucacosta.easypmd</groupId>
     <artifactId>easypmd</artifactId>
-    <version>8.0</version>
+    <version>9.0</version>
     <packaging>nbm</packaging>
 
 
@@ -90,19 +90,7 @@
         <dependency>
             <groupId>net.sourceforge.pmd</groupId>
             <artifactId>pmd-core</artifactId>
-            <version>5.3.2</version>            
-
-            <exclusions>
-                <exclusion>
-                    <groupId>xerces</groupId>
-                    <artifactId>xercesImpl</artifactId>
-                </exclusion>
-
-                <exclusion>
-                    <groupId>net.sourceforge.saxon</groupId>
-                    <artifactId>saxon</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>5.3.2</version>                        
         </dependency>
 
 
@@ -110,18 +98,6 @@
             <groupId>net.sourceforge.pmd</groupId>
             <artifactId>pmd-java</artifactId>
             <version>5.3.2</version>
-
-            <exclusions>
-                <exclusion>
-                    <groupId>xerces</groupId>
-                    <artifactId>xercesImpl</artifactId>
-                </exclusion>
-
-                <exclusion>
-                    <groupId>net.sourceforge.saxon</groupId>
-                    <artifactId>saxon</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
 
