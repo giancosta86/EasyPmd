@@ -21,16 +21,17 @@
  */
 package info.gianlucacosta.easypmd.ide.options.profiles;
 
+import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import info.gianlucacosta.easypmd.StorageAreaService;
 import info.gianlucacosta.easypmd.ide.Injector;
-import info.gianlucacosta.easypmd.io.StreamUtils;
 import info.gianlucacosta.helios.io.storagearea.StorageArea;
 import info.gianlucacosta.helios.io.storagearea.StorageAreaEntry;
+import java.io.IOException;
 import org.openide.util.lookup.ServiceProvider;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,11 +41,13 @@ import java.util.logging.Logger;
 @ServiceProvider(service = ProfileConfigurationRepository.class)
 public class DefaultProfileConfigurationRepository implements ProfileConfigurationRepository {
 
-    private static final String PROFILE_CONFIGURATION_ENTRY_NAME = "ProfileConfiguration";
+    private static final String PROFILE_CONFIGURATION_ENTRY_NAME = "ProfileConfiguration.xml";
     private static final Logger logger = Logger.getLogger(DefaultProfileConfigurationFactory.class.getName());
 
-    private final StorageArea storageArea;
     private final ProfileConfigurationFactory profileConfigurationFactory;
+    private final EasyPmdXStream xmlStream = new EasyPmdXStream();
+
+    private final StorageArea storageArea;
 
     private ProfileConfiguration profileConfiguration;
 
@@ -58,8 +61,8 @@ public class DefaultProfileConfigurationRepository implements ProfileConfigurati
             try {
                 StorageAreaEntry profileConfigurationEntry = storageArea.getEntry(PROFILE_CONFIGURATION_ENTRY_NAME);
                 if (profileConfigurationEntry.exists()) {
-                    try (InputStream profileConfigurationInputStream = profileConfigurationEntry.openInputStream()) {
-                        profileConfiguration = (ProfileConfiguration) StreamUtils.readSingleObjectFromStream(profileConfigurationInputStream);
+                    try (ObjectInputStream profileConfigurationInputStream = xmlStream.createObjectInputStream(profileConfigurationEntry.openInputStream())) {
+                        profileConfiguration = (ProfileConfiguration) profileConfigurationInputStream.readObject();
                     }
                 }
             } catch (IOException | ClassNotFoundException ex) {
@@ -85,8 +88,10 @@ public class DefaultProfileConfigurationRepository implements ProfileConfigurati
             try {
                 StorageAreaEntry profileConfigurationEntry = storageArea.getEntry(PROFILE_CONFIGURATION_ENTRY_NAME);
 
-                try (OutputStream profileConfigurationOutputStream = profileConfigurationEntry.openOutputStream()) {
-                    StreamUtils.writeSingleObjectToStream(profileConfigurationOutputStream, profileConfiguration);
+                try (ObjectOutputStream profileConfigurationOutputStream = xmlStream.createObjectOutputStream(
+                        new PrettyPrintWriter(new OutputStreamWriter(profileConfigurationEntry.openOutputStream()))
+                )) {
+                    profileConfigurationOutputStream.writeObject(profileConfiguration);
                 }
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, "Error while saving the options", ex);

@@ -70,6 +70,17 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        
+        
+        <repository>
+            <id>jcenter</id>
+            <name>JCenter</name>
+            <url>https://jcenter.bintray.com</url>
+            
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>            
+        </repository>
     </repositories>
     
     
@@ -86,11 +97,12 @@
             <artifactId>helios-core</artifactId>
             <version>1.7</version>
         </dependency>
-
+        
+     
         <dependency>
             <groupId>net.sourceforge.pmd</groupId>
             <artifactId>pmd-core</artifactId>
-            <version>5.3.2</version>                        
+            <version>5.3.2</version>            
         </dependency>
 
 
@@ -98,6 +110,13 @@
             <groupId>net.sourceforge.pmd</groupId>
             <artifactId>pmd-java</artifactId>
             <version>5.3.2</version>
+        </dependency>
+        
+    
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.8</version>
         </dependency>
 
 

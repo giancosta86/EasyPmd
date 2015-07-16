@@ -48,7 +48,7 @@ public class DefaultStorageAreaService implements StorageAreaService {
         pluginInfoService = Injector.lookup(PropertyPluginInfoService.class);
 
         String majorVersion = pluginInfoService.getVersion().split("\\.")[0];
-        storageDirName = String.format(".EasyPmd%s", majorVersion);
+        storageDirName = String.format(".EasyPmd_%s", majorVersion);
 
         StorageArea tempStorageArea;
 
