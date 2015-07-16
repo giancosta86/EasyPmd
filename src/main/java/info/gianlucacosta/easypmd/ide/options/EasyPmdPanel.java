@@ -250,8 +250,8 @@ class EasyPmdPanel extends JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        resetSettingsButton = new javax.swing.JButton();
-        verifySettingsButton = new javax.swing.JButton();
+        resetOptionsButton = new javax.swing.JButton();
+        verifyOptionsButton = new javax.swing.JButton();
         profilePanel = new javax.swing.JPanel();
         profileLabel = new javax.swing.JLabel();
         profileCombo = new javax.swing.JComboBox();
@@ -297,11 +297,11 @@ class EasyPmdPanel extends JPanel {
 
         setLayout(new java.awt.GridBagLayout());
 
-        org.openide.awt.Mnemonics.setLocalizedText(resetSettingsButton, org.openide.util.NbBundle.getMessage(EasyPmdPanel.class, "EasyPmdPanel.resetSettingsButton.text")); // NOI18N
-        resetSettingsButton.setPreferredSize(new java.awt.Dimension(101, 30));
-        resetSettingsButton.addActionListener(new java.awt.event.ActionListener() {
+        org.openide.awt.Mnemonics.setLocalizedText(resetOptionsButton, org.openide.util.NbBundle.getMessage(EasyPmdPanel.class, "EasyPmdPanel.resetOptionsButton.text")); // NOI18N
+        resetOptionsButton.setPreferredSize(new java.awt.Dimension(101, 30));
+        resetOptionsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                resetSettingsButtonActionPerformed(evt);
+                resetOptionsButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -309,13 +309,13 @@ class EasyPmdPanel extends JPanel {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        add(resetSettingsButton, gridBagConstraints);
+        add(resetOptionsButton, gridBagConstraints);
 
-        org.openide.awt.Mnemonics.setLocalizedText(verifySettingsButton, org.openide.util.NbBundle.getMessage(EasyPmdPanel.class, "EasyPmdPanel.verifySettingsButton.text")); // NOI18N
-        verifySettingsButton.setPreferredSize(new java.awt.Dimension(101, 30));
-        verifySettingsButton.addActionListener(new java.awt.event.ActionListener() {
+        org.openide.awt.Mnemonics.setLocalizedText(verifyOptionsButton, org.openide.util.NbBundle.getMessage(EasyPmdPanel.class, "EasyPmdPanel.verifyOptionsButton.text")); // NOI18N
+        verifyOptionsButton.setPreferredSize(new java.awt.Dimension(101, 30));
+        verifyOptionsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                verifySettingsButtonActionPerformed(evt);
+                verifyOptionsButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -324,7 +324,7 @@ class EasyPmdPanel extends JPanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        add(verifySettingsButton, gridBagConstraints);
+        add(verifyOptionsButton, gridBagConstraints);
 
         profilePanel.setLayout(new java.awt.GridBagLayout());
 
@@ -672,22 +672,22 @@ class EasyPmdPanel extends JPanel {
         }
     }//GEN-LAST:event_clearScanMessagesCacheButtonActionPerformed
 
-    private void verifySettingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verifySettingsButtonActionPerformed
+    private void verifyOptionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verifyOptionsButtonActionPerformed
         try {
             verifyOptions();
             dialogService.showInfo("Your EasyPmd options seem to be correct.");
         } catch (InvalidOptionsException ex) {
             dialogService.showWarning(String.format("The current EasyPmd options appear to be incorrect.\n%s", ex.getMessage()));
         }
-    }//GEN-LAST:event_verifySettingsButtonActionPerformed
+    }//GEN-LAST:event_verifyOptionsButtonActionPerformed
 
-    private void resetSettingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetSettingsButtonActionPerformed
+    private void resetOptionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetOptionsButtonActionPerformed
         Options defaultOptions = optionsFactory.createDefaultOptions();
 
         setOptions(defaultOptions);
 
         dialogService.showInfo("The default options have been restored in the dialog controls.\nTo save them, please confirm the options dialog.");
-    }//GEN-LAST:event_resetSettingsButtonActionPerformed
+    }//GEN-LAST:event_resetOptionsButtonActionPerformed
 
     private void renameProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameProfileButtonActionPerformed
         String currentName = activeProfileName;
@@ -785,7 +785,7 @@ class EasyPmdPanel extends JPanel {
     private javax.swing.JButton removeProfileButton;
     private javax.swing.JButton renameProfileButton;
     private javax.swing.JPanel reportingPanel;
-    private javax.swing.JButton resetSettingsButton;
+    private javax.swing.JButton resetOptionsButton;
     private info.gianlucacosta.easypmd.ide.options.RuleSetsPanel ruleSetsPanel;
     private javax.swing.JCheckBox showAllMessagesInGuardedSectionsCheckBox;
     private javax.swing.JCheckBox showAnnotationsInEditorCheckBox;
@@ -802,6 +802,6 @@ class EasyPmdPanel extends JPanel {
     private javax.swing.JTextField targetJavaVersionField;
     private javax.swing.JLabel targetJavaVersionLabel;
     private javax.swing.JCheckBox useScanMessagesCacheCheckBox;
-    private javax.swing.JButton verifySettingsButton;
+    private javax.swing.JButton verifyOptionsButton;
     // End of variables declaration//GEN-END:variables
 }
