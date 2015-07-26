@@ -21,27 +21,29 @@
  */
 package info.gianlucacosta.easypmd.ide.options;
 
-import info.gianlucacosta.helios.beans.events.TriggerListener;
+import info.gianlucacosta.easypmd.ide.options.profiles.ProfileConfiguration;
 
 /**
- * Provides methods to get/set options, to verify them and to monitor their
- * changes
+ * Configuration object returned by EasyPmdPanel
  */
-public interface OptionsService {
+public class ProfileConfigurationDTO {
 
-    void addOptionsChangedListener(TriggerListener listener);
+    private ProfileConfiguration profileConfiguration;
+    private boolean enforceChange;
 
-    void removeOptionsChangedListener(TriggerListener listener);
+    public ProfileConfiguration getProfileConfiguration() {
+        return profileConfiguration;
+    }
 
-    Options getOptions();
+    public void setProfileConfiguration(ProfileConfiguration profileConfiguration) {
+        this.profileConfiguration = profileConfiguration;
+    }
 
-    void setOptions(Options options);
+    public boolean isEnforceChange() {
+        return enforceChange;
+    }
 
-    void setOptionsEnforcingChange(Options options);
-
-    void verifyOptions(Options options) throws InvalidOptionsException;
-
-    void addOptionsVerifier(OptionsVerifier optionsVerifier);
-
-    void removeOptionsVerifier(OptionsVerifier optionsVerifier);
+    public void setEnforceChange(boolean enforceChange) {
+        this.enforceChange = enforceChange;
+    }
 }

@@ -110,6 +110,20 @@ public class DefaultOptionsService implements OptionsService {
     }
 
     @Override
+    public void setOptionsEnforcingChange(Options options) {
+        writeLock.lock();
+        try {
+            this.options = options;
+
+            logger.log(Level.INFO, "Options with enforced change!");
+
+            optionsChangedEvent.fire();
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    @Override
     public void addOptionsVerifier(OptionsVerifier optionsVerifier) {
         optionsVerifiers.add(optionsVerifier);
     }

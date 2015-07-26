@@ -63,6 +63,10 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
                 throw new InvalidOptionsException(ex);
             }
         });
+
+        optionsService.addOptionsChangedListener(() -> {
+            pcs.firePropertyChange(EASY_PMD_OPTIONS_NAME_IN_EVENT, null, optionsService.getOptions());
+        });
     }
 
     @Override
@@ -74,16 +78,17 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
 
     @Override
     public void applyChanges() {
-        ProfileConfiguration profileConfiguration = panel.getProfileConfiguration();
+        ProfileConfigurationDTO profileConfigurationDTO = panel.getProfileConfigurationDTO();
+        ProfileConfiguration profileConfiguration = profileConfigurationDTO.getProfileConfiguration();
+
         profileConfigurationRepository.saveProfileConfiguration(profileConfiguration);
 
-        Options oldOptions = optionsService.getOptions();
         Options newOptions = profileConfiguration.getActiveOptions();
 
-        optionsService.setOptions(newOptions);
-
-        if (!newOptions.equals(oldOptions)) {
-            pcs.firePropertyChange(EASY_PMD_OPTIONS_NAME_IN_EVENT, oldOptions, newOptions);
+        if (profileConfigurationDTO.isEnforceChange()) {
+            optionsService.setOptionsEnforcingChange(newOptions);
+        } else {
+            optionsService.setOptions(newOptions);
         }
     }
 
@@ -95,7 +100,7 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
     @Override
     public boolean isValid() {
         try {
-            Options activeOptions = panel.getProfileConfiguration().getActiveOptions();
+            Options activeOptions = panel.getProfileConfigurationDTO().getProfileConfiguration().getActiveOptions();
             optionsService.verifyOptions(activeOptions);
             return true;
         } catch (InvalidOptionsException ex) {

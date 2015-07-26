@@ -133,10 +133,18 @@ class EasyPmdPanel extends JPanel {
         return result;
     }
 
-    synchronized ProfileConfiguration getProfileConfiguration() {
+    synchronized ProfileConfigurationDTO getProfileConfigurationDTO() {
         updateOptionsInActiveProfile();
 
-        return new DefaultProfileConfiguration(profiles, activeProfileName);
+        ProfileConfigurationDTO result = new ProfileConfigurationDTO();
+
+        result.setProfileConfiguration(
+                new DefaultProfileConfiguration(profiles, activeProfileName)
+        );
+
+        result.setEnforceChange(enforceChangeCheckBox.isSelected());
+
+        return result;
     }
 
     private void updateOptionsInActiveProfile() {
@@ -231,6 +239,8 @@ class EasyPmdPanel extends JPanel {
         pathFilteringPanel.setExcludedPathRegexes(options.getPathFilteringOptions().getExcludedPathCompositeRegex().getSubRegexes());
 
         auxiliaryPathField.setText(options.getAuxiliaryClassPath());
+
+        enforceChangeCheckBox.setSelected(false);
     }
 
     private boolean clearScanMessagesScache() {
@@ -250,8 +260,6 @@ class EasyPmdPanel extends JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        resetOptionsButton = new javax.swing.JButton();
-        verifyOptionsButton = new javax.swing.JButton();
         profilePanel = new javax.swing.JPanel();
         profileLabel = new javax.swing.JLabel();
         profileCombo = new javax.swing.JComboBox();
@@ -294,37 +302,12 @@ class EasyPmdPanel extends JPanel {
         pmdVersionLabel = new javax.swing.JLabel();
         showHomePageButton = new javax.swing.JButton();
         showFacebookPageButton = new javax.swing.JButton();
+        optionButtonsPanel = new javax.swing.JPanel();
+        resetOptionsButton = new javax.swing.JButton();
+        verifyOptionsButton = new javax.swing.JButton();
+        enforceChangeCheckBox = new javax.swing.JCheckBox();
 
         setLayout(new java.awt.GridBagLayout());
-
-        org.openide.awt.Mnemonics.setLocalizedText(resetOptionsButton, org.openide.util.NbBundle.getMessage(EasyPmdPanel.class, "EasyPmdPanel.resetOptionsButton.text")); // NOI18N
-        resetOptionsButton.setPreferredSize(new java.awt.Dimension(101, 30));
-        resetOptionsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                resetOptionsButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        add(resetOptionsButton, gridBagConstraints);
-
-        org.openide.awt.Mnemonics.setLocalizedText(verifyOptionsButton, org.openide.util.NbBundle.getMessage(EasyPmdPanel.class, "EasyPmdPanel.verifyOptionsButton.text")); // NOI18N
-        verifyOptionsButton.setPreferredSize(new java.awt.Dimension(101, 30));
-        verifyOptionsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                verifyOptionsButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        add(verifyOptionsButton, gridBagConstraints);
 
         profilePanel.setLayout(new java.awt.GridBagLayout());
 
@@ -662,6 +645,53 @@ class EasyPmdPanel extends JPanel {
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         add(optionsTabbedPane, gridBagConstraints);
+
+        optionButtonsPanel.setLayout(new java.awt.GridBagLayout());
+
+        org.openide.awt.Mnemonics.setLocalizedText(resetOptionsButton, org.openide.util.NbBundle.getMessage(EasyPmdPanel.class, "EasyPmdPanel.resetOptionsButton.text")); // NOI18N
+        resetOptionsButton.setPreferredSize(new java.awt.Dimension(101, 30));
+        resetOptionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetOptionsButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        optionButtonsPanel.add(resetOptionsButton, gridBagConstraints);
+
+        org.openide.awt.Mnemonics.setLocalizedText(verifyOptionsButton, org.openide.util.NbBundle.getMessage(EasyPmdPanel.class, "EasyPmdPanel.verifyOptionsButton.text")); // NOI18N
+        verifyOptionsButton.setPreferredSize(new java.awt.Dimension(101, 30));
+        verifyOptionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verifyOptionsButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        optionButtonsPanel.add(verifyOptionsButton, gridBagConstraints);
+
+        org.openide.awt.Mnemonics.setLocalizedText(enforceChangeCheckBox, org.openide.util.NbBundle.getMessage(EasyPmdPanel.class, "EasyPmdPanel.enforceChangeCheckBox.text")); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 15);
+        optionButtonsPanel.add(enforceChangeCheckBox, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 10, 10);
+        add(optionButtonsPanel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void clearScanMessagesCacheButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearScanMessagesCacheButtonActionPerformed
@@ -765,6 +795,7 @@ class EasyPmdPanel extends JPanel {
     private javax.swing.JPanel cachePanel;
     private javax.swing.JButton clearScanMessagesCacheButton;
     private javax.swing.JButton duplicateProfileButton;
+    private javax.swing.JCheckBox enforceChangeCheckBox;
     private javax.swing.JPanel generalPanel;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JPanel mainAdditionalClasspathPanel;
@@ -773,6 +804,7 @@ class EasyPmdPanel extends JPanel {
     private javax.swing.JComboBox minimumPriorityCombo;
     private javax.swing.JLabel minimumPriorityLabel;
     private javax.swing.JPanel miscPanel;
+    private javax.swing.JPanel optionButtonsPanel;
     private javax.swing.JTabbedPane optionsTabbedPane;
     private info.gianlucacosta.easypmd.ide.options.PathFilteringPanel pathFilteringPanel;
     private javax.swing.JScrollPane pathFilteringScrollPane;

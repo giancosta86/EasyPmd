@@ -51,13 +51,15 @@ The overall build process is based on Maven 3, for elegance and robustness.
 
 * Predefined, customizable regular expressions, to simplify path filtering.
 
+* XML, human-readable options stored in the user's home directory
+
 * Online help, integrated into the NetBeans help system.
 
 
 
 ## Requirements
 
-EasyPmd 7 requires NetBeans 8+ and Java 8+.
+EasyPmd requires NetBeans 8+ and Java 8+.
 
 
 
