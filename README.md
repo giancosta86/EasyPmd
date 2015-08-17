@@ -89,6 +89,7 @@ Special thanks to (ordered by surname):
 * *Matthew Harrison*
 * *Thomas Kellerer*
 * *Wes McKean*
+* *Diogo Mendes*
 * *Jeremy Pyman*
 * *Christian Funder Sommerlund*
 * *Toru Takahashi*
