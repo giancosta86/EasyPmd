@@ -4,7 +4,7 @@
 
     <groupId>info.gianlucacosta.easypmd</groupId>
     <artifactId>easypmd</artifactId>
-    <version>9.2</version>
+    <version>9.3</version>
     <packaging>nbm</packaging>
 
 
@@ -42,6 +42,9 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <facebookPage>https://www.facebook.com/easypmd</facebookPage>
+
+        <libs.netbeans.version>RELEASE80</libs.netbeans.version>
+        <libs.pmd.version>5.3.3</libs.pmd.version>
     </properties>
 
 
@@ -102,7 +105,7 @@
         <dependency>
             <groupId>net.sourceforge.pmd</groupId>
             <artifactId>pmd-core</artifactId>
-            <version>5.3.3</version>   
+            <version>${libs.pmd.version}</version>   
             
             <exclusions>
                 <exclusion>
@@ -121,7 +124,7 @@
         <dependency>
             <groupId>net.sourceforge.pmd</groupId>
             <artifactId>pmd-java</artifactId>
-            <version>5.3.3</version>
+            <version>${libs.pmd.version}</version>
             
             <exclusions>
                 <exclusion>
@@ -148,73 +151,73 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-api-annotations-common</artifactId>
-            <version>RELEASE80</version>
+            <version>${libs.netbeans.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-dialogs</artifactId>
-            <version>RELEASE80</version>
+            <version>${libs.netbeans.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-spi-tasklist</artifactId>
-            <version>RELEASE80</version>
+            <version>${libs.netbeans.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-text</artifactId>
-            <version>RELEASE80</version>
+            <version>${libs.netbeans.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-loaders</artifactId>
-            <version>RELEASE80</version>
+            <version>${libs.netbeans.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-editor-guards</artifactId>
-            <version>RELEASE80</version>
+            <version>${libs.netbeans.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-options-api</artifactId>
-            <version>RELEASE80</version>
+            <version>${libs.netbeans.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-awt</artifactId>
-            <version>RELEASE80</version>
+            <version>${libs.netbeans.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-util</artifactId>
-            <version>RELEASE80</version>
+            <version>${libs.netbeans.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-util-lookup</artifactId>
-            <version>RELEASE80</version>
+            <version>${libs.netbeans.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-filesystems</artifactId>
-            <version>RELEASE80</version>
+            <version>${libs.netbeans.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-netbeans-modules-javahelp</artifactId>
-            <version>RELEASE80</version>
+            <version>${libs.netbeans.version}</version>
         </dependency>
     </dependencies>
 
