@@ -28,11 +28,13 @@ import info.gianlucacosta.easypmd.pmdscanner.StandardRuleSetsCatalog;
 import info.gianlucacosta.helios.conversions.CollectionToArrayConverter;
 import info.gianlucacosta.helios.product.ProductInfoService;
 import info.gianlucacosta.helios.swing.jlist.AdvancedSelectionListModel;
-import java.io.File;
-import net.sourceforge.pmd.RuleSet;
 
-import javax.swing.*;
+import java.io.File;
+
 import java.util.Collection;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 
 /**
@@ -196,24 +198,22 @@ public class RuleSetsPanel extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addStandardRuleSetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addStandardRuleSetButtonActionPerformed
-        Collection<RuleSetWrapper> standardRuleSetWrappers = standardRulesetsCatalog.getRuleSetWrappers();
+        StandardRuleSetsInputPanel inputPanel = new StandardRuleSetsInputPanel(standardRulesetsCatalog);
 
-        Object userChoice = JOptionPane.showInputDialog(
+        int userChoice = JOptionPane.showConfirmDialog(
                 null,
-                "Choose a standard rule set:",
+                inputPanel,
                 pluginInfoService.getName(),
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                ruleSetsArrayConverter.convert(standardRuleSetWrappers),
-                null);
+                JOptionPane.OK_CANCEL_OPTION
+        );
 
-        if (userChoice == null) {
+        if (userChoice == JOptionPane.CANCEL_OPTION) {
             return;
         }
 
-        RuleSet chosenRuleSet = ((RuleSetWrapper) userChoice).getRuleSet();
-
-        ruleSetsModel.addElement(chosenRuleSet.getFileName());
+        inputPanel.getSelectedRuleSets().forEach(ruleSet
+                -> ruleSetsModel.addElement(ruleSet.getFileName())
+        );
     }//GEN-LAST:event_addStandardRuleSetButtonActionPerformed
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
