@@ -4,7 +4,7 @@
 
     <groupId>info.gianlucacosta.easypmd</groupId>
     <artifactId>easypmd</artifactId>
-    <version>9.3</version>
+    <version>9.4</version>
     <packaging>nbm</packaging>
 
 
@@ -43,8 +43,8 @@
 
         <facebookPage>https://www.facebook.com/easypmd</facebookPage>
 
-        <libs.netbeans.version>RELEASE80</libs.netbeans.version>
-        <libs.pmd.version>5.3.3</libs.pmd.version>
+        <libs.netbeans.version>RELEASE81</libs.netbeans.version>
+        <libs.pmd.version>5.4.0</libs.pmd.version>
     </properties>
 
 
@@ -205,6 +205,12 @@
         <dependency>
             <groupId>org.netbeans.api</groupId>
             <artifactId>org-openide-util-lookup</artifactId>
+            <version>${libs.netbeans.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-openide-util-ui</artifactId>
             <version>${libs.netbeans.version}</version>
         </dependency>
 
