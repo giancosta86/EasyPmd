@@ -28,8 +28,10 @@ import net.sourceforge.pmd.lang.LanguageVersion;
 import net.sourceforge.pmd.lang.dfa.report.ReportTree;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Scans a file using PMD
@@ -108,9 +110,18 @@ class LinkedPmdScanningStrategy implements PmdScannerStrategy {
 
         ScanMessageList scanMessages = new ScanMessageList();
 
+        RuleSets applicableRuleSets = new RuleSets();
+        Iterator<RuleSet> ruleSetsIterator = ruleSets.getRuleSetsIterator();
+        while (ruleSetsIterator.hasNext()) {
+            RuleSet currentRuleSet = ruleSetsIterator.next();
+            if (currentRuleSet.applies(file)) {
+                applicableRuleSets.addRuleSet(currentRuleSet);
+            }
+        }
+
         try {
             try (Reader reader = new InputStreamReader(new FileInputStream(filePath), sourceFileEncoding)) {
-                pmd.getSourceCodeProcessor().processSourceCode(reader, ruleSets, ruleContext);
+                pmd.getSourceCodeProcessor().processSourceCode(reader, applicableRuleSets, ruleContext);
             }
 
             ReportTree violationTree = report.getViolationTree();
