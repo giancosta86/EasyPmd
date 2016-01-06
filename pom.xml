@@ -4,7 +4,7 @@
 
     <groupId>info.gianlucacosta.easypmd</groupId>
     <artifactId>easypmd</artifactId>
-    <version>9.4</version>
+    <version>9.5</version>
     <packaging>nbm</packaging>
 
 
@@ -44,7 +44,7 @@
         <facebookPage>https://www.facebook.com/easypmd</facebookPage>
 
         <libs.netbeans.version>RELEASE80</libs.netbeans.version>
-        <libs.pmd.version>5.4.0</libs.pmd.version>
+        <libs.pmd.version>5.4.1</libs.pmd.version>
     </properties>
 
 
