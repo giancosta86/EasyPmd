@@ -36,7 +36,7 @@ import java.util.Optional;
  */
 public class ScanMessagesCacheItem implements Serializable {
 
-    private final Optional<FileTime> lastModifiedOption;
+    private final long lastModifiedMillis;
     private final List<ScanMessage> scanMessages;
 
     ScanMessagesCacheItem(Path path, List<ScanMessage> scanMessages) {
@@ -44,25 +44,21 @@ public class ScanMessagesCacheItem implements Serializable {
             throw new IllegalArgumentException();
         }
 
-        Optional<FileTime> actualLastModifiedOption;
+        long actualLastModifiedMillis;
 
         try {
-            actualLastModifiedOption = Optional.of(
-                    Files.getLastModifiedTime(path)
-            );
+            actualLastModifiedMillis = Files.getLastModifiedTime(path).toMillis();
         } catch (IOException ex) {
-            actualLastModifiedOption = Optional.empty();
+            actualLastModifiedMillis = -1;
         }
 
-        this.lastModifiedOption = actualLastModifiedOption;
+        this.lastModifiedMillis = actualLastModifiedMillis;
         this.scanMessages = scanMessages;
     }
 
     public boolean isSynchronizedWith(Path path) {
         try {
-            return Objects.equals(
-                    lastModifiedOption,
-                    Files.getLastModifiedTime(path));
+            return lastModifiedMillis == Files.getLastModifiedTime(path).toMillis();
         } catch (IOException ex) {
             return false;
         }
