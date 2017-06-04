@@ -24,6 +24,8 @@ package info.gianlucacosta.easypmd.pmdscanner.messagescache;
 import info.gianlucacosta.easypmd.io.StreamUtils;
 import info.gianlucacosta.helios.io.storagearea.StorageArea;
 import info.gianlucacosta.helios.io.storagearea.StorageAreaEntry;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,7 +74,7 @@ class StorageAreaBasedScanMessagesCache extends AbstractScanMessagesCache {
             }
 
             try (InputStream entryStream = clusterMapEntry.openInputStream()) {
-                return (Map<String, ScanMessagesCacheItem>) StreamUtils.readSingleObjectFromStream(entryStream);
+                return (Map<String, ScanMessagesCacheItem>) StreamUtils.readSingleObjectFromStream(new BufferedInputStream(entryStream));
             }
 
         } catch (IOException | ClassNotFoundException ex) {
@@ -114,7 +116,10 @@ class StorageAreaBasedScanMessagesCache extends AbstractScanMessagesCache {
             StorageAreaEntry clusterMapEntry = getClusterMapEntry(scannedFile);
 
             try (OutputStream entryOutputStream = clusterMapEntry.openOutputStream()) {
-                StreamUtils.writeSingleObjectToStream(entryOutputStream, clusterMap);
+                StreamUtils.writeSingleObjectToStream(
+                        new BufferedOutputStream(entryOutputStream),
+                        clusterMap
+                );
             }
         } catch (IOException ex) {
             logger.log(

@@ -26,20 +26,16 @@ import java.io.*;
 /**
  * Stream-related utilities
  */
-public class StreamUtils {
-
-    private StreamUtils() {
-    }
+public interface StreamUtils {
 
     public static Object readSingleObjectFromStream(InputStream sourceStream) throws IOException, ClassNotFoundException {
-        try (ObjectInputStream inputStream = new ObjectInputStream(new BufferedInputStream(sourceStream))) {
-
+        try (ObjectInputStream inputStream = new ObjectInputStream(sourceStream)) {
             return inputStream.readObject();
         }
     }
 
     public static void writeSingleObjectToStream(OutputStream targetStream, Object obj) throws IOException {
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new BufferedOutputStream(targetStream))) {
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(targetStream)) {
             outputStream.writeObject(obj);
         }
     }
