@@ -24,9 +24,11 @@ package info.gianlucacosta.easypmd.pmdscanner;
 import info.gianlucacosta.easypmd.ide.options.Options;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * Scans files using PMD, returning a ScanMessageList for each scanned file
+ * Scans files using PMD, returning a list of ScanMessage for each scanned file
  */
 public class PmdScanner {
 
@@ -45,13 +47,15 @@ public class PmdScanner {
         }
     }
 
-    public ScanMessageList scanFile(File file) {
+    public List<ScanMessage> scanFile(File file) {
         try {
             return strategy.scanFile(file);
         } catch (RuntimeException ex) {
-            ScanMessageList result = new ScanMessageList();
-            result.add(new ScanError(ex));
-            return result;
+            ScanError scanError = new ScanError(ex);
+
+            return Collections.singletonList(
+                    scanError
+            );
         }
     }
 }

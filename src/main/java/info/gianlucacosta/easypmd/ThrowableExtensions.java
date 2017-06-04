@@ -29,6 +29,7 @@ import java.io.Writer;
  * Throwable-related utilities
  */
 public interface ThrowableExtensions {
+
     /**
      * Converts the stack trace of a Throwable to a string
      *

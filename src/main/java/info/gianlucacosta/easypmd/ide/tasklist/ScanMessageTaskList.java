@@ -22,11 +22,11 @@
 package info.gianlucacosta.easypmd.ide.tasklist;
 
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
-import info.gianlucacosta.easypmd.pmdscanner.ScanMessageList;
 import org.netbeans.spi.tasklist.Task;
 import org.openide.filesystems.FileObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A list of tasks, generated from a list of scan messages, related to a
@@ -38,7 +38,7 @@ public class ScanMessageTaskList extends ArrayList<Task> {
         //Just do nothing
     }
 
-    public ScanMessageTaskList(FileObject fileObject, ScanMessageList scanMessages) {
+    public ScanMessageTaskList(FileObject fileObject, List<ScanMessage> scanMessages) {
         for (ScanMessage scanMessage : scanMessages) {
             Task violationTask = Task.create(fileObject, scanMessage.getTaskType(), scanMessage.getTaskText(), scanMessage.getLineNumber());
             add(violationTask);

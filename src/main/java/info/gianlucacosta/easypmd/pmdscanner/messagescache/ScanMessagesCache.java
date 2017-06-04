@@ -21,18 +21,19 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner.messagescache;
 
-import info.gianlucacosta.easypmd.pmdscanner.ScanMessageList;
+import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Cache of scan messages
  */
 public interface ScanMessagesCache {
 
-    ScanMessageList getScanMessagesFor(File file);
+    List<ScanMessage> getScanMessagesFor(File file);
 
-    void putScanMessagesFor(File file, ScanMessageList scanMessages);
+    void putScanMessagesFor(File file, List<ScanMessage> scanMessages);
 
     boolean clear();
 }

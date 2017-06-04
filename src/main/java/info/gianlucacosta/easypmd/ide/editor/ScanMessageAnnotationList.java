@@ -22,16 +22,16 @@
 package info.gianlucacosta.easypmd.ide.editor;
 
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
-import info.gianlucacosta.easypmd.pmdscanner.ScanMessageList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A list of scan message annotations
  */
 public class ScanMessageAnnotationList extends ArrayList<ScanMessageAnnotation> {
 
-    public ScanMessageAnnotationList(ScanMessageList scanMessages) {
+    public ScanMessageAnnotationList(List<ScanMessage> scanMessages) {
         for (ScanMessage scanMessage : scanMessages) {
             ScanMessageAnnotation currentAnnotation = new ScanMessageAnnotation(scanMessage);
 

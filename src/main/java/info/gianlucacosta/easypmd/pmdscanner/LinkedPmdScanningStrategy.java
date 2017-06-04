@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 /**
  * Scans a file using PMD
@@ -99,7 +100,7 @@ class LinkedPmdScanningStrategy implements PmdScannerStrategy {
     }
 
     @Override
-    public ScanMessageList scanFile(File file) {
+    public List<ScanMessage> scanFile(File file) {
         String filePath = file.getAbsolutePath();
 
         Report report = new Report();
@@ -108,10 +109,11 @@ class LinkedPmdScanningStrategy implements PmdScannerStrategy {
         ruleContext.setReport(report);
         ruleContext.setSourceCodeFilename(filePath);
 
-        ScanMessageList scanMessages = new ScanMessageList();
+        List<ScanMessage> scanMessages = new ArrayList<ScanMessage>();
 
         RuleSets applicableRuleSets = new RuleSets();
         Iterator<RuleSet> ruleSetsIterator = ruleSets.getRuleSetsIterator();
+
         while (ruleSetsIterator.hasNext()) {
             RuleSet currentRuleSet = ruleSetsIterator.next();
             if (currentRuleSet.applies(file)) {

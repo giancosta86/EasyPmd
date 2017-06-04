@@ -21,10 +21,10 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner.messagescache;
 
-import info.gianlucacosta.easypmd.pmdscanner.ScanMessageList;
-
+import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
 import java.io.File;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * An item in the scan messages cache
@@ -32,9 +32,9 @@ import java.io.Serializable;
 public class ScanMessagesCacheItem implements Serializable {
 
     private final long lastModified;
-    private final ScanMessageList scanMessages;
+    private final List<ScanMessage> scanMessages;
 
-    ScanMessagesCacheItem(File file, ScanMessageList scanMessages) {
+    ScanMessagesCacheItem(File file, List<ScanMessage> scanMessages) {
         if (scanMessages == null) {
             throw new IllegalArgumentException();
         }
@@ -47,7 +47,7 @@ public class ScanMessagesCacheItem implements Serializable {
         return lastModified == file.lastModified();
     }
 
-    public ScanMessageList getScanMessages() {
+    public List<ScanMessage> getScanMessages() {
         return scanMessages;
     }
 }

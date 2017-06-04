@@ -28,7 +28,7 @@ import info.gianlucacosta.easypmd.ide.options.Options;
 import info.gianlucacosta.easypmd.ide.options.OptionsService;
 import info.gianlucacosta.easypmd.ide.tasklist.ScanMessageTaskList;
 import info.gianlucacosta.easypmd.pmdscanner.PmdScanner;
-import info.gianlucacosta.easypmd.pmdscanner.ScanMessageList;
+import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
 import org.netbeans.spi.tasklist.FileTaskScanner;
 import org.netbeans.spi.tasklist.Task;
 import org.openide.filesystems.FileObject;
@@ -47,6 +47,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * The link between the IDE and the plugin's scan system
@@ -144,7 +145,7 @@ public class IdeScanner extends FileTaskScanner {
                 throw new RuntimeException(ex);
             }
 
-            ScanMessageList scanMessages = pmdScanner.scanFile(file);
+            List<ScanMessage> scanMessages = pmdScanner.scanFile(file);
 
             if (!options.isShowAllMessagesInGuardedSections()) {
                 GuardedSectionsAnalyzer guardedSectionsAnalyzer = new GuardedSectionsAnalyzer(dataObject);
@@ -152,7 +153,16 @@ public class IdeScanner extends FileTaskScanner {
                 Set<Integer> guardedPmdLineNumbers = guardedSectionsAnalyzer.getGuardedLineNumbers();
 
                 if (!guardedPmdLineNumbers.isEmpty()) {
-                    scanMessages = scanMessages.filterOutGuardedSections(guardedPmdLineNumbers);
+                    scanMessages = scanMessages
+                            .stream()
+                            .filter(scanMessage -> {
+                                int violationLineNumber = scanMessage.getLineNumber();
+
+                                return scanMessage.isShowableInGuardedSections()
+                                        || !guardedPmdLineNumbers.contains(violationLineNumber);
+
+                            })
+                            .collect(Collectors.toList());
                 }
             }
 

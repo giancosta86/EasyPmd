@@ -21,9 +21,9 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner.messagescache;
 
-import info.gianlucacosta.easypmd.pmdscanner.ScanMessageList;
-
+import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -44,7 +44,7 @@ abstract class AbstractScanMessagesCache implements ScanMessagesCache {
     }
 
     @Override
-    public ScanMessageList getScanMessagesFor(File file) {
+    public List<ScanMessage> getScanMessagesFor(File file) {
         readLock.lock();
 
         try {
@@ -65,7 +65,7 @@ abstract class AbstractScanMessagesCache implements ScanMessagesCache {
     }
 
     @Override
-    public void putScanMessagesFor(File file, ScanMessageList scanMessages) {
+    public void putScanMessagesFor(File file, List<ScanMessage> scanMessages) {
         writeLock.lock();
         try {
             ScanMessagesCacheItem cacheItem = new ScanMessagesCacheItem(file, scanMessages);

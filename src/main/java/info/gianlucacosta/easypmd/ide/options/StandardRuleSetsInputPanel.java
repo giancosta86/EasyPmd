@@ -36,33 +36,35 @@ import javax.swing.JScrollPane;
 import net.sourceforge.pmd.RuleSet;
 
 /**
- * Panel showing a list of available standard rule sets and allowing multiple selection
+ * Panel showing a list of available standard rule sets and allowing multiple
+ * selection
  */
 public final class StandardRuleSetsInputPanel extends JPanel {
+
     private JList<RuleSetWrapper> inputList;
-    
+
     public StandardRuleSetsInputPanel(StandardRuleSetsCatalog standardRuleSetsCatalog) {
         Collection<RuleSetWrapper> standardRuleSetWrappers = standardRuleSetsCatalog.getRuleSetWrappers();
-        
+
         setLayout(new BorderLayout());
-        
+
         JLabel inputLabel = new JLabel("Choose a standard rule set:");
         inputLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 7, 0));
         add(inputLabel, BorderLayout.NORTH);
-        
+
         DefaultListModel<RuleSetWrapper> inputModel = new DefaultListModel<>();
         standardRuleSetWrappers.forEach(ruleSetWrapper -> inputModel.addElement(ruleSetWrapper));
-                
-        inputList = new JList<>(inputModel);        
-        
-        JScrollPane inputScroll = new JScrollPane(inputList);        
+
+        inputList = new JList<>(inputModel);
+
+        JScrollPane inputScroll = new JScrollPane(inputList);
         add(inputScroll, BorderLayout.CENTER);
-        
+
         setPreferredSize(new Dimension(450, 200));
     }
-    
+
     public Stream<RuleSet> getSelectedRuleSets() {
         return inputList.getSelectedValuesList().stream()
-                .map(ruleSetWrapper -> ruleSetWrapper.getRuleSet());                
-    }    
+                .map(ruleSetWrapper -> ruleSetWrapper.getRuleSet());
+    }
 }

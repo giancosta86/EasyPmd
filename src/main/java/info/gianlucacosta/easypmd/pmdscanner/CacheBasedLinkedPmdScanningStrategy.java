@@ -26,6 +26,7 @@ import info.gianlucacosta.easypmd.ide.options.Options;
 import info.gianlucacosta.easypmd.pmdscanner.messagescache.ScanMessagesCache;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Scanning strategy looking for cached scan messages: if they are missing, a
@@ -42,14 +43,14 @@ class CacheBasedLinkedPmdScanningStrategy extends LinkedPmdScanningStrategy {
     }
 
     @Override
-    public ScanMessageList scanFile(File file) {
-        final ScanMessageList cachedScanMessages = scanMessagesCache.getScanMessagesFor(file);
+    public List<ScanMessage> scanFile(File file) {
+        final List<ScanMessage> cachedScanMessages = scanMessagesCache.getScanMessagesFor(file);
 
         if (cachedScanMessages != null) {
             return cachedScanMessages;
         }
 
-        final ScanMessageList scanMessages = super.scanFile(file);
+        final List<ScanMessage> scanMessages = super.scanFile(file);
 
         scanMessagesCache.putScanMessagesFor(file, scanMessages);
 

@@ -22,11 +22,12 @@
 package info.gianlucacosta.easypmd.pmdscanner;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Strategy used by the PMD scanner to scan files
  */
 interface PmdScannerStrategy {
 
-    ScanMessageList scanFile(File file);
+    List<ScanMessage> scanFile(File file);
 }
