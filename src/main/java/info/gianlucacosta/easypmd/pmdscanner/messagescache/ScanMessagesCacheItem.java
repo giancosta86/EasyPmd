@@ -26,10 +26,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.attribute.FileTime;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * An item in the scan messages cache
