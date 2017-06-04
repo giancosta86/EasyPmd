@@ -25,7 +25,7 @@ import info.gianlucacosta.easypmd.ide.Injector;
 import info.gianlucacosta.easypmd.ide.options.Options;
 import info.gianlucacosta.easypmd.pmdscanner.messagescache.ScanMessagesCache;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -43,16 +43,16 @@ class CacheBasedLinkedPmdScanningStrategy extends LinkedPmdScanningStrategy {
     }
 
     @Override
-    public List<ScanMessage> scanFile(File file) {
-        final List<ScanMessage> cachedScanMessages = scanMessagesCache.getScanMessagesFor(file);
+    public List<ScanMessage> scan(Path path) {
+        final List<ScanMessage> cachedScanMessages = scanMessagesCache.getScanMessagesFor(path);
 
         if (cachedScanMessages != null) {
             return cachedScanMessages;
         }
 
-        final List<ScanMessage> scanMessages = super.scanFile(file);
+        final List<ScanMessage> scanMessages = super.scan(path);
 
-        scanMessagesCache.putScanMessagesFor(file, scanMessages);
+        scanMessagesCache.putScanMessagesFor(path, scanMessages);
 
         return scanMessages;
     }

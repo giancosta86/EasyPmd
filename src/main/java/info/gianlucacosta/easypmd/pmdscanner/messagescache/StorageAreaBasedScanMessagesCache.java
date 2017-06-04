@@ -27,10 +27,10 @@ import info.gianlucacosta.helios.io.storagearea.StorageAreaEntry;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -50,39 +50,39 @@ class StorageAreaBasedScanMessagesCache extends AbstractScanMessagesCache {
     }
 
     @Override
-    protected ScanMessagesCacheItem getItem(File scannedFile) {
+    protected ScanMessagesCacheItem getItem(Path scannedPath) {
         if (storageArea == null) {
             logger.log(Level.FINE, "No storage area detected - reading cannot be performed");
             return null;
         }
 
-        Map<String, ScanMessagesCacheItem> clusterMap = getClusterMap(scannedFile);
+        Map<Path, ScanMessagesCacheItem> clusterMap = getClusterMap(scannedPath);
 
         if (clusterMap == null) {
             return null;
         }
 
-        return clusterMap.get(scannedFile.getAbsolutePath());
+        return clusterMap.get(scannedPath.toAbsolutePath());
     }
 
-    private Map<String, ScanMessagesCacheItem> getClusterMap(File scannedFile) {
+    private Map<Path, ScanMessagesCacheItem> getClusterMap(Path scannedPath) {
         try {
-            StorageAreaEntry clusterMapEntry = getClusterMapEntry(scannedFile);
+            StorageAreaEntry clusterMapEntry = getClusterMapEntry(scannedPath);
 
             if (!clusterMapEntry.exists()) {
                 return null;
             }
 
             try (InputStream entryStream = clusterMapEntry.openInputStream()) {
-                return (Map<String, ScanMessagesCacheItem>) StreamUtils.readSingleObjectFromStream(new BufferedInputStream(entryStream));
+                return (Map<Path, ScanMessagesCacheItem>) StreamUtils.readSingleObjectFromStream(new BufferedInputStream(entryStream));
             }
 
         } catch (IOException | ClassNotFoundException ex) {
             logger.log(
                     Level.WARNING,
                     String.format(
-                            "Error while reading cache cluster map for file: '%s'",
-                            scannedFile.getAbsolutePath()),
+                            "Error while reading cache cluster map for path: '%s'",
+                            scannedPath.toAbsolutePath()),
                     ex);
 
         }
@@ -90,30 +90,30 @@ class StorageAreaBasedScanMessagesCache extends AbstractScanMessagesCache {
         return null;
     }
 
-    private StorageAreaEntry getClusterMapEntry(File scannedFile) throws IOException {
-        String absolutePath = scannedFile.getAbsolutePath();
+    private StorageAreaEntry getClusterMapEntry(Path scannedPath) throws IOException {
+        Path absolutePath = scannedPath.toAbsolutePath();
 
         Integer pathHashCode = absolutePath.hashCode();
         return storageArea.getEntry(ROOT_CACHE_ENTRY, pathHashCode.toString());
     }
 
     @Override
-    protected void putItem(File scannedFile, ScanMessagesCacheItem cacheItem) {
+    protected void putItem(Path scannedPath, ScanMessagesCacheItem cacheItem) {
         if (storageArea == null) {
             logger.log(Level.FINE, "No storage area detected - bypassing writing phase...");
             return;
         }
 
-        Map<String, ScanMessagesCacheItem> clusterMap = getClusterMap(scannedFile);
+        Map<Path, ScanMessagesCacheItem> clusterMap = getClusterMap(scannedPath);
 
         if (clusterMap == null) {
             clusterMap = new HashMap<>();
         }
 
-        clusterMap.put(scannedFile.getAbsolutePath(), cacheItem);
+        clusterMap.put(scannedPath.toAbsolutePath(), cacheItem);
 
         try {
-            StorageAreaEntry clusterMapEntry = getClusterMapEntry(scannedFile);
+            StorageAreaEntry clusterMapEntry = getClusterMapEntry(scannedPath);
 
             try (OutputStream entryOutputStream = clusterMapEntry.openOutputStream()) {
                 StreamUtils.writeSingleObjectToStream(
@@ -124,7 +124,7 @@ class StorageAreaBasedScanMessagesCache extends AbstractScanMessagesCache {
         } catch (IOException ex) {
             logger.log(
                     Level.SEVERE,
-                    String.format("Error while writing the cache cluster map for file: '%s'", scannedFile.getAbsolutePath()),
+                    String.format("Error while writing the cache cluster map for path: '%s'", scannedPath.toAbsolutePath()),
                     ex);
         }
     }

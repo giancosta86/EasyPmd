@@ -22,7 +22,7 @@
 package info.gianlucacosta.easypmd.pmdscanner.messagescache;
 
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
-import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -44,17 +44,17 @@ abstract class AbstractScanMessagesCache implements ScanMessagesCache {
     }
 
     @Override
-    public List<ScanMessage> getScanMessagesFor(File file) {
+    public List<ScanMessage> getScanMessagesFor(Path path) {
         readLock.lock();
 
         try {
-            ScanMessagesCacheItem cacheItem = getItem(file);
+            ScanMessagesCacheItem cacheItem = getItem(path);
 
             if (cacheItem == null) {
                 return null;
             }
 
-            if (!cacheItem.isSynchronizedWith(file)) {
+            if (!cacheItem.isSynchronizedWith(path)) {
                 return null;
             }
 
@@ -65,12 +65,12 @@ abstract class AbstractScanMessagesCache implements ScanMessagesCache {
     }
 
     @Override
-    public void putScanMessagesFor(File file, List<ScanMessage> scanMessages) {
+    public void putScanMessagesFor(Path path, List<ScanMessage> scanMessages) {
         writeLock.lock();
         try {
-            ScanMessagesCacheItem cacheItem = new ScanMessagesCacheItem(file, scanMessages);
+            ScanMessagesCacheItem cacheItem = new ScanMessagesCacheItem(path, scanMessages);
 
-            putItem(file, cacheItem);
+            putItem(path, cacheItem);
         } finally {
             writeLock.unlock();
         }
@@ -87,9 +87,9 @@ abstract class AbstractScanMessagesCache implements ScanMessagesCache {
         }
     }
 
-    protected abstract ScanMessagesCacheItem getItem(File scannedFile);
+    protected abstract ScanMessagesCacheItem getItem(Path scannedPath);
 
-    protected abstract void putItem(File scannedFile, ScanMessagesCacheItem cacheItem);
+    protected abstract void putItem(Path scannedPath, ScanMessagesCacheItem cacheItem);
 
     protected abstract boolean doClear();
 }

@@ -22,9 +22,11 @@
 package info.gianlucacosta.easypmd;
 
 import info.gianlucacosta.helios.io.Directory;
+import java.nio.file.Files;
 import org.openide.util.lookup.ServiceProvider;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,10 +59,10 @@ public class DefaultSystemPropertiesService implements SystemPropertiesService {
             return null;
         }
 
-        File result = new File(userHomeString);
+        Path result = Paths.get(userHomeString);
 
-        if (result.exists() && result.isDirectory()) {
-            return new Directory(result);
+        if (Files.isDirectory(result)) {
+            return new Directory(result.toFile());
         }
 
         return null;

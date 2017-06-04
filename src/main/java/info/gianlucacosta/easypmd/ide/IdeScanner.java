@@ -145,7 +145,7 @@ public class IdeScanner extends FileTaskScanner {
                 throw new RuntimeException(ex);
             }
 
-            List<ScanMessage> scanMessages = pmdScanner.scanFile(file);
+            List<ScanMessage> scanMessages = pmdScanner.scan(file.toPath());
 
             if (!options.isShowAllMessagesInGuardedSections()) {
                 GuardedSectionsAnalyzer guardedSectionsAnalyzer = new GuardedSectionsAnalyzer(dataObject);

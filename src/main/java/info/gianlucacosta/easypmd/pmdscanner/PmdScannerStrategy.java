@@ -21,7 +21,7 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -29,5 +29,5 @@ import java.util.List;
  */
 interface PmdScannerStrategy {
 
-    List<ScanMessage> scanFile(File file);
+    List<ScanMessage> scan(Path path);
 }

@@ -21,7 +21,7 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner.messagescache;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,16 +30,16 @@ import java.util.Map;
  */
 class InMemoryScanMessagesCache extends AbstractScanMessagesCache {
 
-    private final Map<String, ScanMessagesCacheItem> cacheItems = new HashMap<>();
+    private final Map<Path, ScanMessagesCacheItem> cacheItems = new HashMap<>();
 
     @Override
-    protected ScanMessagesCacheItem getItem(File scannedFile) {
-        return cacheItems.get(scannedFile.getAbsolutePath());
+    protected ScanMessagesCacheItem getItem(Path scannedPath) {
+        return cacheItems.get(scannedPath.toAbsolutePath());
     }
 
     @Override
-    protected void putItem(File scannedFile, ScanMessagesCacheItem cacheItem) {
-        cacheItems.put(scannedFile.getAbsolutePath(), cacheItem);
+    protected void putItem(Path scannedPath, ScanMessagesCacheItem cacheItem) {
+        cacheItems.put(scannedPath.toAbsolutePath(), cacheItem);
     }
 
     @Override

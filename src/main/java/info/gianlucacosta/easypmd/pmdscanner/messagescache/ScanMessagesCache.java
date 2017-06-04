@@ -22,8 +22,8 @@
 package info.gianlucacosta.easypmd.pmdscanner.messagescache;
 
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
+import java.nio.file.Path;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -31,9 +31,9 @@ import java.util.List;
  */
 public interface ScanMessagesCache {
 
-    List<ScanMessage> getScanMessagesFor(File file);
+    List<ScanMessage> getScanMessagesFor(Path path);
 
-    void putScanMessagesFor(File file, List<ScanMessage> scanMessages);
+    void putScanMessagesFor(Path path, List<ScanMessage> scanMessages);
 
     boolean clear();
 }

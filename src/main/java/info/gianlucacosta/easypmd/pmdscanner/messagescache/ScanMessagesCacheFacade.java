@@ -27,7 +27,7 @@ import info.gianlucacosta.easypmd.ide.options.OptionsService;
 import info.gianlucacosta.helios.beans.events.TriggerListener;
 import org.openide.util.lookup.ServiceProvider;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,17 +59,17 @@ public class ScanMessagesCacheFacade extends AbstractScanMessagesCache {
     }
 
     @Override
-    protected ScanMessagesCacheItem getItem(File file) {
-        ScanMessagesCacheItem memoryCacheItem = inMemoryCache.getItem(file);
+    protected ScanMessagesCacheItem getItem(Path path) {
+        ScanMessagesCacheItem memoryCacheItem = inMemoryCache.getItem(path);
 
         if (memoryCacheItem != null) {
             return memoryCacheItem;
         }
 
-        ScanMessagesCacheItem storageCacheItem = onDiskCache.getItem(file);
+        ScanMessagesCacheItem storageCacheItem = onDiskCache.getItem(path);
 
         if (storageCacheItem != null) {
-            inMemoryCache.putItem(file, storageCacheItem);
+            inMemoryCache.putItem(path, storageCacheItem);
 
             return storageCacheItem;
         }
@@ -78,9 +78,9 @@ public class ScanMessagesCacheFacade extends AbstractScanMessagesCache {
     }
 
     @Override
-    protected void putItem(File file, ScanMessagesCacheItem cacheItem) {
-        inMemoryCache.putItem(file, cacheItem);
-        onDiskCache.putItem(file, cacheItem);
+    protected void putItem(Path path, ScanMessagesCacheItem cacheItem) {
+        inMemoryCache.putItem(path, cacheItem);
+        onDiskCache.putItem(path, cacheItem);
     }
 
     @Override

@@ -28,11 +28,11 @@ import net.sourceforge.pmd.lang.LanguageVersion;
 import net.sourceforge.pmd.lang.dfa.report.ReportTree;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.StreamSupport;
 
 /**
  * Scans a file using PMD
@@ -100,29 +100,29 @@ class LinkedPmdScanningStrategy implements PmdScannerStrategy {
     }
 
     @Override
-    public List<ScanMessage> scanFile(File file) {
-        String filePath = file.getAbsolutePath();
+    public List<ScanMessage> scan(Path path) {
+        String pathString = path.toAbsolutePath().toString();
 
         Report report = new Report();
 
         RuleContext ruleContext = new RuleContext();
         ruleContext.setReport(report);
-        ruleContext.setSourceCodeFilename(filePath);
+        ruleContext.setSourceCodeFilename(pathString);
 
-        List<ScanMessage> scanMessages = new ArrayList<ScanMessage>();
+        List<ScanMessage> scanMessages = new ArrayList<>();
 
         RuleSets applicableRuleSets = new RuleSets();
         Iterator<RuleSet> ruleSetsIterator = ruleSets.getRuleSetsIterator();
 
         while (ruleSetsIterator.hasNext()) {
             RuleSet currentRuleSet = ruleSetsIterator.next();
-            if (currentRuleSet.applies(file)) {
+            if (currentRuleSet.applies(path.toFile())) {
                 applicableRuleSets.addRuleSet(currentRuleSet);
             }
         }
 
         try {
-            try (Reader reader = new InputStreamReader(new FileInputStream(filePath), sourceFileEncoding)) {
+            try (Reader reader = new InputStreamReader(new FileInputStream(pathString), sourceFileEncoding)) {
                 pmd.getSourceCodeProcessor().processSourceCode(reader, applicableRuleSets, ruleContext);
             }
 

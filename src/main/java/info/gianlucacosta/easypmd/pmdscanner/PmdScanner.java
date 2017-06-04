@@ -23,7 +23,7 @@ package info.gianlucacosta.easypmd.pmdscanner;
 
 import info.gianlucacosta.easypmd.ide.options.Options;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,9 +47,9 @@ public class PmdScanner {
         }
     }
 
-    public List<ScanMessage> scanFile(File file) {
+    public List<ScanMessage> scan(Path path) {
         try {
-            return strategy.scanFile(file);
+            return strategy.scan(path);
         } catch (RuntimeException ex) {
             ScanError scanError = new ScanError(ex);
 

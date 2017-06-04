@@ -22,29 +22,50 @@
 package info.gianlucacosta.easypmd.pmdscanner.messagescache;
 
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
-import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.FileTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * An item in the scan messages cache
  */
 public class ScanMessagesCacheItem implements Serializable {
 
-    private final long lastModified;
+    private final Optional<FileTime> lastModifiedOption;
     private final List<ScanMessage> scanMessages;
 
-    ScanMessagesCacheItem(File file, List<ScanMessage> scanMessages) {
+    ScanMessagesCacheItem(Path path, List<ScanMessage> scanMessages) {
         if (scanMessages == null) {
             throw new IllegalArgumentException();
         }
 
-        this.lastModified = file.lastModified();
+        Optional<FileTime> actualLastModifiedOption;
+
+        try {
+            actualLastModifiedOption = Optional.of(
+                    Files.getLastModifiedTime(path)
+            );
+        } catch (IOException ex) {
+            actualLastModifiedOption = Optional.empty();
+        }
+
+        this.lastModifiedOption = actualLastModifiedOption;
         this.scanMessages = scanMessages;
     }
 
-    public boolean isSynchronizedWith(File file) {
-        return lastModified == file.lastModified();
+    public boolean isSynchronizedWith(Path path) {
+        try {
+            return Objects.equals(
+                    lastModifiedOption,
+                    Files.getLastModifiedTime(path));
+        } catch (IOException ex) {
+            return false;
+        }
     }
 
     public List<ScanMessage> getScanMessages() {

@@ -21,7 +21,7 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,7 +31,7 @@ import java.util.List;
 public class NoOpPmdScannerStrategy implements PmdScannerStrategy {
 
     @Override
-    public List<ScanMessage> scanFile(File file) {
+    public List<ScanMessage> scan(Path path) {
         return Collections.emptyList();
     }
 }
