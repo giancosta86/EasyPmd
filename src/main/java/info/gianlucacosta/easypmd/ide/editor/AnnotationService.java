@@ -21,12 +21,13 @@
  */
 package info.gianlucacosta.easypmd.ide.editor;
 
+import java.util.Set;
 import org.openide.filesystems.FileObject;
 import org.openide.loaders.DataObject;
 
 public interface AnnotationService {
 
-    void attachAnnotationsTo(DataObject dataObject, ScanMessageAnnotationList annotations);
+    void attachAnnotationsTo(DataObject dataObject, Set<ScanMessageAnnotation> annotations);
 
     void detachAnnotationsFrom(FileObject fileObject);
 

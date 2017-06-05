@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Default implementation of AnnotationService
@@ -42,11 +43,11 @@ import java.util.Map;
 @ServiceProvider(service = AnnotationService.class)
 public class DefaultAnnotationService implements AnnotationService {
 
-    private final Map<FileObject, ScanMessageAnnotationList> attachedAnnotations = new HashMap<>();
+    private final Map<FileObject, Set<ScanMessageAnnotation>> attachedAnnotations = new HashMap<>();
     private final Map<FileObject, FileChangeListener> registeredFileChangeListeners = new HashMap<>();
 
     @Override
-    public void attachAnnotationsTo(DataObject dataObject, ScanMessageAnnotationList annotations) {
+    public void attachAnnotationsTo(DataObject dataObject, Set<ScanMessageAnnotation> annotations) {
         final FileObject fileObject = dataObject.getPrimaryFile();
 
         if (attachedAnnotations.containsKey(fileObject)) {
@@ -84,7 +85,7 @@ public class DefaultAnnotationService implements AnnotationService {
 
     @Override
     public void detachAnnotationsFrom(FileObject fileObject) {
-        ScanMessageAnnotationList fileAnnotations = attachedAnnotations.get(fileObject);
+        Set<ScanMessageAnnotation> fileAnnotations = attachedAnnotations.get(fileObject);
 
         if (fileAnnotations == null) {
             return;

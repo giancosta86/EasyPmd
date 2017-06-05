@@ -23,9 +23,9 @@ package info.gianlucacosta.easypmd.pmdscanner.messagescache;
 
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -42,7 +42,7 @@ public class DualLayerCache implements ScanMessagesCache {
     }
 
     @Override
-    public Optional<List<ScanMessage>> getScanMessagesFor(String pathString, long pathLastModificationMillis) {
+    public Optional<Set<ScanMessage>> getScanMessagesFor(String pathString, long pathLastModificationMillis) {
         CacheEntry inMemoryEntry = inMemoryEntries.get(pathString);
 
         if (inMemoryEntry != null) {
@@ -60,14 +60,14 @@ public class DualLayerCache implements ScanMessagesCache {
 
                     return storageEntry.getScanMessages();
                 } else {
-                    return Collections.emptyList();
+                    return Collections.emptySet();
                 }
             });
         }
     }
 
     @Override
-    public void putScanMessagesFor(String pathString, long lastModificationMillis, List<ScanMessage> scanMessages) {
+    public void putScanMessagesFor(String pathString, long lastModificationMillis, Set<ScanMessage> scanMessages) {
         CacheEntry cacheEntry = new CacheEntry(lastModificationMillis, scanMessages);
 
         inMemoryEntries.put(pathString, cacheEntry);

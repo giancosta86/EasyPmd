@@ -32,7 +32,7 @@ public class ScanMessageAnnotation extends Annotation {
 
     private final ScanMessage message;
 
-    ScanMessageAnnotation(ScanMessage message) {
+    public ScanMessageAnnotation(ScanMessage message) {
         this.message = message;
     }
 

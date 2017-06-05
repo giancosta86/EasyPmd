@@ -34,6 +34,7 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -57,18 +58,18 @@ class CacheBasedLinkedPmdScanningStrategy extends LinkedPmdScanningStrategy {
     }
 
     @Override
-    public List<ScanMessage> scan(Path path) {
+    public Set<ScanMessage> scan(Path path) {
         try {
             String pathString = path.toString();
             long lastModificationMillis = Files.getLastModifiedTime(path).toMillis();
 
-            final Optional<List<ScanMessage>> cachedScanMessagesOption = scanMessagesCache.getScanMessagesFor(
+            final Optional<Set<ScanMessage>> cachedScanMessagesOption = scanMessagesCache.getScanMessagesFor(
                     pathString,
                     lastModificationMillis
             );
 
             return cachedScanMessagesOption.orElseGet(() -> {
-                List<ScanMessage> scanMessages = super.scan(path);
+                Set<ScanMessage> scanMessages = super.scan(path);
 
                 scanMessagesCache.putScanMessagesFor(pathString, lastModificationMillis, scanMessages);
 
@@ -79,7 +80,7 @@ class CacheBasedLinkedPmdScanningStrategy extends LinkedPmdScanningStrategy {
                     String.format("Exception while scanning path: %s", path)
             );
 
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
     }
 }

@@ -25,7 +25,7 @@ import info.gianlucacosta.easypmd.ide.options.Options;
 
 import java.nio.file.Path;
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Scans files using PMD, returning a list of ScanMessage for each scanned file
@@ -47,13 +47,13 @@ public class PmdScanner {
         }
     }
 
-    public List<ScanMessage> scan(Path path) {
+    public Set<ScanMessage> scan(Path path) {
         try {
             return strategy.scan(path);
         } catch (RuntimeException ex) {
             ScanError scanError = new ScanError(ex);
 
-            return Collections.singletonList(
+            return Collections.singleton(
                     scanError
             );
         }

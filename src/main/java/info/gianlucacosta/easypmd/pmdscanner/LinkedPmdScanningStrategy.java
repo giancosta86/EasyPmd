@@ -29,10 +29,10 @@ import net.sourceforge.pmd.lang.dfa.report.ReportTree;
 
 import java.io.*;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Scans a file using PMD
@@ -100,7 +100,7 @@ class LinkedPmdScanningStrategy implements PmdScannerStrategy {
     }
 
     @Override
-    public List<ScanMessage> scan(Path path) {
+    public Set<ScanMessage> scan(Path path) {
         String pathString = path.toAbsolutePath().toString();
 
         Report report = new Report();
@@ -109,7 +109,7 @@ class LinkedPmdScanningStrategy implements PmdScannerStrategy {
         ruleContext.setReport(report);
         ruleContext.setSourceCodeFilename(pathString);
 
-        List<ScanMessage> scanMessages = new ArrayList<>();
+        Set<ScanMessage> scanMessages = new HashSet<>();
 
         RuleSets applicableRuleSets = new RuleSets();
         Iterator<RuleSet> ruleSetsIterator = ruleSets.getRuleSetsIterator();

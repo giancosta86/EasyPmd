@@ -23,10 +23,9 @@ package info.gianlucacosta.easypmd.ide;
 
 import info.gianlucacosta.easypmd.ide.editor.AnnotationService;
 import info.gianlucacosta.easypmd.ide.editor.GuardedSectionsAnalyzer;
-import info.gianlucacosta.easypmd.ide.editor.ScanMessageAnnotationList;
+import info.gianlucacosta.easypmd.ide.editor.ScanMessageAnnotation;
 import info.gianlucacosta.easypmd.ide.options.Options;
 import info.gianlucacosta.easypmd.ide.options.OptionsService;
-import info.gianlucacosta.easypmd.ide.tasklist.ScanMessageTaskList;
 import info.gianlucacosta.easypmd.pmdscanner.PmdScanner;
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
 import org.netbeans.spi.tasklist.FileTaskScanner;
@@ -39,6 +38,7 @@ import org.openide.util.NbBundle;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -119,7 +119,7 @@ public class IdeScanner extends FileTaskScanner {
     @Override
     public List<? extends Task> scan(FileObject fileObject) {
         if (pmdScanner == null) {
-            return new ScanMessageTaskList();
+            return Collections.emptyList();
         }
 
         readOptionsLock.lock();
@@ -127,7 +127,7 @@ public class IdeScanner extends FileTaskScanner {
             File file = FileUtil.toFile(fileObject);
 
             if (file == null || !file.isFile()) {
-                return new ScanMessageTaskList();
+                return Collections.emptyList();
             }
 
             annotationService.detachAnnotationsFrom(fileObject);
@@ -135,7 +135,7 @@ public class IdeScanner extends FileTaskScanner {
             String filePath = file.getPath();
 
             if (!options.getPathFilteringOptions().isPathValid(filePath)) {
-                return new ScanMessageTaskList();
+                return Collections.emptyList();
             }
 
             DataObject dataObject;
@@ -145,7 +145,7 @@ public class IdeScanner extends FileTaskScanner {
                 throw new RuntimeException(ex);
             }
 
-            List<ScanMessage> scanMessages = pmdScanner.scan(file.toPath());
+            Set<ScanMessage> scanMessages = pmdScanner.scan(file.toPath());
 
             if (!options.isShowAllMessagesInGuardedSections()) {
                 GuardedSectionsAnalyzer guardedSectionsAnalyzer = new GuardedSectionsAnalyzer(dataObject);
@@ -162,14 +162,24 @@ public class IdeScanner extends FileTaskScanner {
                                         || !guardedPmdLineNumbers.contains(violationLineNumber);
 
                             })
-                            .collect(Collectors.toList());
+                            .collect(Collectors.toSet());
                 }
             }
 
-            ScanMessageTaskList tasks = new ScanMessageTaskList(fileObject, scanMessages);
+            List<Task> tasks = scanMessages
+                    .stream()
+                    .map(scanMessage
+                            -> Task.create(fileObject, scanMessage.getTaskType(), scanMessage.getTaskText(), scanMessage.getLineNumber())
+                    )
+                    .collect(Collectors.toList());
 
             if (options.isShowAnnotationsInEditor()) {
-                ScanMessageAnnotationList annotations = new ScanMessageAnnotationList(scanMessages);
+                Set<ScanMessageAnnotation> annotations
+                        = scanMessages
+                                .stream()
+                                .map(scanMessage -> new ScanMessageAnnotation(scanMessage))
+                                .collect(Collectors.toSet());
+
                 annotationService.attachAnnotationsTo(dataObject, annotations);
             }
 

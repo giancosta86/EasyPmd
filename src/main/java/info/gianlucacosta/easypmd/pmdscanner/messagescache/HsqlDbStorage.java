@@ -31,8 +31,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -107,7 +107,7 @@ public class HsqlDbStorage implements CacheStorage {
             try (ResultSet resultSet = selectStatement.executeQuery()) {
                 if (resultSet.next()) {
                     long lastModificationMillis = resultSet.getLong(1);
-                    List<ScanMessage> scanMessages = (List<ScanMessage>) resultSet.getObject(2);
+                    Set<ScanMessage> scanMessages = (Set<ScanMessage>) resultSet.getObject(2);
 
                     CacheEntry cacheEntry = new CacheEntry(lastModificationMillis, scanMessages);
 

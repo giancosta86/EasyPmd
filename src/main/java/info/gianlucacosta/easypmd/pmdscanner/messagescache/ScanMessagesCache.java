@@ -23,17 +23,17 @@ package info.gianlucacosta.easypmd.pmdscanner.messagescache;
 
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Cache of scan messages
  */
 public interface ScanMessagesCache extends AutoCloseable {
 
-    Optional<List<ScanMessage>> getScanMessagesFor(String pathString, long pathLastModificationMillis);
+    Optional<Set<ScanMessage>> getScanMessagesFor(String pathString, long pathLastModificationMillis);
 
-    void putScanMessagesFor(String pathString, long lastModificationMillis, List<ScanMessage> scanMessages);
+    void putScanMessagesFor(String pathString, long lastModificationMillis, Set<ScanMessage> scanMessages);
 
     boolean clear();
 }
