@@ -31,6 +31,7 @@ import java.io.OutputStreamWriter;
 import java.util.logging.Logger;
 import java.nio.file.Path;
 import info.gianlucacosta.easypmd.ide.PathService;
+import info.gianlucacosta.easypmd.util.Throwables;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.nio.file.Files;
@@ -66,7 +67,10 @@ public class DefaultProfileContextRepository implements ProfileContextRepository
             profileContext = (ProfileContext) profileContextInputStream.readObject();
         } catch (Exception ex) {
             logger.warning(
-                    String.format("Exception while loading the profiles: %s", ex)
+                    () -> String.format(
+                            "Exception while loading the profiles: %s",
+                            Throwables.toStringWithStackTrace(ex)
+                    )
             );
             profileContext = profileContextFactory.createDefaultProfileContext();
         }
@@ -93,9 +97,9 @@ public class DefaultProfileContextRepository implements ProfileContextRepository
             profileContextOutputStream.writeObject(profileContext);
         } catch (Exception ex) {
             logger.severe(
-                    String.format(
+                    () -> String.format(
                             "Error while saving the options: %s",
-                            ex
+                            Throwables.toStringWithStackTrace(ex)
                     )
             );
         }

@@ -88,7 +88,10 @@ public class DefaultOptionsFactory implements OptionsFactory {
                     if (standardRulesetsCatalog.containsFileName(ruleSetFileName)) {
                         defaultRuleSets.add(ruleSetFileName);
                     } else {
-                        logger.log(Level.WARNING, String.format("The standard ruleset '%s' was not found", ruleSetFileName));
+                        logger.warning(() -> String.format(
+                                "The standard ruleset '%s' was not found",
+                                ruleSetFileName
+                        ));
                     }
                 });
 

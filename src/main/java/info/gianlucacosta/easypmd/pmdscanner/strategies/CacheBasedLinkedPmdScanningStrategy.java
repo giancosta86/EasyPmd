@@ -26,6 +26,7 @@ import info.gianlucacosta.easypmd.ide.Injector;
 import info.gianlucacosta.easypmd.ide.options.Options;
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
 import info.gianlucacosta.easypmd.pmdscanner.messages.cache.ScanMessagesCache;
+import info.gianlucacosta.easypmd.util.Throwables;
 import java.io.IOException;
 import java.nio.file.Files;
 
@@ -70,7 +71,11 @@ public class CacheBasedLinkedPmdScanningStrategy extends LinkedPmdScanningStrate
             });
         } catch (IOException ex) {
             logger.warning(
-                    String.format("Exception while scanning path: %s. %s", path, ex)
+                    () -> String.format(
+                            "Exception while scanning path: %s.\nCause: %s",
+                            path,
+                            Throwables.toStringWithStackTrace(ex)
+                    )
             );
 
             return Collections.emptySet();

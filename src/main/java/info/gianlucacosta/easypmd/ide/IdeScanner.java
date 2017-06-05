@@ -30,6 +30,7 @@ import info.gianlucacosta.easypmd.ide.options.OptionsService;
 import info.gianlucacosta.easypmd.pmdscanner.PmdScanner;
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
 import info.gianlucacosta.easypmd.pmdscanner.messages.cache.ScanMessagesCache;
+import info.gianlucacosta.easypmd.util.Throwables;
 import org.netbeans.spi.tasklist.FileTaskScanner;
 import org.netbeans.spi.tasklist.Task;
 import org.openide.filesystems.FileObject;
@@ -92,7 +93,7 @@ public class IdeScanner extends FileTaskScanner {
             switch (optionsChanges) {
                 case NONE:
                     //Just do nothing
-                    logger.info("Options were not changed");
+                    logger.info(() -> "Options were not changed");
                     break;
 
                 case VIEW_ONLY:
@@ -103,11 +104,11 @@ public class IdeScanner extends FileTaskScanner {
                         options = newOptions;
 
                         if (!scanMessagesCache.clear()) {
-                            logger.warning("Could not clear the cache before replacing the PMD scanner");
+                            logger.warning(() -> "Could not clear the cache before replacing the PMD scanner");
                         }
 
                         if (optionsChanges == OptionsChanges.ENGINE) {
-                            logger.info("Engine options changed");
+                            logger.info(() -> "Engine options changed");
 
                             try {
                                 pmdScanner = new PmdScanner(options);
@@ -116,7 +117,7 @@ public class IdeScanner extends FileTaskScanner {
                                 showScannerConfigurationException(ex);
                             }
                         } else {
-                            logger.info("Only view options were changed");
+                            logger.info(() -> "Only view options were changed");
                         }
 
                         annotationService.detachAllAnnotations();
@@ -137,7 +138,12 @@ public class IdeScanner extends FileTaskScanner {
     }
 
     private void showScannerConfigurationException(Exception ex) {
-        logger.log(Level.WARNING, "Configuration exception for EasyPmd:\n%s", ex);
+        logger.warning(
+                () -> String.format(
+                        "Configuration exception for EasyPmd: %s",
+                        Throwables.toStringWithStackTrace(ex)
+                )
+        );
 
         dialogService.showWarning(String.format("Could not run EasyPmd because of configuration errors:\n\t%s (%s)", ex.getMessage(), ex.getClass().getSimpleName()));
     }
@@ -220,7 +226,12 @@ public class IdeScanner extends FileTaskScanner {
     @Override
     public void attach(Callback callback) {
 
-        logger.log(Level.INFO, String.format("Attaching callback: %s", callback));
+        logger.info(
+                () -> String.format(
+                        "Attaching callback: %s",
+                        callback
+                )
+        );
 
         this.callback = callback;
 

@@ -28,7 +28,7 @@ import java.io.Writer;
 /**
  * Throwable-related utilities
  */
-public interface ThrowableExtensions {
+public interface Throwables {
 
     /**
      * Converts the stack trace of a Throwable to a string
@@ -66,5 +66,21 @@ public interface ThrowableExtensions {
         }
 
         return message;
+    }
+
+    /**
+     * Returns a string showing a Throwable (type and message) and the related
+     * stack trace
+     *
+     * @param throwable
+     * @return
+     */
+    static String toStringWithStackTrace(Throwable throwable) {
+        return String.format(
+                "%s (%s)\n%s",
+                throwable.getClass().getName(),
+                throwable.getMessage(),
+                getStackTraceString(throwable)
+        );
     }
 }

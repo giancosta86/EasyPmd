@@ -98,7 +98,7 @@ public class DefaultOptionsService implements OptionsService {
             Options oldOptions = this.options;
 
             this.options = options;
-            logger.info("Options set!");
+            logger.info(() -> "Options set!");
 
             OptionsChanges optionsChanges = Options.computeChanges(oldOptions, options);
 

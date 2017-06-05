@@ -22,6 +22,7 @@
 package info.gianlucacosta.easypmd.pmdscanner.messages.cache;
 
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
+import info.gianlucacosta.easypmd.util.Throwables;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -118,9 +119,10 @@ public class HsqlDbStorage implements CacheStorage {
             }
         } catch (Exception ex) {
             logger.warning(
-                    String.format(
-                            "Error while retrieving db-cached scan messages for path: %s",
-                            pathString
+                    () -> String.format(
+                            "Error while retrieving db-cached scan messages for path: %s.\nCause: %s",
+                            pathString,
+                            Throwables.toStringWithStackTrace(ex)
                     )
             );
 
@@ -150,10 +152,10 @@ public class HsqlDbStorage implements CacheStorage {
             }
         } catch (Exception ex) {
             logger.warning(
-                    String.format(
-                            "Could not write to db-cache messages for path: %s. Cause: %s",
+                    () -> String.format(
+                            "Could not write to db-cache messages for path: %s.\nCause: %s",
                             pathString,
-                            ex
+                            Throwables.toStringWithStackTrace(ex)
                     )
             );
         }
@@ -166,9 +168,10 @@ public class HsqlDbStorage implements CacheStorage {
             return true;
         } catch (Exception ex) {
             logger.warning(
-                    String.format(
-                            "Error while clearing the db cache: %s",
-                            ex
+                    () -> String.format(
+                            "Error while clearing the db cache: %s.\nCause: %s",
+                            ex,
+                            Throwables.toStringWithStackTrace(ex)
                     )
             );
 
