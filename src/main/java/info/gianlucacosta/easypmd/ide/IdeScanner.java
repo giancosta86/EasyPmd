@@ -25,9 +25,11 @@ import info.gianlucacosta.easypmd.ide.editor.AnnotationService;
 import info.gianlucacosta.easypmd.ide.editor.GuardedSectionsAnalyzer;
 import info.gianlucacosta.easypmd.ide.editor.ScanMessageAnnotation;
 import info.gianlucacosta.easypmd.ide.options.Options;
+import info.gianlucacosta.easypmd.ide.options.OptionsChanges;
 import info.gianlucacosta.easypmd.ide.options.OptionsService;
 import info.gianlucacosta.easypmd.pmdscanner.PmdScanner;
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
+import info.gianlucacosta.easypmd.pmdscanner.messages.cache.ScanMessagesCache;
 import org.netbeans.spi.tasklist.FileTaskScanner;
 import org.netbeans.spi.tasklist.Task;
 import org.openide.filesystems.FileObject;
@@ -59,6 +61,7 @@ public class IdeScanner extends FileTaskScanner {
     private final AnnotationService annotationService;
     private final DialogService dialogService;
     private final OptionsService optionsService;
+    private final ScanMessagesCache scanMessagesCache;
     private Callback callback;
     private PmdScanner pmdScanner;
     private Options options;
@@ -71,6 +74,7 @@ public class IdeScanner extends FileTaskScanner {
         dialogService = Injector.lookup(DialogService.class);
         annotationService = Injector.lookup(AnnotationService.class);
         optionsService = Injector.lookup(OptionsService.class);
+        scanMessagesCache = Injector.lookup(ScanMessagesCache.class);
 
         ReadWriteLock optionsLock = new ReentrantReadWriteLock();
         readOptionsLock = optionsLock.readLock();
@@ -84,28 +88,52 @@ public class IdeScanner extends FileTaskScanner {
             showScannerConfigurationException(ex);
         }
 
-        optionsService.addOptionsChangedListener(() -> {
-            logger.log(Level.INFO, "The options have changed: reinitializing the IDE scanner");
+        optionsService.addOptionsSetListener((oldOptions, newOptions) -> {
+            OptionsChanges optionsChanges = Options.computeChanges(oldOptions, newOptions);
 
-            writeOptionsLock.lock();
+            switch (optionsChanges) {
+                case NONE:
+                    //Just do nothing
+                    logger.info("Options were not changed");
+                    break;
 
-            try {
-                annotationService.detachAllAnnotations();
+                case VIEW_ONLY:
+                case ENGINE:
+                    writeOptionsLock.lock();
 
-                options = optionsService.getOptions();
+                    try {
+                        options = newOptions;
 
-                try {
-                    pmdScanner = new PmdScanner(options);
-                } catch (RuntimeException ex) {
-                    pmdScanner = null;
-                    showScannerConfigurationException(ex);
-                }
+                        if (!scanMessagesCache.clear()) {
+                            logger.warning("Could not clear the cache before replacing the PMD scanner");
+                        }
 
-                if (callback != null) {
-                    callback.refreshAll();
-                }
-            } finally {
-                writeOptionsLock.unlock();
+                        if (optionsChanges == OptionsChanges.ENGINE) {
+                            logger.info("Engine options changed");
+
+                            try {
+                                pmdScanner = new PmdScanner(options);
+                            } catch (RuntimeException ex) {
+                                pmdScanner = null;
+                                showScannerConfigurationException(ex);
+                            }
+                        } else {
+                            logger.info("Only view options were changed");
+                        }
+
+                        annotationService.detachAllAnnotations();
+
+                        if (callback != null) {
+                            callback.refreshAll();
+                        }
+                    } finally {
+                        writeOptionsLock.unlock();
+                    }
+
+                    break;
+
+                default:
+                    throw new IllegalArgumentException();
             }
         });
     }

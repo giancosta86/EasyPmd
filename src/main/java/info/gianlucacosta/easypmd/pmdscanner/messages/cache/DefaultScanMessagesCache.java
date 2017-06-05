@@ -30,6 +30,7 @@ import org.openide.util.lookup.ServiceProvider;
  */
 @ServiceProvider(service = ScanMessagesCache.class)
 public class DefaultScanMessagesCache extends DualLayerCache {
+
     public DefaultScanMessagesCache() {
         super(new HsqlDbStorage(
                 Injector.lookup(PathService.class).getCachePath()

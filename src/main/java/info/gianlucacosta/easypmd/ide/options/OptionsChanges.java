@@ -19,30 +19,13 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.pmdscanner.strategies;
-
-import net.sourceforge.pmd.PMD;
-
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Collection;
+package info.gianlucacosta.easypmd.ide.options;
 
 /**
- * ClassLoader that firstly tries to load classes and resources using PMD's
- * class loader as its parent
+ * Magnitude of the changes between two different instances of Options
  */
-class PmdBasedClassLoader extends URLClassLoader {
-
-    public static PmdBasedClassLoader create(Collection<URL> additionalUrls) {
-        ClassLoader pmdClassLoader = PMD.class.getClassLoader();
-
-        return new PmdBasedClassLoader(
-                additionalUrls.stream().toArray(URL[]::new),
-                pmdClassLoader
-        );
-    }
-
-    private PmdBasedClassLoader(URL[] urls, ClassLoader parent) {
-        super(urls, parent);
-    }
+public enum OptionsChanges {
+    NONE,
+    VIEW_ONLY,
+    ENGINE
 }

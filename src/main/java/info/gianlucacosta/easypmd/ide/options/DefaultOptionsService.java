@@ -24,15 +24,15 @@ package info.gianlucacosta.easypmd.ide.options;
 import info.gianlucacosta.easypmd.ide.Injector;
 import info.gianlucacosta.easypmd.ide.options.profiles.ProfileConfiguration;
 import info.gianlucacosta.easypmd.ide.options.profiles.ProfileConfigurationRepository;
-import info.gianlucacosta.helios.beans.events.TriggerEvent;
-import info.gianlucacosta.helios.beans.events.TriggerListener;
 import org.openide.util.lookup.ServiceProvider;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,10 +43,10 @@ import java.util.logging.Logger;
 public class DefaultOptionsService implements OptionsService {
 
     private static final Logger logger = Logger.getLogger(DefaultOptionsService.class.getName());
-    private final TriggerEvent optionsChangedEvent = new TriggerEvent();
+    private final List<BiConsumer<Options, Options>> optionsSetListeners = new LinkedList<>();
     private final Lock readLock;
     private final Lock writeLock;
-    private final Collection<OptionsVerifier> optionsVerifiers = new ArrayList<>();
+    private final Collection<OptionsVerifier> optionsVerifiers = new LinkedList<>();
     private Options options;
 
     public DefaultOptionsService() {
@@ -60,20 +60,20 @@ public class DefaultOptionsService implements OptionsService {
     }
 
     @Override
-    public void addOptionsChangedListener(TriggerListener listener) {
+    public void addOptionsSetListener(BiConsumer<Options, Options> listener) {
         writeLock.lock();
         try {
-            optionsChangedEvent.addListener(listener);
+            optionsSetListeners.add(listener);
         } finally {
             writeLock.unlock();
         }
     }
 
     @Override
-    public void removeOptionsChangedListener(TriggerListener listener) {
+    public void removeOptionsSetListener(BiConsumer<Options, Options> listener) {
         writeLock.lock();
         try {
-            optionsChangedEvent.removeListener(listener);
+            optionsSetListeners.remove(listener);
         } finally {
             writeLock.unlock();
         }
@@ -98,26 +98,11 @@ public class DefaultOptionsService implements OptionsService {
             Options oldOptions = this.options;
 
             this.options = options;
+            logger.info("Options set!");
 
-            if (!options.equals(oldOptions)) {
-                logger.log(Level.INFO, "Options changed!");
-
-                optionsChangedEvent.fire();
-            }
-        } finally {
-            writeLock.unlock();
-        }
-    }
-
-    @Override
-    public void setOptionsEnforcingChange(Options options) {
-        writeLock.lock();
-        try {
-            this.options = options;
-
-            logger.log(Level.INFO, "Options with enforced change!");
-
-            optionsChangedEvent.fire();
+            optionsSetListeners
+                    .stream()
+                    .forEach(listener -> listener.accept(oldOptions, options));
         } finally {
             writeLock.unlock();
         }
@@ -125,24 +110,35 @@ public class DefaultOptionsService implements OptionsService {
 
     @Override
     public void addOptionsVerifier(OptionsVerifier optionsVerifier) {
-        optionsVerifiers.add(optionsVerifier);
+        writeLock.lock();
+        try {
+            optionsVerifiers.add(optionsVerifier);
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     @Override
     public void removeOptionsVerifier(OptionsVerifier optionsVerifier) {
-        optionsVerifiers.remove(optionsVerifier);
+        writeLock.lock();
+
+        try {
+            optionsVerifiers.remove(optionsVerifier);
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     @Override
     public void verifyOptions(Options options) throws InvalidOptionsException {
-        writeLock.lock();
+        readLock.lock();
 
         try {
             for (OptionsVerifier optionsVerifier : optionsVerifiers) {
                 optionsVerifier.verifyOptions(options);
             }
         } finally {
-            writeLock.unlock();
+            readLock.unlock();
         }
     }
 }

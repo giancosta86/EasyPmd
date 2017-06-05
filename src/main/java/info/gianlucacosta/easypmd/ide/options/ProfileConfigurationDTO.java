@@ -29,7 +29,6 @@ import info.gianlucacosta.easypmd.ide.options.profiles.ProfileConfiguration;
 public class ProfileConfigurationDTO {
 
     private ProfileConfiguration profileConfiguration;
-    private boolean enforceChange;
 
     public ProfileConfiguration getProfileConfiguration() {
         return profileConfiguration;
@@ -37,13 +36,5 @@ public class ProfileConfigurationDTO {
 
     public void setProfileConfiguration(ProfileConfiguration profileConfiguration) {
         this.profileConfiguration = profileConfiguration;
-    }
-
-    public boolean isEnforceChange() {
-        return enforceChange;
-    }
-
-    public void setEnforceChange(boolean enforceChange) {
-        this.enforceChange = enforceChange;
     }
 }

@@ -21,7 +21,7 @@
  */
 package info.gianlucacosta.easypmd.ide.options;
 
-import info.gianlucacosta.helios.beans.events.TriggerListener;
+import java.util.function.BiConsumer;
 
 /**
  * Provides methods to get/set options, to verify them and to monitor their
@@ -29,15 +29,13 @@ import info.gianlucacosta.helios.beans.events.TriggerListener;
  */
 public interface OptionsService {
 
-    void addOptionsChangedListener(TriggerListener listener);
+    void addOptionsSetListener(BiConsumer<Options, Options> listener);
 
-    void removeOptionsChangedListener(TriggerListener listener);
+    void removeOptionsSetListener(BiConsumer<Options, Options> listener);
 
     Options getOptions();
 
     void setOptions(Options options);
-
-    void setOptionsEnforcingChange(Options options);
 
     void verifyOptions(Options options) throws InvalidOptionsException;
 

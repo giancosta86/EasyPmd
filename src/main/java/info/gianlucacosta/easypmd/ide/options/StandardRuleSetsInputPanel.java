@@ -41,7 +41,7 @@ import net.sourceforge.pmd.RuleSet;
  */
 public final class StandardRuleSetsInputPanel extends JPanel {
 
-    private JList<RuleSetWrapper> inputList;
+    private final JList<RuleSetWrapper> inputList;
 
     public StandardRuleSetsInputPanel(StandardRuleSetsCatalog standardRuleSetsCatalog) {
         Collection<RuleSetWrapper> standardRuleSetWrappers = standardRuleSetsCatalog.getRuleSetWrappers();
@@ -64,7 +64,8 @@ public final class StandardRuleSetsInputPanel extends JPanel {
     }
 
     public Stream<RuleSet> getSelectedRuleSets() {
-        return inputList.getSelectedValuesList().stream()
+        return inputList.getSelectedValuesList()
+                .stream()
                 .map(ruleSetWrapper -> ruleSetWrapper.getRuleSet());
     }
 }

@@ -142,8 +142,6 @@ class EasyPmdPanel extends JPanel {
                 new DefaultProfileConfiguration(profiles, activeProfileName)
         );
 
-        result.setEnforceChange(enforceChangeCheckBox.isSelected());
-
         return result;
     }
 
@@ -163,9 +161,9 @@ class EasyPmdPanel extends JPanel {
 
         try {
             profileCombo.removeAllItems();
-            for (String profileName : profiles.getProfileNames()) {
+            profiles.getProfileNames().forEach(profileName -> {
                 profileCombo.addItem(profileName);
-            }
+            });
         } finally {
             refillingProfileCombo = false;
         }
@@ -239,8 +237,6 @@ class EasyPmdPanel extends JPanel {
         pathFilteringPanel.setExcludedPathRegexes(options.getPathFilteringOptions().getExcludedPathCompositeRegex().getSubRegexes());
 
         auxiliaryPathField.setText(options.getAuxiliaryClassPath());
-
-        enforceChangeCheckBox.setSelected(false);
     }
 
     private boolean clearScanMessagesScache() {
@@ -305,7 +301,6 @@ class EasyPmdPanel extends JPanel {
         optionButtonsPanel = new javax.swing.JPanel();
         resetOptionsButton = new javax.swing.JButton();
         verifyOptionsButton = new javax.swing.JButton();
-        enforceChangeCheckBox = new javax.swing.JCheckBox();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -678,14 +673,6 @@ class EasyPmdPanel extends JPanel {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         optionButtonsPanel.add(verifyOptionsButton, gridBagConstraints);
 
-        org.openide.awt.Mnemonics.setLocalizedText(enforceChangeCheckBox, org.openide.util.NbBundle.getMessage(EasyPmdPanel.class, "EasyPmdPanel.enforceChangeCheckBox.text")); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 15);
-        optionButtonsPanel.add(enforceChangeCheckBox, gridBagConstraints);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -795,7 +782,6 @@ class EasyPmdPanel extends JPanel {
     private javax.swing.JPanel cachePanel;
     private javax.swing.JButton clearScanMessagesCacheButton;
     private javax.swing.JButton duplicateProfileButton;
-    private javax.swing.JCheckBox enforceChangeCheckBox;
     private javax.swing.JPanel generalPanel;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JPanel mainAdditionalClasspathPanel;

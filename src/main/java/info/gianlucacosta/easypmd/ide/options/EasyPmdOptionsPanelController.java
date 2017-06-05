@@ -56,16 +56,22 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
         profileConfigurationRepository = Injector.lookup(ProfileConfigurationRepository.class);
         optionsService = Injector.lookup(OptionsService.class);
 
+        optionsService.addOptionsSetListener((oldOptions, newOptions) -> {
+            OptionsChanges optionsChanges = Options.computeChanges(oldOptions, newOptions);
+
+            optionsChanged = (optionsChanges != OptionsChanges.NONE);
+
+            if (optionsChanged) {
+                pcs.firePropertyChange(EASY_PMD_OPTIONS_NAME_IN_EVENT, null, optionsService.getOptions());
+            }
+        });
+
         optionsService.addOptionsVerifier((Options options) -> {
             try {
                 new PmdScanner(options);
             } catch (RuntimeException ex) {
                 throw new InvalidOptionsException(ex);
             }
-        });
-
-        optionsService.addOptionsChangedListener(() -> {
-            pcs.firePropertyChange(EASY_PMD_OPTIONS_NAME_IN_EVENT, null, optionsService.getOptions());
         });
     }
 
@@ -85,11 +91,7 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
 
         Options newOptions = profileConfiguration.getActiveOptions();
 
-        if (profileConfigurationDTO.isEnforceChange()) {
-            optionsService.setOptionsEnforcingChange(newOptions);
-        } else {
-            optionsService.setOptions(newOptions);
-        }
+        optionsService.setOptions(newOptions);
     }
 
     @Override

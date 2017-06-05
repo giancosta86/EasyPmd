@@ -21,15 +21,52 @@
  */
 package info.gianlucacosta.easypmd.ide.options;
 
+import info.gianlucacosta.helios.collections.general.CollectionItems;
 import net.sourceforge.pmd.RulePriority;
 
 import java.net.URL;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * The plugin's options
  */
 public interface Options {
+
+    static OptionsChanges computeChanges(Options oldOptions, Options newOptions) {
+        if (oldOptions == null) {
+            return OptionsChanges.ENGINE;
+        }
+
+        boolean noEngineChanges
+                = Objects.equals(oldOptions.getTargetJavaVersion(), newOptions.getTargetJavaVersion())
+                && Objects.equals(oldOptions.getSourceFileEncoding(), newOptions.getSourceFileEncoding())
+                && Objects.equals(oldOptions.getSuppressMarker(), newOptions.getSuppressMarker())
+                && CollectionItems.equals(oldOptions.getAdditionalClassPathUrls(), newOptions.getAdditionalClassPathUrls())
+                && CollectionItems.equals(oldOptions.getRuleSets(), newOptions.getRuleSets())
+                && (oldOptions.isShowAllMessagesInGuardedSections() == newOptions.isShowAllMessagesInGuardedSections())
+                && Objects.equals(oldOptions.getPathFilteringOptions(), newOptions.getPathFilteringOptions())
+                && (oldOptions.getMinimumPriority() == newOptions.getMinimumPriority())
+                && Objects.equals(oldOptions.getAuxiliaryClassPath(), newOptions.getAuxiliaryClassPath())
+                && (oldOptions.isUseScanMessagesCache() == newOptions.isUseScanMessagesCache());
+
+        if (noEngineChanges) {
+            boolean noChanges
+                    = (oldOptions.isShowRulePriorityInTasks() == newOptions.isShowRulePriorityInTasks())
+                    && (oldOptions.isShowDescriptionInTasks() == newOptions.isShowDescriptionInTasks())
+                    && (oldOptions.isShowRuleInTasks() == newOptions.isShowRuleInTasks())
+                    && (oldOptions.isShowRuleSetInTasks() == newOptions.isShowRuleSetInTasks())
+                    && (oldOptions.isShowAnnotationsInEditor() == newOptions.isShowAnnotationsInEditor());
+
+            if (noChanges) {
+                return OptionsChanges.NONE;
+            } else {
+                return OptionsChanges.VIEW_ONLY;
+            }
+        } else {
+            return OptionsChanges.ENGINE;
+        }
+    }
 
     String getTargetJavaVersion();
 
