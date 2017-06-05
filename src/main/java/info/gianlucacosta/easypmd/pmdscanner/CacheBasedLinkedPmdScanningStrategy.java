@@ -46,15 +46,10 @@ class CacheBasedLinkedPmdScanningStrategy extends LinkedPmdScanningStrategy {
     private static final Logger logger = Logger.getLogger(CacheBasedLinkedPmdScanningStrategy.class.getName());
 
     private final PathService pathService = Injector.lookup(PathService.class);
-
-    private final ScanMessagesCache scanMessagesCache;
+    private final ScanMessagesCache scanMessagesCache = Injector.lookup(ScanMessagesCache.class);
 
     public CacheBasedLinkedPmdScanningStrategy(Options options) {
         super(options);
-
-        scanMessagesCache = new DualLayerCache(
-                new HsqlDbStorage(pathService.getCachePath())
-        );
     }
 
     @Override
