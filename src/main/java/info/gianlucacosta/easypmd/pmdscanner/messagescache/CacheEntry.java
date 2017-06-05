@@ -19,14 +19,29 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd;
+package info.gianlucacosta.easypmd.pmdscanner.messagescache;
 
-import info.gianlucacosta.helios.io.storagearea.StorageArea;
+import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
+import java.util.List;
 
 /**
- * Provides a storage area
+ * Entry for the in-memory cache
  */
-public interface StorageAreaService {
+public class CacheEntry {
 
-    StorageArea getStorageArea();
+    private final long lastModificationMillis;
+    private final List<ScanMessage> scanMessages;
+
+    public CacheEntry(long lastModificationMillis, List<ScanMessage> scanMessages) {
+        this.lastModificationMillis = lastModificationMillis;
+        this.scanMessages = scanMessages;
+    }
+
+    public long getLastModificationMillis() {
+        return lastModificationMillis;
+    }
+
+    public List<ScanMessage> getScanMessages() {
+        return scanMessages;
+    }
 }

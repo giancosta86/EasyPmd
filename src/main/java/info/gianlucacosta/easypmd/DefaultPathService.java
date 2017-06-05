@@ -22,51 +22,35 @@
 package info.gianlucacosta.easypmd;
 
 import info.gianlucacosta.easypmd.ide.Injector;
-import info.gianlucacosta.helios.io.Directory;
-import info.gianlucacosta.helios.io.storagearea.DirectoryStorageArea;
-import info.gianlucacosta.helios.io.storagearea.StorageArea;
+import java.nio.file.Path;
 import org.openide.util.lookup.ServiceProvider;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-/**
- * Default implementation of StorageAreaService
- */
-@ServiceProvider(service = StorageAreaService.class)
-public class DefaultStorageAreaService implements StorageAreaService {
-
-    private static final Logger logger = Logger.getLogger(DefaultStorageAreaService.class.getName());
+@ServiceProvider(service = PathService.class)
+public class DefaultPathService implements PathService {
 
     private final SystemPropertiesService systemPropertiesService;
     private final PropertyPluginInfoService pluginInfoService;
-    private final String storageDirName;
-    private final StorageArea storageArea;
+    private final Path rootPath;
+    private final Path cachePath;
 
-    public DefaultStorageAreaService() {
+    public DefaultPathService() {
         systemPropertiesService = Injector.lookup(SystemPropertiesService.class);
         pluginInfoService = Injector.lookup(PropertyPluginInfoService.class);
 
         String majorVersion = pluginInfoService.getVersion().split("\\.")[0];
-        storageDirName = String.format(".EasyPmd_%s", majorVersion);
+        String rootDirName = String.format(".EasyPmd_%s", majorVersion);
 
-        StorageArea tempStorageArea;
-
-        Directory userHomeDir = systemPropertiesService.getUserHomeDir();
-        if (userHomeDir != null) {
-            Directory storageDir = new Directory(userHomeDir, storageDirName);
-
-            tempStorageArea = new DirectoryStorageArea(storageDir);
-        } else {
-            tempStorageArea = null;
-            logger.log(Level.SEVERE, "Cannot determine the home directory: the storage area will NOT be available");
-        }
-
-        storageArea = tempStorageArea;
+        rootPath = systemPropertiesService.getUserHomeDirectory().resolve(rootDirName);
+        cachePath = rootPath.resolve("cache");
     }
 
     @Override
-    public StorageArea getStorageArea() {
-        return storageArea;
+    public Path getRootPath() {
+        return rootPath;
+    }
+
+    @Override
+    public Path getCachePath() {
+        return cachePath;
     }
 }

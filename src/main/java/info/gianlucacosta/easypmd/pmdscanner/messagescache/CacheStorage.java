@@ -19,24 +19,22 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.io;
+package info.gianlucacosta.easypmd.pmdscanner.messagescache;
 
-import java.io.*;
+import java.nio.file.Path;
+import java.util.Optional;
 
 /**
- * Stream-related utilities
+ * Persistent cache backend. It should provide its own locking and
+ * synchronization
  */
-public interface StreamUtils {
+public interface CacheStorage {
 
-    public static Object readSingleObjectFromStream(InputStream sourceStream) throws IOException, ClassNotFoundException {
-        try (ObjectInputStream inputStream = new ObjectInputStream(sourceStream)) {
-            return inputStream.readObject();
-        }
-    }
+    Optional<CacheEntry> getEntry(String pathString);
 
-    public static void writeSingleObjectToStream(OutputStream targetStream, Object obj) throws IOException {
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(targetStream)) {
-            outputStream.writeObject(obj);
-        }
-    }
+    void putEntry(String pathString, CacheEntry cacheEntry);
+
+    boolean clearEntries();
+
+    void close() throws Exception;
 }

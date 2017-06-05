@@ -21,8 +21,6 @@
  */
 package info.gianlucacosta.easypmd;
 
-import info.gianlucacosta.helios.io.Directory;
-import java.nio.file.Files;
 import org.openide.util.lookup.ServiceProvider;
 
 import java.nio.file.Path;
@@ -36,8 +34,24 @@ import java.util.regex.Pattern;
 @ServiceProvider(service = SystemPropertiesService.class)
 public class DefaultSystemPropertiesService implements SystemPropertiesService {
 
-    public String javaVersion;
-    public Directory userHomeDir;
+    public final String javaVersion;
+    public final Path userHomeDir;
+
+    public DefaultSystemPropertiesService() {
+        javaVersion = findJavaVersion();
+
+        userHomeDir = findUserHomeDir();
+    }
+
+    @Override
+    public String getJavaVersion() {
+        return javaVersion;
+    }
+
+    @Override
+    public Path getUserHomeDirectory() {
+        return userHomeDir;
+    }
 
     private static String findJavaVersion() {
         Pattern versionPattern = Pattern.compile("(\\d\\.\\d).*");
@@ -48,41 +62,17 @@ public class DefaultSystemPropertiesService implements SystemPropertiesService {
         if (versionMatcher.matches()) {
             return versionMatcher.group(1);
         } else {
-            return null;
+            throw new RuntimeException("Cannot detected Java version");
         }
     }
 
-    private static Directory findUserHomeDir() {
+    private static Path findUserHomeDir() {
         String userHomeString = System.getProperty("user.home");
 
         if (userHomeString == null) {
-            return null;
+            throw new RuntimeException("Cannot detect the user's home directory");
         }
 
-        Path result = Paths.get(userHomeString);
-
-        if (Files.isDirectory(result)) {
-            return new Directory(result.toFile());
-        }
-
-        return null;
-    }
-
-    @Override
-    public String getJavaVersion() {
-        if (javaVersion == null) {
-            javaVersion = findJavaVersion();
-        }
-
-        return javaVersion;
-    }
-
-    @Override
-    public Directory getUserHomeDir() {
-        if (userHomeDir == null) {
-            userHomeDir = findUserHomeDir();
-        }
-
-        return userHomeDir;
+        return Paths.get(userHomeString);
     }
 }

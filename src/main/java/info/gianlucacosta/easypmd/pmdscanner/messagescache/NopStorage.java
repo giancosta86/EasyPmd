@@ -21,47 +21,29 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner.messagescache;
 
-import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
-import java.io.IOException;
-import java.io.Serializable;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.Optional;
 
 /**
- * An item in the scan messages cache
+ * Storage doing just nothing
  */
-public class ScanMessagesCacheItem implements Serializable {
+public class NopStorage implements CacheStorage {
 
-    private final long lastModifiedMillis;
-    private final List<ScanMessage> scanMessages;
-
-    ScanMessagesCacheItem(Path path, List<ScanMessage> scanMessages) {
-        if (scanMessages == null) {
-            throw new IllegalArgumentException();
-        }
-
-        long actualLastModifiedMillis;
-
-        try {
-            actualLastModifiedMillis = Files.getLastModifiedTime(path).toMillis();
-        } catch (IOException ex) {
-            actualLastModifiedMillis = -1;
-        }
-
-        this.lastModifiedMillis = actualLastModifiedMillis;
-        this.scanMessages = scanMessages;
+    @Override
+    public Optional<CacheEntry> getEntry(String pathString) {
+        return Optional.empty();
     }
 
-    public boolean isSynchronizedWith(Path path) {
-        try {
-            return lastModifiedMillis == Files.getLastModifiedTime(path).toMillis();
-        } catch (IOException ex) {
-            return false;
-        }
+    @Override
+    public void putEntry(String pathString, CacheEntry cacheEntry) {
     }
 
-    public List<ScanMessage> getScanMessages() {
-        return scanMessages;
+    @Override
+    public boolean clearEntries() {
+        return true;
+    }
+
+    @Override
+    public void close() throws Exception {
     }
 }

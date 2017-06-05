@@ -21,7 +21,7 @@
  */
 package info.gianlucacosta.easypmd;
 
-import info.gianlucacosta.helios.io.Directory;
+import java.nio.file.Path;
 
 /**
  * Provides system properties
@@ -30,5 +30,5 @@ public interface SystemPropertiesService {
 
     String getJavaVersion();
 
-    Directory getUserHomeDir();
+    Path getUserHomeDirectory();
 }

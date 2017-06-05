@@ -21,12 +21,20 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner;
 
+import info.gianlucacosta.easypmd.PathService;
 import info.gianlucacosta.easypmd.ide.Injector;
 import info.gianlucacosta.easypmd.ide.options.Options;
+import info.gianlucacosta.easypmd.pmdscanner.messagescache.DualLayerCache;
+import info.gianlucacosta.easypmd.pmdscanner.messagescache.HsqlDbStorage;
 import info.gianlucacosta.easypmd.pmdscanner.messagescache.ScanMessagesCache;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
 
 /**
  * Scanning strategy looking for cached scan messages: if they are missing, a
@@ -34,26 +42,44 @@ import java.util.List;
  */
 class CacheBasedLinkedPmdScanningStrategy extends LinkedPmdScanningStrategy {
 
+    private static final Logger logger = Logger.getLogger(CacheBasedLinkedPmdScanningStrategy.class.getName());
+
+    private final PathService pathService = Injector.lookup(PathService.class);
+
     private final ScanMessagesCache scanMessagesCache;
 
     public CacheBasedLinkedPmdScanningStrategy(Options options) {
         super(options);
 
-        scanMessagesCache = Injector.lookup(ScanMessagesCache.class);
+        scanMessagesCache = new DualLayerCache(
+                new HsqlDbStorage(pathService.getCachePath())
+        );
     }
 
     @Override
     public List<ScanMessage> scan(Path path) {
-        final List<ScanMessage> cachedScanMessages = scanMessagesCache.getScanMessagesFor(path);
+        try {
+            String pathString = path.toString();
+            long lastModificationMillis = Files.getLastModifiedTime(path).toMillis();
 
-        if (cachedScanMessages != null) {
-            return cachedScanMessages;
+            final Optional<List<ScanMessage>> cachedScanMessagesOption = scanMessagesCache.getScanMessagesFor(
+                    pathString,
+                    lastModificationMillis
+            );
+
+            return cachedScanMessagesOption.orElseGet(() -> {
+                List<ScanMessage> scanMessages = super.scan(path);
+
+                scanMessagesCache.putScanMessagesFor(pathString, lastModificationMillis, scanMessages);
+
+                return scanMessages;
+            });
+        } catch (IOException ex) {
+            logger.warning(
+                    String.format("Exception while scanning path: %s", path)
+            );
+
+            return Collections.emptyList();
         }
-
-        final List<ScanMessage> scanMessages = super.scan(path);
-
-        scanMessagesCache.putScanMessagesFor(path, scanMessages);
-
-        return scanMessages;
     }
 }

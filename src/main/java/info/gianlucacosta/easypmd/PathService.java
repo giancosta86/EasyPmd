@@ -19,33 +19,21 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.pmdscanner.messagescache;
+package info.gianlucacosta.easypmd;
 
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
- * In-memory scan messages cache
+ * Provides project-wide path information
  */
-class InMemoryScanMessagesCache extends AbstractScanMessagesCache {
+public interface PathService {
+    /**
+     * The root of the plugin directory within the user's home directory
+     */
+    Path getRootPath();
 
-    private final Map<Path, ScanMessagesCacheItem> cacheItems = new HashMap<>();
-
-    @Override
-    protected ScanMessagesCacheItem getItem(Path scannedPath) {
-        return cacheItems.get(scannedPath.toAbsolutePath());
-    }
-
-    @Override
-    protected void putItem(Path scannedPath, ScanMessagesCacheItem cacheItem) {
-        cacheItems.put(scannedPath.toAbsolutePath(), cacheItem);
-    }
-
-    @Override
-    protected boolean doClear() {
-        cacheItems.clear();
-
-        return true;
-    }
+    /**
+     * The directory containing cache information
+     */
+    Path getCachePath();
 }
