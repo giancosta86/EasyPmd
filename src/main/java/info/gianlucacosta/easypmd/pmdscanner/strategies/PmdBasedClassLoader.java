@@ -37,7 +37,9 @@ class PmdBasedClassLoader extends URLClassLoader {
         ClassLoader pmdClassLoader = PMD.class.getClassLoader();
 
         return new PmdBasedClassLoader(
-                additionalUrls.stream().toArray(URL[]::new),
+                additionalUrls
+                        .stream()
+                        .toArray(URL[]::new),
                 pmdClassLoader
         );
     }
