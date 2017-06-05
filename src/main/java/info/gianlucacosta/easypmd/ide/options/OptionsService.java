@@ -29,9 +29,9 @@ import java.util.function.BiConsumer;
  */
 public interface OptionsService {
 
-    void addOptionsSetListener(BiConsumer<Options, Options> listener);
+    void addOptionsSetListener(BiConsumer<Options, OptionsChanges> listener);
 
-    void removeOptionsSetListener(BiConsumer<Options, Options> listener);
+    void removeOptionsSetListener(BiConsumer<Options, OptionsChanges> listener);
 
     Options getOptions();
 

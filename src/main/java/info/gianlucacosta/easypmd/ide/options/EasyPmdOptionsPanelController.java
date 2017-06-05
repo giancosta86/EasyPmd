@@ -56,9 +56,7 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
         profileConfigurationRepository = Injector.lookup(ProfileConfigurationRepository.class);
         optionsService = Injector.lookup(OptionsService.class);
 
-        optionsService.addOptionsSetListener((oldOptions, newOptions) -> {
-            OptionsChanges optionsChanges = Options.computeChanges(oldOptions, newOptions);
-
+        optionsService.addOptionsSetListener((options, optionsChanges) -> {
             optionsChanged = (optionsChanges != OptionsChanges.NONE);
 
             if (optionsChanged) {

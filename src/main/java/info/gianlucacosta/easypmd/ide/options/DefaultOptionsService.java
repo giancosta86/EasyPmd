@@ -43,7 +43,7 @@ import java.util.logging.Logger;
 public class DefaultOptionsService implements OptionsService {
 
     private static final Logger logger = Logger.getLogger(DefaultOptionsService.class.getName());
-    private final List<BiConsumer<Options, Options>> optionsSetListeners = new LinkedList<>();
+    private final List<BiConsumer<Options, OptionsChanges>> optionsSetListeners = new LinkedList<>();
     private final Lock readLock;
     private final Lock writeLock;
     private final Collection<OptionsVerifier> optionsVerifiers = new LinkedList<>();
@@ -60,7 +60,7 @@ public class DefaultOptionsService implements OptionsService {
     }
 
     @Override
-    public void addOptionsSetListener(BiConsumer<Options, Options> listener) {
+    public void addOptionsSetListener(BiConsumer<Options, OptionsChanges> listener) {
         writeLock.lock();
         try {
             optionsSetListeners.add(listener);
@@ -70,7 +70,7 @@ public class DefaultOptionsService implements OptionsService {
     }
 
     @Override
-    public void removeOptionsSetListener(BiConsumer<Options, Options> listener) {
+    public void removeOptionsSetListener(BiConsumer<Options, OptionsChanges> listener) {
         writeLock.lock();
         try {
             optionsSetListeners.remove(listener);
@@ -100,9 +100,11 @@ public class DefaultOptionsService implements OptionsService {
             this.options = options;
             logger.info("Options set!");
 
+            OptionsChanges optionsChanges = Options.computeChanges(oldOptions, options);
+
             optionsSetListeners
                     .stream()
-                    .forEach(listener -> listener.accept(oldOptions, options));
+                    .forEach(listener -> listener.accept(oldOptions, optionsChanges));
         } finally {
             writeLock.unlock();
         }

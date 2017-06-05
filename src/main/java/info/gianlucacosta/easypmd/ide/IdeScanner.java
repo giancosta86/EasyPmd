@@ -88,9 +88,7 @@ public class IdeScanner extends FileTaskScanner {
             showScannerConfigurationException(ex);
         }
 
-        optionsService.addOptionsSetListener((oldOptions, newOptions) -> {
-            OptionsChanges optionsChanges = Options.computeChanges(oldOptions, newOptions);
-
+        optionsService.addOptionsSetListener((newOptions, optionsChanges) -> {
             switch (optionsChanges) {
                 case NONE:
                     //Just do nothing
