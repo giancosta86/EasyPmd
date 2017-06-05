@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd;
+package info.gianlucacosta.easypmd.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

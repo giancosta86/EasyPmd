@@ -21,7 +21,7 @@
  */
 package info.gianlucacosta.easypmd.ide.options;
 
-import info.gianlucacosta.easypmd.SystemPropertiesService;
+import info.gianlucacosta.easypmd.system.SystemPropertiesService;
 import info.gianlucacosta.easypmd.ide.Injector;
 import info.gianlucacosta.easypmd.pmdscanner.pmdcatalogs.LanguageVersionParser;
 import info.gianlucacosta.easypmd.pmdscanner.pmdcatalogs.StandardRuleSetsCatalog;

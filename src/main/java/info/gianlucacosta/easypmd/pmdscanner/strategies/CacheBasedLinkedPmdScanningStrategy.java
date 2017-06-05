@@ -21,7 +21,7 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner.strategies;
 
-import info.gianlucacosta.easypmd.PathService;
+import info.gianlucacosta.easypmd.ide.PathService;
 import info.gianlucacosta.easypmd.ide.Injector;
 import info.gianlucacosta.easypmd.ide.options.Options;
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;

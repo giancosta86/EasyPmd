@@ -21,7 +21,7 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner.messages.cache;
 
-import info.gianlucacosta.easypmd.PathService;
+import info.gianlucacosta.easypmd.ide.PathService;
 import info.gianlucacosta.easypmd.ide.Injector;
 import org.openide.util.lookup.ServiceProvider;
 

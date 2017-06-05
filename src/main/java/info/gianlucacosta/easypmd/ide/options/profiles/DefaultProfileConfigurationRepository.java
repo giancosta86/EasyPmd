@@ -31,7 +31,7 @@ import java.io.OutputStreamWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.nio.file.Path;
-import info.gianlucacosta.easypmd.PathService;
+import info.gianlucacosta.easypmd.ide.PathService;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.nio.file.Files;

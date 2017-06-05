@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd;
+package info.gianlucacosta.easypmd.ide;
 
 import java.nio.file.Path;
 
