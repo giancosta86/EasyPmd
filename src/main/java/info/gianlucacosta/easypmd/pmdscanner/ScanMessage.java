@@ -21,22 +21,22 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner;
 
+import info.gianlucacosta.easypmd.ide.options.Options;
 import java.io.Serializable;
+import org.netbeans.spi.tasklist.Task;
+import org.openide.filesystems.FileObject;
+import org.openide.text.Annotation;
 
 /**
  * A message emitted during a PMD scan
  */
 public interface ScanMessage extends Serializable {
 
+    boolean isShowableInGuardedSections();
+
     int getLineNumber();
 
-    String getTaskText();
+    Task createTask(Options options, FileObject fileObject);
 
-    String getTaskType();
-
-    String getAnnotationText();
-
-    String getAnnotationType();
-
-    boolean isShowableInGuardedSections();
+    Annotation createAnnotation(Options options);
 }

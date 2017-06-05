@@ -21,9 +21,8 @@
  */
 package info.gianlucacosta.easypmd.ide;
 
-import info.gianlucacosta.easypmd.ide.editor.AnnotationService;
-import info.gianlucacosta.easypmd.ide.editor.GuardedSectionsAnalyzer;
-import info.gianlucacosta.easypmd.ide.editor.ScanMessageAnnotation;
+import info.gianlucacosta.easypmd.ide.annotations.AnnotationService;
+import info.gianlucacosta.easypmd.ide.annotations.GuardedSectionsAnalyzer;
 import info.gianlucacosta.easypmd.ide.options.Options;
 import info.gianlucacosta.easypmd.ide.options.OptionsChanges;
 import info.gianlucacosta.easypmd.ide.options.OptionsService;
@@ -48,7 +47,6 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -200,20 +198,14 @@ public class IdeScanner extends FileTaskScanner {
             List<Task> tasks = scanMessages
                     .stream()
                     .parallel()
-                    .map(scanMessage
-                            -> Task.create(fileObject, scanMessage.getTaskType(), scanMessage.getTaskText(), scanMessage.getLineNumber())
-                    )
+                    .map(scanMessage -> scanMessage.createTask(options, fileObject))
                     .collect(Collectors.toList());
 
             if (options.isShowAnnotationsInEditor()) {
-                Set<ScanMessageAnnotation> annotations
-                        = scanMessages
-                                .stream()
-                                .parallel()
-                                .map(scanMessage -> new ScanMessageAnnotation(scanMessage))
-                                .collect(Collectors.toSet());
-
-                annotationService.attachAnnotationsTo(dataObject, annotations);
+                annotationService.attachAnnotationsTo(options,
+                        dataObject,
+                        scanMessages
+                );
             }
 
             return tasks;

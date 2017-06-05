@@ -19,17 +19,30 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.ide.editor;
+package info.gianlucacosta.easypmd.ide.annotations;
 
-import java.util.Set;
-import org.openide.filesystems.FileObject;
-import org.openide.loaders.DataObject;
+import org.openide.text.Annotation;
 
-public interface AnnotationService {
+/**
+ * Basic annotation subclass that can be instantiated
+ */
+public class BasicAnnotation extends Annotation {
 
-    void attachAnnotationsTo(DataObject dataObject, Set<ScanMessageAnnotation> annotations);
+    private final String annotationType;
+    private final String message;
 
-    void detachAnnotationsFrom(FileObject fileObject);
+    public BasicAnnotation(String annotationType, String message) {
+        this.annotationType = annotationType;
+        this.message = message;
+    }
 
-    void detachAllAnnotations();
+    @Override
+    public String getAnnotationType() {
+        return annotationType;
+    }
+
+    @Override
+    public String getShortDescription() {
+        return message;
+    }
 }

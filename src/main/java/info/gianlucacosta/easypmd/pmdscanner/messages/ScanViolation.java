@@ -21,12 +21,14 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner.messages;
 
-import info.gianlucacosta.easypmd.ide.Injector;
+import info.gianlucacosta.easypmd.ide.annotations.BasicAnnotation;
 import info.gianlucacosta.easypmd.ide.options.Options;
-import info.gianlucacosta.easypmd.ide.options.OptionsService;
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
 import net.sourceforge.pmd.RulePriority;
 import net.sourceforge.pmd.RuleViolation;
+import org.netbeans.spi.tasklist.Task;
+import org.openide.filesystems.FileObject;
+import org.openide.text.Annotation;
 
 public class ScanViolation implements ScanMessage {
 
@@ -38,9 +40,6 @@ public class ScanViolation implements ScanMessage {
     private final String ruleSetName;
     private final RulePriority priority;
 
-    private transient String taskText;
-    private transient String annotationText;
-
     public ScanViolation(RuleViolation ruleViolation) {
         lineNumber = ruleViolation.getBeginLine();
         description = ruleViolation.getDescription();
@@ -50,31 +49,26 @@ public class ScanViolation implements ScanMessage {
     }
 
     @Override
+    public boolean isShowableInGuardedSections() {
+        return false;
+    }
+
+    @Override
     public int getLineNumber() {
         return lineNumber;
     }
 
-    private void verifyTransientFields() {
-        if (taskText != null && annotationText != null) {
-            return;
-        }
-
-        OptionsService optionsService = Injector.lookup(OptionsService.class);
-        Options options = optionsService.getOptions();
-
-        taskText = formatViolationComponents(TASK_TOKEN_SEPARATOR, options.isShowRulePriorityInTasks(), options.isShowDescriptionInTasks(), options.isShowRuleInTasks(), options.isShowRuleSetInTasks());
-        annotationText = formatViolationComponents(ANNOTATION_TOKEN_SEPARATOR, false, true, true, true);
+    @Override
+    public Task createTask(Options options, FileObject fileObject) {
+        return Task.create(
+                fileObject,
+                getTaskType(),
+                formatTaskText(options),
+                lineNumber
+        );
     }
 
-    @Override
-    public String getTaskText() {
-        verifyTransientFields();
-
-        return taskText;
-    }
-
-    @Override
-    public String getTaskType() {
+    private String getTaskType() {
         switch (priority) {
             case HIGH:
                 return "info.gianlucacosta.easypmd.ide.tasklist.High";
@@ -91,15 +85,38 @@ public class ScanViolation implements ScanMessage {
         }
     }
 
-    @Override
-    public String getAnnotationText() {
-        verifyTransientFields();
-
-        return annotationText;
+    private String formatTaskText(Options options) {
+        return formatViolationComponents(
+                TASK_TOKEN_SEPARATOR,
+                options.isShowRulePriorityInTasks(),
+                options.isShowDescriptionInTasks(),
+                options.isShowRuleInTasks(),
+                options.isShowRuleSetInTasks()
+        );
     }
 
     @Override
-    public String getAnnotationType() {
+    public Annotation createAnnotation(Options options) {
+        String annotationType = getAnnotationType();
+        String annotationMessage = formatAnnotationText(options);
+
+        return new BasicAnnotation(
+                annotationType,
+                annotationMessage
+        );
+    }
+
+    private String formatAnnotationText(Options options) {
+        return formatViolationComponents(
+                ANNOTATION_TOKEN_SEPARATOR,
+                false,
+                true,
+                true,
+                true
+        );
+    }
+
+    private String getAnnotationType() {
         switch (priority) {
             case HIGH:
                 return "info.gianlucacosta.easypmd.ide.annotations.High";
@@ -145,10 +162,5 @@ public class ScanViolation implements ScanMessage {
         }
 
         return resultBuilder.toString();
-    }
-
-    @Override
-    public boolean isShowableInGuardedSections() {
-        return false;
     }
 }

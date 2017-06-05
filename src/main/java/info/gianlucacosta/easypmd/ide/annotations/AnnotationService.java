@@ -19,39 +19,19 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.ide.editor;
+package info.gianlucacosta.easypmd.ide.annotations;
 
+import info.gianlucacosta.easypmd.ide.options.Options;
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
-import org.openide.text.Annotation;
-import org.openide.text.Line;
+import java.util.Set;
+import org.openide.filesystems.FileObject;
+import org.openide.loaders.DataObject;
 
-/**
- * An editor annotation related to a scan message
- */
-public class ScanMessageAnnotation extends Annotation {
+public interface AnnotationService {
 
-    private final ScanMessage message;
+    void attachAnnotationsTo(Options options, DataObject dataObject, Set<ScanMessage> scanMessages);
 
-    public ScanMessageAnnotation(ScanMessage message) {
-        this.message = message;
-    }
+    void detachAnnotationsFrom(FileObject fileObject);
 
-    public void attach(Line.Set lineSet) {
-        Line line = lineSet.getOriginal(getLineNumber() - 1);
-        attach(line);
-    }
-
-    @Override
-    public String getAnnotationType() {
-        return message.getAnnotationType();
-    }
-
-    @Override
-    public String getShortDescription() {
-        return message.getAnnotationText();
-    }
-
-    public int getLineNumber() {
-        return message.getLineNumber();
-    }
+    void detachAllAnnotations();
 }
