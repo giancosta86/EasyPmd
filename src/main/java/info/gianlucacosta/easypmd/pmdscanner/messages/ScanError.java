@@ -21,7 +21,7 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner.messages;
 
-import info.gianlucacosta.easypmd.ThrowableExtensions;
+import info.gianlucacosta.easypmd.util.ThrowableExtensions;
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
 
 public class ScanError implements ScanMessage {
@@ -34,7 +34,7 @@ public class ScanError implements ScanMessage {
     public ScanError(Exception exception) {
         String fullStackTraceString = ThrowableExtensions.getStackTraceString(exception);
 
-        if (fullStackTraceString.length() < MAX_STACK_TRACE_STRING_LENGTH) {
+        if (fullStackTraceString.length() <= MAX_STACK_TRACE_STRING_LENGTH) {
             this.stackTraceString = fullStackTraceString;
         } else {
             this.stackTraceString = fullStackTraceString.substring(0, MAX_STACK_TRACE_STRING_LENGTH - ELLIPSIS_STRING.length() - 1) + ELLIPSIS_STRING;
@@ -45,7 +45,7 @@ public class ScanError implements ScanMessage {
 
     @Override
     public String getAnnotationText() {
-        return String.format(stackTraceString);
+        return stackTraceString;
     }
 
     @Override
