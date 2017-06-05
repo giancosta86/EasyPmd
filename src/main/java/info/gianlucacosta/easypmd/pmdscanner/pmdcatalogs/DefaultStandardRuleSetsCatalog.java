@@ -58,14 +58,10 @@ public class DefaultStandardRuleSetsCatalog implements StandardRuleSetsCatalog {
 
     @Override
     public boolean containsFileName(String ruleSetFileName) {
-        for (RuleSetWrapper wrapper : wrappers) {
-            RuleSet ruleSet = wrapper.getRuleSet();
-
-            if (ruleSet.getFileName().equals(ruleSetFileName)) {
-                return true;
-            }
-        }
-
-        return false;
+        return wrappers
+                .stream()
+                .anyMatch(wrapper
+                        -> wrapper.getRuleSet().getFileName().equals(ruleSetFileName)
+                );
     }
 }

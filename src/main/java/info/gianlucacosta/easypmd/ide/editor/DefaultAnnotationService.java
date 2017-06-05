@@ -57,9 +57,9 @@ public class DefaultAnnotationService implements AnnotationService {
         LineCookie lineCookie = dataObject.getLookup().lookup(LineCookie.class);
         Line.Set lineSet = lineCookie.getLineSet();
 
-        for (ScanMessageAnnotation annotation : annotations) {
+        annotations.forEach(annotation -> {
             annotation.attach(lineSet);
-        }
+        });
 
         attachedAnnotations.put(fileObject, annotations);
 
@@ -91,9 +91,9 @@ public class DefaultAnnotationService implements AnnotationService {
             return;
         }
 
-        for (Annotation annotation : fileAnnotations) {
+        fileAnnotations.forEach(annotation -> {
             annotation.detach();
-        }
+        });
 
         attachedAnnotations.remove(fileObject);
 
@@ -112,8 +112,8 @@ public class DefaultAnnotationService implements AnnotationService {
     public void detachAllAnnotations() {
         Collection<FileObject> fileObjects = new ArrayList<>(attachedAnnotations.keySet());
 
-        for (FileObject fileObject : fileObjects) {
+        fileObjects.forEach(fileObject -> {
             detachAnnotationsFrom(fileObject);
-        }
+        });
     }
 }

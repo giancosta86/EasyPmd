@@ -30,6 +30,7 @@ import info.gianlucacosta.helios.product.ProductInfoService;
 import info.gianlucacosta.helios.swing.jlist.AdvancedSelectionListModel;
 
 import java.io.File;
+import java.util.Arrays;
 
 import java.util.Collection;
 import javax.swing.JFileChooser;
@@ -248,9 +249,11 @@ public class RuleSetsPanel extends JPanel {
         ruleSetsFileChooser.setSelectedFiles(null);
 
         if (ruleSetsFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            for (File ruleSetFile : ruleSetsFileChooser.getSelectedFiles()) {
-                ruleSetsModel.addElement(ruleSetFile.getAbsolutePath());
-            }
+            Arrays
+                    .stream(ruleSetsFileChooser.getSelectedFiles())
+                    .forEach(ruleSetFile -> {
+                        ruleSetsModel.addElement(ruleSetFile.getAbsolutePath());
+                    });
         }
     }//GEN-LAST:event_addFileRuleSetsButtonActionPerformed
 

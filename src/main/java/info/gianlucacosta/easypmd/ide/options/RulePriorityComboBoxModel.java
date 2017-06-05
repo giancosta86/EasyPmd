@@ -21,9 +21,10 @@
  */
 package info.gianlucacosta.easypmd.ide.options;
 
-import net.sourceforge.pmd.RulePriority;
+import java.util.Arrays;
 
 import javax.swing.*;
+import net.sourceforge.pmd.RulePriority;
 
 /**
  * ComboBoxModel containing PMD's rule priorities.
@@ -31,9 +32,11 @@ import javax.swing.*;
 class RulePriorityComboBoxModel extends DefaultComboBoxModel<RulePriority> {
 
     public RulePriorityComboBoxModel() {
-        for (RulePriority rulePriority : RulePriority.values()) {
-            addElement(rulePriority);
-        }
+        Arrays
+                .stream(RulePriority.values())
+                .forEach(rulePriority -> {
+                    addElement(rulePriority);
+                });
     }
 
 }

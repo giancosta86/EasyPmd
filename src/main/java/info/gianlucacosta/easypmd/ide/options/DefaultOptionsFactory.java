@@ -30,6 +30,7 @@ import net.sourceforge.pmd.RulePriority;
 import org.openide.util.lookup.ServiceProvider;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -81,13 +82,15 @@ public class DefaultOptionsFactory implements OptionsFactory {
 
         List<String> defaultRuleSets = new ArrayList<>();
 
-        for (String ruleSetFileName : suggestedDefaultRuleSetFileNames) {
-            if (standardRulesetsCatalog.containsFileName(ruleSetFileName)) {
-                defaultRuleSets.add(ruleSetFileName);
-            } else {
-                logger.log(Level.WARNING, String.format("The standard ruleset '%s' was not found", ruleSetFileName));
-            }
-        }
+        Arrays
+                .stream(suggestedDefaultRuleSetFileNames)
+                .forEach(ruleSetFileName -> {
+                    if (standardRulesetsCatalog.containsFileName(ruleSetFileName)) {
+                        defaultRuleSets.add(ruleSetFileName);
+                    } else {
+                        logger.log(Level.WARNING, String.format("The standard ruleset '%s' was not found", ruleSetFileName));
+                    }
+                });
 
         result.setRuleSets(defaultRuleSets);
 
