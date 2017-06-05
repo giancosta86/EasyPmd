@@ -22,8 +22,6 @@
 package info.gianlucacosta.easypmd.ide.options;
 
 import info.gianlucacosta.easypmd.ide.Injector;
-import info.gianlucacosta.easypmd.ide.options.profiles.ProfileConfiguration;
-import info.gianlucacosta.easypmd.ide.options.profiles.ProfileConfigurationRepository;
 import org.openide.util.lookup.ServiceProvider;
 
 import java.util.Collection;
@@ -35,6 +33,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import info.gianlucacosta.easypmd.ide.options.profiles.ProfileContext;
+import info.gianlucacosta.easypmd.ide.options.profiles.ProfileContextRepository;
 
 /**
  * Default implementation of OptionsService
@@ -54,9 +54,9 @@ public class DefaultOptionsService implements OptionsService {
         readLock = optionsLock.readLock();
         writeLock = optionsLock.writeLock();
 
-        ProfileConfigurationRepository profileConfigurationRepository = Injector.lookup(ProfileConfigurationRepository.class);
-        ProfileConfiguration profileConfiguration = profileConfigurationRepository.getProfileConfiguration();
-        options = profileConfiguration.getActiveOptions();
+        ProfileContextRepository profileContextRepository = Injector.lookup(ProfileContextRepository.class);
+        ProfileContext profileContext = profileContextRepository.getProfileContext();
+        options = profileContext.getActiveOptions();
     }
 
     @Override

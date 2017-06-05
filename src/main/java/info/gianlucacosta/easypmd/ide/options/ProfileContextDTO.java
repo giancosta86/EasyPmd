@@ -19,22 +19,22 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.ide.options.profiles;
+package info.gianlucacosta.easypmd.ide.options;
 
-import com.thoughtworks.xstream.XStream;
+import info.gianlucacosta.easypmd.ide.options.profiles.ProfileContext;
 
 /**
- * XStream for EasyPmd
+ * Context DTO returned by EasyPmdPanel
  */
-public class EasyPmdXStream extends XStream {
+public class ProfileContextDTO {
 
-    public EasyPmdXStream() {
-        alias(DefaultProfileContext.class.getSimpleName(), DefaultProfileContext.class);
-        alias(DefaultProfileMap.class.getSimpleName(), DefaultProfileMap.class);
-        alias(DefaultProfile.class.getSimpleName(), DefaultProfile.class);
+    private ProfileContext profileContext;
 
-        aliasPackage("regex", "info.gianlucacosta.helios.regex");
-        aliasPackage("helios", "info.gianlucacosta.helios");
-        aliasPackage("easypmd", "info.gianlucacosta.easypmd");
+    public ProfileContext getProfileContext() {
+        return profileContext;
+    }
+
+    public void setProfileContext(ProfileContext profileContext) {
+        this.profileContext = profileContext;
     }
 }

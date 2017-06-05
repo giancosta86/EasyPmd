@@ -19,22 +19,14 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.ide.options;
-
-import info.gianlucacosta.easypmd.ide.options.profiles.ProfileConfiguration;
+package info.gianlucacosta.easypmd.ide.options.profiles;
 
 /**
- * Configuration object returned by EasyPmdPanel
+ * Loads and saves ProfileContext objects.
  */
-public class ProfileConfigurationDTO {
+public interface ProfileContextRepository {
 
-    private ProfileConfiguration profileConfiguration;
+    ProfileContext getProfileContext();
 
-    public ProfileConfiguration getProfileConfiguration() {
-        return profileConfiguration;
-    }
-
-    public void setProfileConfiguration(ProfileConfiguration profileConfiguration) {
-        this.profileConfiguration = profileConfiguration;
-    }
+    void saveProfileContext(ProfileContext profileContext);
 }

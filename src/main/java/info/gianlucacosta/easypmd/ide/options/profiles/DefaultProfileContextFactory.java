@@ -21,35 +21,38 @@
  */
 package info.gianlucacosta.easypmd.ide.options.profiles;
 
+import info.gianlucacosta.easypmd.ide.Injector;
 import info.gianlucacosta.easypmd.ide.options.Options;
-
-import java.io.Serializable;
+import info.gianlucacosta.easypmd.ide.options.OptionsFactory;
+import org.openide.util.lookup.ServiceProvider;
 
 /**
- * Default implementation of ProfileConfiguration.
+ * Default implementation of ProfileContextFactory.
  */
-public class DefaultProfileConfiguration implements ProfileConfiguration, Serializable {
+@ServiceProvider(service = ProfileContextFactory.class)
+public class DefaultProfileContextFactory implements ProfileContextFactory {
 
-    private final ProfileMap profileMap;
-    private final String activeProfileName;
+    private static final String defaultProfileName = "Default profile";
+    private final OptionsFactory optionsFactory;
 
-    public DefaultProfileConfiguration(ProfileMap profileMap, String activeProfileName) {
-        this.profileMap = profileMap;
-        this.activeProfileName = activeProfileName;
+    public DefaultProfileContextFactory() {
+        this.optionsFactory = Injector.lookup(OptionsFactory.class);
     }
 
     @Override
-    public ProfileMap getProfiles() {
-        return profileMap;
+    public ProfileContext createDefaultProfileContext() {
+        Options defaultOptions = optionsFactory.createDefaultOptions();
+        Profile defaultProfile = new DefaultProfile(defaultOptions);
+
+        ProfileMap defaultProfiles = new DefaultProfileMap();
+
+        try {
+            defaultProfiles.setProfile(defaultProfileName, defaultProfile);
+        } catch (ProfileException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return new DefaultProfileContext(defaultProfiles, defaultProfileName);
     }
 
-    @Override
-    public String getActiveProfileName() {
-        return activeProfileName;
-    }
-
-    @Override
-    public Options getActiveOptions() {
-        return profileMap.getProfile(activeProfileName).getOptions();
-    }
 }

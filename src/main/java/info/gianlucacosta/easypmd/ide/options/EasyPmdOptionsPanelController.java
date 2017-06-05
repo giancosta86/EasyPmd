@@ -22,8 +22,6 @@
 package info.gianlucacosta.easypmd.ide.options;
 
 import info.gianlucacosta.easypmd.ide.Injector;
-import info.gianlucacosta.easypmd.ide.options.profiles.ProfileConfiguration;
-import info.gianlucacosta.easypmd.ide.options.profiles.ProfileConfigurationRepository;
 import info.gianlucacosta.easypmd.pmdscanner.PmdScanner;
 import org.netbeans.spi.options.OptionsPanelController;
 import org.openide.util.HelpCtx;
@@ -32,6 +30,8 @@ import org.openide.util.Lookup;
 import javax.swing.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import info.gianlucacosta.easypmd.ide.options.profiles.ProfileContext;
+import info.gianlucacosta.easypmd.ide.options.profiles.ProfileContextRepository;
 
 /**
  * Controller underlying the plugin's options panel
@@ -48,12 +48,12 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
     private static final String EASY_PMD_OPTIONS_NAME_IN_EVENT = "EASYPMD_OPTIONS";
     private final EasyPmdPanel panel = new EasyPmdPanel();
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-    private final ProfileConfigurationRepository profileConfigurationRepository;
+    private final ProfileContextRepository profileContextRepository;
     private final OptionsService optionsService;
     private boolean optionsChanged;
 
     public EasyPmdOptionsPanelController() {
-        profileConfigurationRepository = Injector.lookup(ProfileConfigurationRepository.class);
+        profileContextRepository = Injector.lookup(ProfileContextRepository.class);
         optionsService = Injector.lookup(OptionsService.class);
 
         optionsService.addOptionsSetListener((options, optionsChanges) -> {
@@ -75,19 +75,19 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
 
     @Override
     public void update() {
-        ProfileConfiguration profileConfiguration = profileConfigurationRepository.getProfileConfiguration();
+        ProfileContext profileContext = profileContextRepository.getProfileContext();
 
-        panel.setProfileConfiguration(profileConfiguration);
+        panel.setProfileContext(profileContext);
     }
 
     @Override
     public void applyChanges() {
-        ProfileConfigurationDTO profileConfigurationDTO = panel.getProfileConfigurationDTO();
-        ProfileConfiguration profileConfiguration = profileConfigurationDTO.getProfileConfiguration();
+        ProfileContextDTO profileContextDTO = panel.getProfileContextDTO();
+        ProfileContext profileContext = profileContextDTO.getProfileContext();
 
-        profileConfigurationRepository.saveProfileConfiguration(profileConfiguration);
+        profileContextRepository.saveProfileContext(profileContext);
 
-        Options newOptions = profileConfiguration.getActiveOptions();
+        Options newOptions = profileContext.getActiveOptions();
 
         optionsService.setOptions(newOptions);
     }
@@ -100,7 +100,7 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
     @Override
     public boolean isValid() {
         try {
-            Options activeOptions = panel.getProfileConfigurationDTO().getProfileConfiguration().getActiveOptions();
+            Options activeOptions = panel.getProfileContextDTO().getProfileContext().getActiveOptions();
             optionsService.verifyOptions(activeOptions);
             return true;
         } catch (InvalidOptionsException ex) {

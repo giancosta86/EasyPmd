@@ -24,9 +24,8 @@ package info.gianlucacosta.easypmd.ide.options;
 import info.gianlucacosta.easypmd.ide.DialogService;
 import info.gianlucacosta.easypmd.ide.Injector;
 import info.gianlucacosta.easypmd.ide.options.profiles.DefaultProfile;
-import info.gianlucacosta.easypmd.ide.options.profiles.DefaultProfileConfiguration;
+import info.gianlucacosta.easypmd.ide.options.profiles.DefaultProfileContext;
 import info.gianlucacosta.easypmd.ide.options.profiles.Profile;
-import info.gianlucacosta.easypmd.ide.options.profiles.ProfileConfiguration;
 import info.gianlucacosta.easypmd.ide.options.profiles.ProfileException;
 import info.gianlucacosta.easypmd.ide.options.profiles.ProfileMap;
 import info.gianlucacosta.easypmd.pmdscanner.messages.cache.ScanMessagesCache;
@@ -43,6 +42,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import info.gianlucacosta.easypmd.ide.options.profiles.ProfileContext;
 
 /**
  * The plugin's panel shown in the Options dialog
@@ -133,13 +133,12 @@ class EasyPmdPanel extends JPanel {
         return result;
     }
 
-    synchronized ProfileConfigurationDTO getProfileConfigurationDTO() {
+    synchronized ProfileContextDTO getProfileContextDTO() {
         updateOptionsInActiveProfile();
 
-        ProfileConfigurationDTO result = new ProfileConfigurationDTO();
+        ProfileContextDTO result = new ProfileContextDTO();
 
-        result.setProfileConfiguration(
-                new DefaultProfileConfiguration(profiles, activeProfileName)
+        result.setProfileContext(new DefaultProfileContext(profiles, activeProfileName)
         );
 
         return result;
@@ -193,10 +192,10 @@ class EasyPmdPanel extends JPanel {
         setOptions(activeProfile.getOptions());
     }
 
-    synchronized void setProfileConfiguration(ProfileConfiguration profileConfiguration) {
-        this.activeProfileName = profileConfiguration.getActiveProfileName();
+    synchronized void setProfileContext(ProfileContext profileContext) {
+        this.activeProfileName = profileContext.getActiveProfileName();
 
-        profiles = profileConfiguration.getProfiles();
+        profiles = profileContext.getProfiles();
 
         profiles.addProfileNamesChangedListener(() -> {
             refillProfileCombo();
@@ -210,8 +209,8 @@ class EasyPmdPanel extends JPanel {
         profileCombo.addActionListener(profileComboActionListener);
         profileCombo.setSelectedItem(activeProfileName);
 
-        this.activeProfileName = profileConfiguration.getActiveProfileName();
-        Options initialOptions = profileConfiguration.getActiveOptions();
+        this.activeProfileName = profileContext.getActiveProfileName();
+        Options initialOptions = profileContext.getActiveOptions();
         setOptions(initialOptions);
     }
 

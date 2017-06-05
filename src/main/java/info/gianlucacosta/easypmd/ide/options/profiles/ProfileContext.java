@@ -21,12 +21,16 @@
  */
 package info.gianlucacosta.easypmd.ide.options.profiles;
 
+import info.gianlucacosta.easypmd.ide.options.Options;
+
 /**
- * Loads and saves ProfileConfiguration objects.
+ * The overall context of profiles and current active profile.
  */
-public interface ProfileConfigurationRepository {
+public interface ProfileContext {
 
-    ProfileConfiguration getProfileConfiguration();
+    ProfileMap getProfiles();
 
-    void saveProfileConfiguration(ProfileConfiguration profileConfiguration);
+    String getActiveProfileName();
+
+    Options getActiveOptions();
 }
