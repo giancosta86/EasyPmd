@@ -44,13 +44,12 @@ import java.util.Set;
  */
 public class LinkedPmdScanningStrategy implements PmdScannerStrategy {
 
-    private final LanguageVersionParser languageVersionParser;
     private final PMD pmd;
     private final RuleSets ruleSets;
     private final String sourceFileEncoding;
 
     public LinkedPmdScanningStrategy(Options options) {
-        languageVersionParser = Injector.lookup(LanguageVersionParser.class);
+        LanguageVersionParser languageVersionParser = Injector.lookup(LanguageVersionParser.class);
 
         ClassLoader pmdBasedClassLoader = PmdBasedClassLoader.create(options.getAdditionalClassPathUrls());
 
@@ -92,14 +91,13 @@ public class LinkedPmdScanningStrategy implements PmdScannerStrategy {
 
         Iterator<String> iterator = ruleSets.iterator();
 
-        while (iterator.hasNext()) {
-            String ruleSet = iterator.next();
+        iterator.forEachRemaining(ruleSet -> {
             result.append(ruleSet);
 
             if (iterator.hasNext()) {
                 result.append(",");
             }
-        }
+        });
 
         return result.toString();
     }
@@ -119,12 +117,11 @@ public class LinkedPmdScanningStrategy implements PmdScannerStrategy {
         RuleSets applicableRuleSets = new RuleSets();
         Iterator<RuleSet> ruleSetsIterator = ruleSets.getRuleSetsIterator();
 
-        while (ruleSetsIterator.hasNext()) {
-            RuleSet currentRuleSet = ruleSetsIterator.next();
+        ruleSetsIterator.forEachRemaining(currentRuleSet -> {
             if (currentRuleSet.applies(path.toFile())) {
                 applicableRuleSets.addRuleSet(currentRuleSet);
             }
-        }
+        });
 
         try {
             try (Reader reader = new InputStreamReader(new FileInputStream(pathString), sourceFileEncoding)) {
@@ -134,11 +131,10 @@ public class LinkedPmdScanningStrategy implements PmdScannerStrategy {
             ReportTree violationTree = report.getViolationTree();
 
             Iterator<RuleViolation> violationsIterator = violationTree.iterator();
-            while (violationsIterator.hasNext()) {
-                RuleViolation violation = violationsIterator.next();
-                scanMessages.add(new ScanViolation(violation));
-            }
 
+            violationsIterator.forEachRemaining(violation -> {
+                scanMessages.add(new ScanViolation(violation));
+            });
         } catch (IOException | PMDException ex) {
             scanMessages.add(new ScanError(ex));
         }

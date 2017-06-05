@@ -70,7 +70,7 @@ public class CacheBasedLinkedPmdScanningStrategy extends LinkedPmdScanningStrate
             });
         } catch (IOException ex) {
             logger.warning(
-                    String.format("Exception while scanning path: %s", path)
+                    String.format("Exception while scanning path: %s. %s", path, ex)
             );
 
             return Collections.emptySet();

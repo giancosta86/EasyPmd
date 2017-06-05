@@ -21,7 +21,6 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner.strategies;
 
-import info.gianlucacosta.helios.conversions.CollectionToArrayConverter;
 import net.sourceforge.pmd.PMD;
 
 import java.net.URL;
