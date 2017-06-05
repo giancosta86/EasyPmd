@@ -19,21 +19,29 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.pmdscanner.messagescache;
+package info.gianlucacosta.easypmd.pmdscanner.messages.cache;
 
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
-
-import java.util.Optional;
 import java.util.Set;
 
 /**
- * Cache of scan messages
+ * Entry for the in-memory cache
  */
-public interface ScanMessagesCache extends AutoCloseable {
+public class CacheEntry {
 
-    Optional<Set<ScanMessage>> getScanMessagesFor(String pathString, long pathLastModificationMillis);
+    private final long lastModificationMillis;
+    private final Set<ScanMessage> scanMessages;
 
-    void putScanMessagesFor(String pathString, long lastModificationMillis, Set<ScanMessage> scanMessages);
+    public CacheEntry(long lastModificationMillis, Set<ScanMessage> scanMessages) {
+        this.lastModificationMillis = lastModificationMillis;
+        this.scanMessages = scanMessages;
+    }
 
-    boolean clear();
+    public long getLastModificationMillis() {
+        return lastModificationMillis;
+    }
+
+    public Set<ScanMessage> getScanMessages() {
+        return scanMessages;
+    }
 }

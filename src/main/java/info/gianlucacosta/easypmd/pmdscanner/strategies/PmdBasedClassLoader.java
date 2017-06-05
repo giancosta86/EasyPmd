@@ -19,27 +19,31 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.pmdscanner;
+package info.gianlucacosta.easypmd.pmdscanner.strategies;
 
-import net.sourceforge.pmd.RuleSet;
+import info.gianlucacosta.helios.conversions.CollectionToArrayConverter;
+import net.sourceforge.pmd.PMD;
+
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Collection;
 
 /**
- * Wraps a ruleset, to provide a user-friendly string representation
+ * ClassLoader that firstly tries to load classes and resources using PMD's
+ * class loader as its parent
  */
-public class RuleSetWrapper {
+class PmdBasedClassLoader extends URLClassLoader {
 
-    private final RuleSet ruleSet;
-
-    public RuleSetWrapper(RuleSet ruleSet) {
-        this.ruleSet = ruleSet;
+    public static PmdBasedClassLoader create(Collection<URL> additionalUrls) {
+        ClassLoader pmdClassLoader = PMD.class.getClassLoader();
+        
+        return new PmdBasedClassLoader(
+                additionalUrls.stream().toArray(URL[]::new), 
+                pmdClassLoader
+        );
     }
 
-    public RuleSet getRuleSet() {
-        return ruleSet;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s (%s)", ruleSet.getName(), ruleSet.getFileName());
+    private PmdBasedClassLoader(URL[] urls, ClassLoader parent) {
+        super(urls, parent);
     }
 }

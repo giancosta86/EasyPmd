@@ -19,11 +19,12 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.pmdscanner;
+package info.gianlucacosta.easypmd.pmdscanner.messages;
 
 import info.gianlucacosta.easypmd.ThrowableExtensions;
+import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
 
-class ScanError implements ScanMessage {
+public class ScanError implements ScanMessage {
 
     private static final int MAX_STACK_TRACE_STRING_LENGTH = 2000;
     private static final String ELLIPSIS_STRING = "\n<...>";

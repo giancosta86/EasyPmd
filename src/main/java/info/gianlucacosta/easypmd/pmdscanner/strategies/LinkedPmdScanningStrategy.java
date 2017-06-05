@@ -19,10 +19,15 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.pmdscanner;
+package info.gianlucacosta.easypmd.pmdscanner.strategies;
 
+import info.gianlucacosta.easypmd.pmdscanner.messages.ScanError;
+import info.gianlucacosta.easypmd.pmdscanner.messages.ScanViolation;
 import info.gianlucacosta.easypmd.ide.Injector;
 import info.gianlucacosta.easypmd.ide.options.Options;
+import info.gianlucacosta.easypmd.pmdscanner.pmdcatalogs.LanguageVersionParser;
+import info.gianlucacosta.easypmd.pmdscanner.PmdScannerStrategy;
+import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
 import net.sourceforge.pmd.*;
 import net.sourceforge.pmd.lang.LanguageVersion;
 import net.sourceforge.pmd.lang.dfa.report.ReportTree;
@@ -37,7 +42,7 @@ import java.util.Set;
 /**
  * Scans a file using PMD
  */
-class LinkedPmdScanningStrategy implements PmdScannerStrategy {
+public class LinkedPmdScanningStrategy implements PmdScannerStrategy {
 
     private final LanguageVersionParser languageVersionParser;
     private final PMD pmd;

@@ -19,16 +19,20 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.pmdscanner;
+package info.gianlucacosta.easypmd.pmdscanner.messages.cache;
 
-import java.util.Collection;
+import info.gianlucacosta.easypmd.PathService;
+import info.gianlucacosta.easypmd.ide.Injector;
+import org.openide.util.lookup.ServiceProvider;
 
 /**
- * Catalog of standard PMD rulesets
+ * Default cache service
  */
-public interface StandardRuleSetsCatalog {
-
-    boolean containsFileName(String ruleSetFileName);
-
-    Collection<RuleSetWrapper> getRuleSetWrappers();
+@ServiceProvider(service = ScanMessagesCache.class)
+public class DefaultScanMessagesCache extends DualLayerCache {
+    public DefaultScanMessagesCache() {
+        super(new HsqlDbStorage(
+                Injector.lookup(PathService.class).getCachePath()
+        ));
+    }
 }

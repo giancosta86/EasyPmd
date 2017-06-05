@@ -21,8 +21,8 @@
  */
 package info.gianlucacosta.easypmd.ide.options;
 
-import info.gianlucacosta.easypmd.pmdscanner.RuleSetWrapper;
-import info.gianlucacosta.easypmd.pmdscanner.StandardRuleSetsCatalog;
+import info.gianlucacosta.easypmd.pmdscanner.pmdcatalogs.RuleSetWrapper;
+import info.gianlucacosta.easypmd.pmdscanner.pmdcatalogs.StandardRuleSetsCatalog;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.Collection;

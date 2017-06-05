@@ -19,22 +19,14 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.pmdscanner.messagescache;
+package info.gianlucacosta.easypmd.pmdscanner.pmdcatalogs;
 
-import java.nio.file.Path;
-import java.util.Optional;
+import net.sourceforge.pmd.lang.LanguageVersion;
 
 /**
- * Persistent cache backend. It should provide its own locking and
- * synchronization
+ * Creates a LanguageVersion by parsing a version string
  */
-public interface CacheStorage {
+public interface LanguageVersionParser {
 
-    Optional<CacheEntry> getEntry(String pathString);
-
-    void putEntry(String pathString, CacheEntry cacheEntry);
-
-    boolean clearEntries();
-
-    void close() throws Exception;
+    LanguageVersion parse(String versionString);
 }

@@ -23,8 +23,8 @@ package info.gianlucacosta.easypmd.ide.options;
 
 import info.gianlucacosta.easypmd.ide.DialogService;
 import info.gianlucacosta.easypmd.ide.Injector;
-import info.gianlucacosta.easypmd.pmdscanner.RuleSetWrapper;
-import info.gianlucacosta.easypmd.pmdscanner.StandardRuleSetsCatalog;
+import info.gianlucacosta.easypmd.pmdscanner.pmdcatalogs.RuleSetWrapper;
+import info.gianlucacosta.easypmd.pmdscanner.pmdcatalogs.StandardRuleSetsCatalog;
 import info.gianlucacosta.helios.conversions.CollectionToArrayConverter;
 import info.gianlucacosta.helios.product.ProductInfoService;
 import info.gianlucacosta.helios.swing.jlist.AdvancedSelectionListModel;

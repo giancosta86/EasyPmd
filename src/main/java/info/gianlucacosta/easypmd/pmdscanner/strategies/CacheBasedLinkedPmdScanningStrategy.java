@@ -19,20 +19,18 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.pmdscanner;
+package info.gianlucacosta.easypmd.pmdscanner.strategies;
 
 import info.gianlucacosta.easypmd.PathService;
 import info.gianlucacosta.easypmd.ide.Injector;
 import info.gianlucacosta.easypmd.ide.options.Options;
-import info.gianlucacosta.easypmd.pmdscanner.messagescache.DualLayerCache;
-import info.gianlucacosta.easypmd.pmdscanner.messagescache.HsqlDbStorage;
-import info.gianlucacosta.easypmd.pmdscanner.messagescache.ScanMessagesCache;
+import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
+import info.gianlucacosta.easypmd.pmdscanner.messages.cache.ScanMessagesCache;
 import java.io.IOException;
 import java.nio.file.Files;
 
 import java.nio.file.Path;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -41,7 +39,7 @@ import java.util.logging.Logger;
  * Scanning strategy looking for cached scan messages: if they are missing, a
  * default PMD scan is performed.
  */
-class CacheBasedLinkedPmdScanningStrategy extends LinkedPmdScanningStrategy {
+public class CacheBasedLinkedPmdScanningStrategy extends LinkedPmdScanningStrategy {
 
     private static final Logger logger = Logger.getLogger(CacheBasedLinkedPmdScanningStrategy.class.getName());
 

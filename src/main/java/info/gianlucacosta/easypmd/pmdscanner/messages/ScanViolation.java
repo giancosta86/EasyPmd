@@ -19,15 +19,16 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.pmdscanner;
+package info.gianlucacosta.easypmd.pmdscanner.messages;
 
 import info.gianlucacosta.easypmd.ide.Injector;
 import info.gianlucacosta.easypmd.ide.options.Options;
 import info.gianlucacosta.easypmd.ide.options.OptionsService;
+import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
 import net.sourceforge.pmd.RulePriority;
 import net.sourceforge.pmd.RuleViolation;
 
-class ScanViolation implements ScanMessage {
+public class ScanViolation implements ScanMessage {
 
     private static final String ANNOTATION_TOKEN_SEPARATOR = "\n";
     private static final String TASK_TOKEN_SEPARATOR = " ";

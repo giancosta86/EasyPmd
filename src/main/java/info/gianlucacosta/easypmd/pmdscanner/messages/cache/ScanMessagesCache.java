@@ -19,14 +19,21 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.pmdscanner;
+package info.gianlucacosta.easypmd.pmdscanner.messages.cache;
 
-import net.sourceforge.pmd.lang.LanguageVersion;
+import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
+
+import java.util.Optional;
+import java.util.Set;
 
 /**
- * Creates a LanguageVersion by parsing a version string
+ * Cache of scan messages
  */
-public interface LanguageVersionParser {
+public interface ScanMessagesCache extends AutoCloseable {
 
-    LanguageVersion parse(String versionString);
+    Optional<Set<ScanMessage>> getScanMessagesFor(String pathString, long pathLastModificationMillis);
+
+    void putScanMessagesFor(String pathString, long lastModificationMillis, Set<ScanMessage> scanMessages);
+
+    boolean clear();
 }

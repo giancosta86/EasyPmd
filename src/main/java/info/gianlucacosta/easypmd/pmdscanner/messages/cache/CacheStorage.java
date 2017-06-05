@@ -19,29 +19,22 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.pmdscanner.messagescache;
+package info.gianlucacosta.easypmd.pmdscanner.messages.cache;
 
-import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
-import java.util.Set;
+import java.nio.file.Path;
+import java.util.Optional;
 
 /**
- * Entry for the in-memory cache
+ * Persistent cache backend. It should provide its own locking and
+ * synchronization
  */
-public class CacheEntry {
+public interface CacheStorage {
 
-    private final long lastModificationMillis;
-    private final Set<ScanMessage> scanMessages;
+    Optional<CacheEntry> getEntry(String pathString);
 
-    public CacheEntry(long lastModificationMillis, Set<ScanMessage> scanMessages) {
-        this.lastModificationMillis = lastModificationMillis;
-        this.scanMessages = scanMessages;
-    }
+    void putEntry(String pathString, CacheEntry cacheEntry);
 
-    public long getLastModificationMillis() {
-        return lastModificationMillis;
-    }
+    boolean clearEntries();
 
-    public Set<ScanMessage> getScanMessages() {
-        return scanMessages;
-    }
+    void close() throws Exception;
 }

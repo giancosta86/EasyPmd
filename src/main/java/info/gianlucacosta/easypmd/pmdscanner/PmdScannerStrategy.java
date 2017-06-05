@@ -27,7 +27,7 @@ import java.util.Set;
 /**
  * Strategy used by the PMD scanner to scan files
  */
-interface PmdScannerStrategy {
+public interface PmdScannerStrategy {
 
     Set<ScanMessage> scan(Path path);
 }

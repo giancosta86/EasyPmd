@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * ==========================================================================%##
  */
-package info.gianlucacosta.easypmd.pmdscanner.messagescache;
+package info.gianlucacosta.easypmd.pmdscanner.messages.cache;
 
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
 import java.io.IOException;

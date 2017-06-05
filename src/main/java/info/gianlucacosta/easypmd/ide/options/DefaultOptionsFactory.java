@@ -23,8 +23,8 @@ package info.gianlucacosta.easypmd.ide.options;
 
 import info.gianlucacosta.easypmd.SystemPropertiesService;
 import info.gianlucacosta.easypmd.ide.Injector;
-import info.gianlucacosta.easypmd.pmdscanner.LanguageVersionParser;
-import info.gianlucacosta.easypmd.pmdscanner.StandardRuleSetsCatalog;
+import info.gianlucacosta.easypmd.pmdscanner.pmdcatalogs.LanguageVersionParser;
+import info.gianlucacosta.easypmd.pmdscanner.pmdcatalogs.StandardRuleSetsCatalog;
 import info.gianlucacosta.helios.regex.OsSpecificPathCompositeRegex;
 import net.sourceforge.pmd.RulePriority;
 import org.openide.util.lookup.ServiceProvider;

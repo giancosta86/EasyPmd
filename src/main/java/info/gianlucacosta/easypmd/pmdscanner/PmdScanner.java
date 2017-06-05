@@ -21,6 +21,10 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner;
 
+import info.gianlucacosta.easypmd.pmdscanner.strategies.NoOpPmdScannerStrategy;
+import info.gianlucacosta.easypmd.pmdscanner.strategies.LinkedPmdScanningStrategy;
+import info.gianlucacosta.easypmd.pmdscanner.strategies.CacheBasedLinkedPmdScanningStrategy;
+import info.gianlucacosta.easypmd.pmdscanner.messages.ScanError;
 import info.gianlucacosta.easypmd.ide.options.Options;
 
 import java.nio.file.Path;
@@ -50,7 +54,7 @@ public class PmdScanner {
     public Set<ScanMessage> scan(Path path) {
         try {
             return strategy.scan(path);
-        } catch (RuntimeException ex) {
+        } catch (Exception ex) {
             ScanError scanError = new ScanError(ex);
 
             return Collections.singleton(

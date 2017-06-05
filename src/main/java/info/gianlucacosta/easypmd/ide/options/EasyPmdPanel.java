@@ -29,7 +29,7 @@ import info.gianlucacosta.easypmd.ide.options.profiles.Profile;
 import info.gianlucacosta.easypmd.ide.options.profiles.ProfileConfiguration;
 import info.gianlucacosta.easypmd.ide.options.profiles.ProfileException;
 import info.gianlucacosta.easypmd.ide.options.profiles.ProfileMap;
-import info.gianlucacosta.easypmd.pmdscanner.messagescache.ScanMessagesCache;
+import info.gianlucacosta.easypmd.pmdscanner.messages.cache.ScanMessagesCache;
 import info.gianlucacosta.helios.application.io.CommonQuestionOutcome;
 import info.gianlucacosta.helios.product.ProductInfoService;
 import info.gianlucacosta.helios.regex.OsSpecificPathCompositeRegex;
