@@ -26,7 +26,6 @@ import info.gianlucacosta.helios.product.ProductInfoService;
 import org.openide.util.lookup.ServiceProvider;
 
 import javax.swing.*;
-import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -40,8 +39,10 @@ public class DefaultRegexTemplateSelectionDialog implements RegexTemplateSelecti
     static {
         Collection<? extends RegexTemplate> foundRegexTemplates = Injector.lookupAll(RegexTemplate.class);
 
-        regexTemplates = foundRegexTemplates.toArray(new RegexTemplate[0]);
-        Arrays.sort(regexTemplates);
+        regexTemplates = foundRegexTemplates
+                .stream()
+                .sorted()
+                .toArray(RegexTemplate[]::new);
     }
 
     private final ProductInfoService pluginInfoService;
