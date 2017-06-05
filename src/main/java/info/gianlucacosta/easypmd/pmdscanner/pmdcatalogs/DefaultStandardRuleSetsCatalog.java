@@ -60,6 +60,7 @@ public class DefaultStandardRuleSetsCatalog implements StandardRuleSetsCatalog {
     public boolean containsFileName(String ruleSetFileName) {
         return wrappers
                 .stream()
+                .parallel()
                 .anyMatch(wrapper
                         -> wrapper.getRuleSet().getFileName().equals(ruleSetFileName)
                 );

@@ -181,11 +181,10 @@ public class IdeScanner extends FileTaskScanner {
                 if (!guardedPmdLineNumbers.isEmpty()) {
                     scanMessages = scanMessages
                             .stream()
+                            .parallel()
                             .filter(scanMessage -> {
-                                int violationLineNumber = scanMessage.getLineNumber();
-
                                 return scanMessage.isShowableInGuardedSections()
-                                        || !guardedPmdLineNumbers.contains(violationLineNumber);
+                                        || !guardedPmdLineNumbers.contains(scanMessage.getLineNumber());
 
                             })
                             .collect(Collectors.toSet());
@@ -194,6 +193,7 @@ public class IdeScanner extends FileTaskScanner {
 
             List<Task> tasks = scanMessages
                     .stream()
+                    .parallel()
                     .map(scanMessage
                             -> Task.create(fileObject, scanMessage.getTaskType(), scanMessage.getTaskText(), scanMessage.getLineNumber())
                     )
@@ -203,6 +203,7 @@ public class IdeScanner extends FileTaskScanner {
                 Set<ScanMessageAnnotation> annotations
                         = scanMessages
                                 .stream()
+                                .parallel()
                                 .map(scanMessage -> new ScanMessageAnnotation(scanMessage))
                                 .collect(Collectors.toSet());
 
