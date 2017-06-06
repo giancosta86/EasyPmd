@@ -46,7 +46,6 @@ public class DefaultProfileContextRepository implements ProfileContextRepository
 
     private static final String PROFILES_FILE_NAME = "Profiles.xml";
 
-    private final ProfileContextFactory profileContextFactory;
     private final EasyPmdXStream xmlStream = new EasyPmdXStream();
 
     private final Path profilesPath;
@@ -54,8 +53,6 @@ public class DefaultProfileContextRepository implements ProfileContextRepository
     private ProfileContext profileContext;
 
     public DefaultProfileContextRepository() {
-        profileContextFactory = Injector.lookup(ProfileContextFactory.class);
-
         PathService pathService = Injector.lookup(PathService.class);
         profilesPath = pathService.getRootPath().resolve(PROFILES_FILE_NAME);
 
@@ -72,6 +69,8 @@ public class DefaultProfileContextRepository implements ProfileContextRepository
                             Throwables.toStringWithStackTrace(ex)
                     )
             );
+
+            ProfileContextFactory profileContextFactory = Injector.lookup(ProfileContextFactory.class);
             profileContext = profileContextFactory.createDefaultProfileContext();
         }
     }

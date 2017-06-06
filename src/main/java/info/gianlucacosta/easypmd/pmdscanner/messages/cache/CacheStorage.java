@@ -21,7 +21,6 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner.messages.cache;
 
-import java.nio.file.Path;
 import java.util.Optional;
 
 /**

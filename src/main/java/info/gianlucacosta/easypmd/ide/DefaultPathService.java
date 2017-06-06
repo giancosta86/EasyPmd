@@ -23,7 +23,6 @@ package info.gianlucacosta.easypmd.ide;
 
 import info.gianlucacosta.easypmd.PropertyPluginInfoService;
 import info.gianlucacosta.easypmd.system.SystemPropertiesService;
-import info.gianlucacosta.easypmd.ide.Injector;
 import java.nio.file.Path;
 import org.openide.util.lookup.ServiceProvider;
 

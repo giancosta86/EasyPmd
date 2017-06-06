@@ -34,10 +34,13 @@ public class ScanError implements ScanMessage {
     private static final int ERROR_LINE_NUMBER = 1;
     private static final int MAX_STACK_TRACE_STRING_LENGTH = 2000;
     private static final String ELLIPSIS_STRING = "\n<...>";
-    private final String stackTraceString;
+
     private final String exceptionMessage;
+    private final String stackTraceString;
 
     public ScanError(Exception exception) {
+        this.exceptionMessage = Throwables.getNonEmptyMessage(exception);
+
         String fullStackTraceString = Throwables.getStackTraceString(exception);
 
         if (fullStackTraceString.length() <= MAX_STACK_TRACE_STRING_LENGTH) {
@@ -45,8 +48,6 @@ public class ScanError implements ScanMessage {
         } else {
             this.stackTraceString = fullStackTraceString.substring(0, MAX_STACK_TRACE_STRING_LENGTH - ELLIPSIS_STRING.length() - 1) + ELLIPSIS_STRING;
         }
-
-        this.exceptionMessage = Throwables.getNonEmptyMessage(exception);
     }
 
     @Override

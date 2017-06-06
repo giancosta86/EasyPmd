@@ -40,7 +40,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Scans a file using PMD
+ * Scans a file using PMD, using the PMD class internally linked with the plugin
  */
 public class LinkedPmdScanningStrategy implements PmdScannerStrategy {
 
@@ -60,6 +60,7 @@ public class LinkedPmdScanningStrategy implements PmdScannerStrategy {
         try {
             ruleSetFactory.setClassLoader(pmdBasedClassLoader);
             ruleSetFactory.setMinimumPriority(options.getMinimumPriority());
+
             ruleSets = ruleSetFactory.createRuleSets(ruleSetsString);
         } catch (RuleSetNotFoundException ex) {
             throw new RuntimeException(ex);

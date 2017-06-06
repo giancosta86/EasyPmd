@@ -28,7 +28,7 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
- * Scanning strategy that does just nothing.
+ * Scanning strategy that always returns an empty set
  */
 public class NoOpPmdScannerStrategy implements PmdScannerStrategy {
 

@@ -31,7 +31,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.BiConsumer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import info.gianlucacosta.easypmd.ide.options.profiles.ProfileContext;
 import info.gianlucacosta.easypmd.ide.options.profiles.ProfileContextRepository;
@@ -88,7 +87,6 @@ public class DefaultOptionsService implements OptionsService {
         } finally {
             readLock.unlock();
         }
-
     }
 
     @Override
@@ -104,7 +102,7 @@ public class DefaultOptionsService implements OptionsService {
 
             optionsSetListeners
                     .stream()
-                    .forEach(listener -> listener.accept(oldOptions, optionsChanges));
+                    .forEach(listener -> listener.accept(options, optionsChanges));
         } finally {
             writeLock.unlock();
         }

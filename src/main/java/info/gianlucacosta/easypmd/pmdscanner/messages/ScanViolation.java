@@ -106,16 +106,6 @@ public class ScanViolation implements ScanMessage {
         );
     }
 
-    private String formatAnnotationText(Options options) {
-        return formatViolationComponents(
-                ANNOTATION_TOKEN_SEPARATOR,
-                false,
-                true,
-                true,
-                true
-        );
-    }
-
     private String getAnnotationType() {
         switch (priority) {
             case HIGH:
@@ -131,6 +121,16 @@ public class ScanViolation implements ScanMessage {
             default:
                 throw new RuntimeException(String.format("Unexpected priority value: '%s'", priority));
         }
+    }
+
+    private String formatAnnotationText(Options options) {
+        return formatViolationComponents(
+                ANNOTATION_TOKEN_SEPARATOR,
+                false,
+                true,
+                true,
+                true
+        );
     }
 
     private String formatViolationComponents(String separator, boolean showPriority, boolean showDescription, boolean showRuleName, boolean showRuleSetName) {

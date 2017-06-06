@@ -33,7 +33,7 @@ public interface Throwables {
     /**
      * Converts the stack trace of a Throwable to a string
      *
-     * @param throwable The subject throwable
+     * @param throwable
      * @return the string representation of the stack trace
      */
     public static String getStackTraceString(Throwable throwable) {
@@ -59,13 +59,13 @@ public interface Throwables {
             Throwable cause = throwable.getCause();
 
             if (cause != null) {
-                return getNonEmptyMessage(throwable);
+                return getNonEmptyMessage(cause);
             } else {
                 return "(no message)";
             }
+        } else {
+            return message;
         }
-
-        return message;
     }
 
     /**

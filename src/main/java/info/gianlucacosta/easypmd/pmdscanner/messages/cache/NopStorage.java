@@ -21,7 +21,6 @@
  */
 package info.gianlucacosta.easypmd.pmdscanner.messages.cache;
 
-import java.nio.file.Path;
 import java.util.Optional;
 
 /**
@@ -44,6 +43,6 @@ public class NopStorage implements CacheStorage {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
     }
 }

@@ -32,7 +32,6 @@ import org.openide.util.lookup.ServiceProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -42,7 +41,7 @@ import java.util.logging.Logger;
 public class DefaultOptionsFactory implements OptionsFactory {
 
     private static final Logger logger = Logger.getLogger(DefaultOptionsFactory.class.getName());
-    private static final String defaultJavaLanguageVersion = "1.8";
+    private static final String fallbackJavaLanguageVersion = "1.8";
 
     private final StandardRuleSetsCatalog standardRulesetsCatalog;
     private final SystemPropertiesService systemPropertiesService;
@@ -59,15 +58,15 @@ public class DefaultOptionsFactory implements OptionsFactory {
         DefaultOptions result = new DefaultOptions();
 
         String retrievedJavaVersion = systemPropertiesService.getJavaVersion();
-        String javaVersion = retrievedJavaVersion != null ? retrievedJavaVersion : defaultJavaLanguageVersion;
+        String targetJavaVersion = retrievedJavaVersion != null ? retrievedJavaVersion : fallbackJavaLanguageVersion;
 
         try {
-            languageVersionParser.parse(javaVersion);
+            languageVersionParser.parse(targetJavaVersion);
         } catch (IllegalArgumentException ex) {
-            javaVersion = defaultJavaLanguageVersion;
+            targetJavaVersion = fallbackJavaLanguageVersion;
         }
 
-        result.setTargetJavaVersion(javaVersion);
+        result.setTargetJavaVersion(targetJavaVersion);
         result.setSourceFileEncoding("utf-8");
         result.setSuppressMarker("NOPMD");
         result.setMinimumPriority(RulePriority.MEDIUM);

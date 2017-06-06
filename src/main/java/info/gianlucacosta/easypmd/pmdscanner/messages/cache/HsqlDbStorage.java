@@ -43,6 +43,8 @@ public class HsqlDbStorage implements CacheStorage {
 
     private static final Logger logger = Logger.getLogger(HsqlDbStorage.class.getName());
 
+    private static final String DB_FILE_NAME = "ScanMessages.db";
+
     private static final String TABLE_CREATION_DDL
             = "CREATE TABLE IF NOT EXISTS CacheItems (path VARCHAR(4096) PRIMARY KEY, lastModificationMillis BIGINT NOT NULL, scanMessages OTHER NOT NULL)";
 
@@ -72,7 +74,7 @@ public class HsqlDbStorage implements CacheStorage {
             throw new RuntimeException(ex);
         }
 
-        Path cacheDb = cacheRootPath.resolve("ScanMessages.db");
+        Path cacheDb = cacheRootPath.resolve(DB_FILE_NAME);
 
         String connectionString = String.format(
                 "jdbc:hsqldb:file:%s; shutdown=true",
@@ -81,7 +83,6 @@ public class HsqlDbStorage implements CacheStorage {
 
         try {
             dbConnection = DriverManager.getConnection(connectionString);
-
             dbConnection.setAutoCommit(true);
 
             try (Statement statement = dbConnection.createStatement()) {

@@ -46,7 +46,7 @@ import info.gianlucacosta.easypmd.ide.options.profiles.ProfileContextRepository;
 public class EasyPmdOptionsPanelController extends OptionsPanelController {
 
     private static final String EASY_PMD_OPTIONS_NAME_IN_EVENT = "EASYPMD_OPTIONS";
-    private final EasyPmdPanel panel = new EasyPmdPanel();
+    private final EasyPmdPanel easyPmdPanel = new EasyPmdPanel();
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private final ProfileContextRepository profileContextRepository;
     private final OptionsService optionsService;
@@ -60,7 +60,7 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
             optionsChanged = (optionsChanges != OptionsChanges.NONE);
 
             if (optionsChanged) {
-                pcs.firePropertyChange(EASY_PMD_OPTIONS_NAME_IN_EVENT, null, optionsService.getOptions());
+                pcs.firePropertyChange(EASY_PMD_OPTIONS_NAME_IN_EVENT, null, options);
             }
         });
 
@@ -77,12 +77,12 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
     public void update() {
         ProfileContext profileContext = profileContextRepository.getProfileContext();
 
-        panel.setProfileContext(profileContext);
+        easyPmdPanel.setProfileContext(profileContext);
     }
 
     @Override
     public void applyChanges() {
-        ProfileContextDTO profileContextDTO = panel.getProfileContextDTO();
+        ProfileContextDTO profileContextDTO = easyPmdPanel.getProfileContextDTO();
         ProfileContext profileContext = profileContextDTO.getProfileContext();
 
         profileContextRepository.saveProfileContext(profileContext);
@@ -100,7 +100,7 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
     @Override
     public boolean isValid() {
         try {
-            Options activeOptions = panel.getProfileContextDTO().getProfileContext().getActiveOptions();
+            Options activeOptions = easyPmdPanel.getProfileContextDTO().getProfileContext().getActiveOptions();
             optionsService.verifyOptions(activeOptions);
             return true;
         } catch (InvalidOptionsException ex) {
@@ -120,7 +120,7 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
 
     @Override
     public JComponent getComponent(Lookup masterLookup) {
-        return panel;
+        return easyPmdPanel;
     }
 
     @Override

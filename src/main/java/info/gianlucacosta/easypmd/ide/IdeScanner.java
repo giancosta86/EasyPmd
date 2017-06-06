@@ -81,11 +81,7 @@ public class IdeScanner extends FileTaskScanner {
 
         options = optionsService.getOptions();
 
-        try {
-            pmdScanner = new PmdScanner(options);
-        } catch (RuntimeException ex) {
-            showScannerConfigurationException(ex);
-        }
+        updatePmdScanner();
 
         optionsService.addOptionsSetListener((newOptions, optionsChanges) -> {
             switch (optionsChanges) {
@@ -101,19 +97,16 @@ public class IdeScanner extends FileTaskScanner {
                     try {
                         options = newOptions;
 
-                        if (!scanMessagesCache.clear()) {
-                            logger.warning(() -> "Could not clear the cache before replacing the PMD scanner");
-                        }
-
                         if (optionsChanges == OptionsChanges.ENGINE) {
                             logger.info(() -> "Engine options changed");
 
-                            try {
-                                pmdScanner = new PmdScanner(options);
-                            } catch (RuntimeException ex) {
-                                pmdScanner = null;
-                                showScannerConfigurationException(ex);
+                            if (scanMessagesCache.clear()) {
+                                logger.info(() -> "Cache cleared");
+                            } else {
+                                logger.warning(() -> "Could not clear the cache before replacing the PMD scanner");
                             }
+
+                            updatePmdScanner();
                         } else {
                             logger.info(() -> "Only view options were changed");
                         }
@@ -135,15 +128,23 @@ public class IdeScanner extends FileTaskScanner {
         });
     }
 
-    private void showScannerConfigurationException(Exception ex) {
-        logger.warning(
-                () -> String.format(
-                        "Configuration exception for EasyPmd: %s",
-                        Throwables.toStringWithStackTrace(ex)
-                )
-        );
+    private void updatePmdScanner() {
+        try {
+            pmdScanner = new PmdScanner(options);
+        } catch (Exception ex) {
+            logger.warning(
+                    () -> String.format(
+                            "Configuration exception for EasyPmd: %s",
+                            Throwables.toStringWithStackTrace(ex)
+                    )
+            );
 
-        dialogService.showWarning(String.format("Could not run EasyPmd because of configuration errors:\n\t%s (%s)", ex.getMessage(), ex.getClass().getSimpleName()));
+            dialogService.showWarning(String.format(
+                    "Could not run EasyPmd because of configuration errors:\n\t%s(%s)",
+                    ex.getMessage(),
+                    ex.getClass().getSimpleName()
+            ));
+        }
     }
 
     @Override
@@ -212,7 +213,6 @@ public class IdeScanner extends FileTaskScanner {
         } finally {
             readOptionsLock.unlock();
         }
-
     }
 
     @Override

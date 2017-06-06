@@ -25,8 +25,8 @@ import info.gianlucacosta.easypmd.ide.PathService;
 import info.gianlucacosta.easypmd.ide.Injector;
 import info.gianlucacosta.easypmd.ide.options.Options;
 import info.gianlucacosta.easypmd.pmdscanner.ScanMessage;
+import info.gianlucacosta.easypmd.pmdscanner.messages.ScanError;
 import info.gianlucacosta.easypmd.pmdscanner.messages.cache.ScanMessagesCache;
-import info.gianlucacosta.easypmd.util.Throwables;
 import java.io.IOException;
 import java.nio.file.Files;
 
@@ -63,6 +63,8 @@ public class CacheBasedLinkedPmdScanningStrategy extends LinkedPmdScanningStrate
             );
 
             return cachedScanMessagesOption.orElseGet(() -> {
+                logger.info(() -> String.format("No valid cache entry found for path: %s", pathString));
+
                 Set<ScanMessage> scanMessages = super.scan(path);
 
                 scanMessagesCache.putScanMessagesFor(pathString, lastModificationMillis, scanMessages);
@@ -70,15 +72,9 @@ public class CacheBasedLinkedPmdScanningStrategy extends LinkedPmdScanningStrate
                 return scanMessages;
             });
         } catch (IOException ex) {
-            logger.warning(
-                    () -> String.format(
-                            "Exception while scanning path: %s.\nCause: %s",
-                            path,
-                            Throwables.toStringWithStackTrace(ex)
-                    )
+            return Collections.singleton(
+                    new ScanError(ex)
             );
-
-            return Collections.emptySet();
         }
     }
 }

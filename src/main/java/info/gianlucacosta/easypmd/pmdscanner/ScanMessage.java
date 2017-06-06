@@ -28,7 +28,7 @@ import org.openide.filesystems.FileObject;
 import org.openide.text.Annotation;
 
 /**
- * A message emitted during a PMD scan
+ * One of the messages emitted as a result of a PMD scan
  */
 public interface ScanMessage extends Serializable {
 
