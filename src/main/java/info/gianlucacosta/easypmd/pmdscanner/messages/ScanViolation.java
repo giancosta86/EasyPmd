@@ -98,7 +98,7 @@ public class ScanViolation implements ScanMessage {
     @Override
     public Annotation createAnnotation(Options options) {
         String annotationType = getAnnotationType();
-        String annotationMessage = formatAnnotationText(options);
+        String annotationMessage = formatAnnotationText();
 
         return new BasicAnnotation(
                 annotationType,
@@ -123,7 +123,7 @@ public class ScanViolation implements ScanMessage {
         }
     }
 
-    private String formatAnnotationText(Options options) {
+    private String formatAnnotationText() {
         return formatViolationComponents(
                 ANNOTATION_TOKEN_SEPARATOR,
                 false,

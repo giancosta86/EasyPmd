@@ -43,7 +43,6 @@ import javax.swing.filechooser.FileFilter;
  */
 public class RuleSetsPanel extends JPanel {
 
-    private static final CollectionToArrayConverter<RuleSetWrapper> ruleSetsArrayConverter = new CollectionToArrayConverter<>(RuleSetWrapper.class);
     private final AdvancedSelectionListModel<String> ruleSetsModel = new AdvancedSelectionListModel<>();
     private final DialogService dialogService;
     private final ProductInfoService pluginInfoService;

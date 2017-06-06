@@ -36,7 +36,7 @@ public interface Throwables {
      * @param throwable
      * @return the string representation of the stack trace
      */
-    public static String getStackTraceString(Throwable throwable) {
+    static String getStackTraceString(Throwable throwable) {
         final Writer result = new StringWriter();
         final PrintWriter printWriter = new PrintWriter(result);
 
@@ -52,7 +52,7 @@ public interface Throwables {
      * @param throwable The subject throwable
      * @return a non-empty string
      */
-    public static String getNonEmptyMessage(Throwable throwable) {
+    static String getNonEmptyMessage(Throwable throwable) {
         String message = throwable.getMessage();
 
         if (message == null || message.isEmpty()) {
