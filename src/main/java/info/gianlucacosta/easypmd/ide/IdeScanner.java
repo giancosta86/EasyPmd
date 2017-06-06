@@ -139,6 +139,12 @@ public class IdeScanner extends FileTaskScanner {
                     )
             );
 
+            if (pmdScanner == null) {
+                logger.warning(() -> "The scanner is missing. No task will be returned");
+            } else {
+                logger.warning(() -> "The current scanner will remain in use");
+            }
+
             dialogService.showWarning(String.format(
                     "Could not run EasyPmd because of configuration errors:\n\t%s(%s)",
                     ex.getMessage(),
