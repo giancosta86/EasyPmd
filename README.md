@@ -5,8 +5,7 @@
 
 ## Introduction
 
-*Elegance always matters, especially when 
-creating software.*
+*Elegance always matters, especially when creating software.*
 
 However, a universal definition of such an ambitious goal seems to be fairly difficult, if not impossible, as different programmers adopt different styles.
 
@@ -43,15 +42,17 @@ The overall build process is based on Maven 3, for elegance and robustness.
 
 * **Robustness:** most execution errors, should they occur, are caught and reported in the tasks list, without crashing the plugin.
 
-* **Integrated cache:** to ensure maximum speed and avoid repeated scans, EasyPmd features a cache which is also persisted to disk, so it is available even after you restart NetBeans.
+* **Integrated cache:** to ensure maximum speed and avoid repeated scans, EasyPmd features a cache which is also persisted to **a HyperSQL local db**, so it is available even after you restart NetBeans.
 
 * You can extensively customize EasyPmd and the underlying PMD engine via a user-friendly options dialog.
+
+* **Smart options**: if you change options that only affect data visualization, the engine and its cache are not affected
 
 * **Custom path filtering** (including and excluding paths), based on *regular expressions*.
 
 * Predefined, customizable regular expressions, to simplify path filtering.
 
-* XML, human-readable options stored in the user's home directory
+* **XML**, human-readable options stored in the user's home directory
 
 * Online help, integrated into the NetBeans help system.
 
@@ -100,4 +101,7 @@ Special thanks to (ordered by surname):
 ## Further references
 
 * [PMD](http://pmd.sourceforge.net/)
+
+* [HSQLDB](http://hsqldb.org/)
+
 * [Facebook page](https://www.facebook.com/easypmd)
