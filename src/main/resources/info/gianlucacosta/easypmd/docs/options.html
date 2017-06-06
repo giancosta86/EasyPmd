@@ -95,7 +95,7 @@
                 <ul>
                     <li>
                         <em>Target Java version</em>: this parameter is used by PMD's parser in order to determine the structure
-                        of source files. At the moment of this writing, the latest Java version is "1.7".
+                        of source files. It will default to your current Java version, if possible.
                     </li>
 
                     <li>
@@ -330,14 +330,6 @@
             <section>
                 <h2>Commands</h2>
                 <ul>
-                    <li>
-                        <em>Enforce change</em>: if checked, forces EasyPmd 
-                        to reload the current options, even if they were not changed
-                        in the Options dialog.
-                        This feature can be used to re-initialize EasyPmd's engine 
-                        whenever you change
-                        external files on which it depends - for example, custom rulesets.
-                    </li>
                     <li>
                         <em>Reset options</em>: restores all the options in the dialog to their original values, but you have
                         to confirm the dialog in order to save them.
