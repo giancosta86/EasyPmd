@@ -32,6 +32,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import info.gianlucacosta.easypmd.ide.options.profiles.ProfileContext;
 import info.gianlucacosta.easypmd.ide.options.profiles.ProfileContextRepository;
+import java.util.logging.Logger;
 
 /**
  * Controller underlying the plugin's options panel
@@ -45,12 +46,15 @@ import info.gianlucacosta.easypmd.ide.options.profiles.ProfileContextRepository;
 )
 public class EasyPmdOptionsPanelController extends OptionsPanelController {
 
+    private static final Logger logger = Logger.getLogger(EasyPmdOptionsPanelController.class.getName());
     private static final String EASY_PMD_OPTIONS_NAME_IN_EVENT = "EASYPMD_OPTIONS";
     private final EasyPmdPanel easyPmdPanel = new EasyPmdPanel();
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private final ProfileContextRepository profileContextRepository;
     private final OptionsService optionsService;
     private boolean optionsChanged;
+
+    private boolean valid;
 
     public EasyPmdOptionsPanelController() {
         profileContextRepository = Injector.lookup(ProfileContextRepository.class);
@@ -73,15 +77,32 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
         });
     }
 
+    private void internalValidate() {
+        logger.info(() -> "Internally validating the options, for the options controller...");
+        try {
+            Options activeOptions = easyPmdPanel.getProfileContextDTO().getProfileContext().getActiveOptions();
+            optionsService.verifyOptions(activeOptions);
+            valid = true;
+            logger.info("Options valid");
+        } catch (InvalidOptionsException ex) {
+            valid = false;
+            logger.info("Options NOT valid");
+        }
+    }
+
     @Override
     public void update() {
         ProfileContext profileContext = profileContextRepository.getProfileContext();
 
         easyPmdPanel.setProfileContext(profileContext);
+
+        internalValidate();
     }
 
     @Override
     public void applyChanges() {
+        internalValidate();
+
         ProfileContextDTO profileContextDTO = easyPmdPanel.getProfileContextDTO();
         ProfileContext profileContext = profileContextDTO.getProfileContext();
 
@@ -99,13 +120,7 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
 
     @Override
     public boolean isValid() {
-        try {
-            Options activeOptions = easyPmdPanel.getProfileContextDTO().getProfileContext().getActiveOptions();
-            optionsService.verifyOptions(activeOptions);
-            return true;
-        } catch (InvalidOptionsException ex) {
-            return false;
-        }
+        return valid;
     }
 
     @Override
