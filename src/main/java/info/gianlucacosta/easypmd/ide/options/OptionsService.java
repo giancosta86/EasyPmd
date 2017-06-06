@@ -24,7 +24,7 @@ package info.gianlucacosta.easypmd.ide.options;
 import java.util.function.BiConsumer;
 
 /**
- * Provides methods to get/set options, to verify them and to monitor their
+ * Provides methods to get/set options, to validate them and to monitor their
  * changes
  */
 public interface OptionsService {
@@ -37,9 +37,5 @@ public interface OptionsService {
 
     void setOptions(Options options);
 
-    void verifyOptions(Options options) throws InvalidOptionsException;
-
-    void addOptionsVerifier(OptionsVerifier optionsVerifier);
-
-    void removeOptionsVerifier(OptionsVerifier optionsVerifier);
+    void validateOptions(Options options) throws InvalidOptionsException;
 }

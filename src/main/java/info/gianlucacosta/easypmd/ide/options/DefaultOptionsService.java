@@ -34,6 +34,7 @@ import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 import info.gianlucacosta.easypmd.ide.options.profiles.ProfileContext;
 import info.gianlucacosta.easypmd.ide.options.profiles.ProfileContextRepository;
+import info.gianlucacosta.easypmd.pmdscanner.PmdScanner;
 
 /**
  * Default implementation of OptionsService
@@ -45,7 +46,6 @@ public class DefaultOptionsService implements OptionsService {
     private final List<BiConsumer<Options, OptionsChanges>> optionsSetListeners = new LinkedList<>();
     private final Lock readLock;
     private final Lock writeLock;
-    private final Collection<OptionsVerifier> optionsVerifiers = new LinkedList<>();
     private Options options;
 
     public DefaultOptionsService() {
@@ -109,34 +109,13 @@ public class DefaultOptionsService implements OptionsService {
     }
 
     @Override
-    public void addOptionsVerifier(OptionsVerifier optionsVerifier) {
-        writeLock.lock();
-        try {
-            optionsVerifiers.add(optionsVerifier);
-        } finally {
-            writeLock.unlock();
-        }
-    }
-
-    @Override
-    public void removeOptionsVerifier(OptionsVerifier optionsVerifier) {
-        writeLock.lock();
-
-        try {
-            optionsVerifiers.remove(optionsVerifier);
-        } finally {
-            writeLock.unlock();
-        }
-    }
-
-    @Override
-    public void verifyOptions(Options options) throws InvalidOptionsException {
+    public void validateOptions(Options options) throws InvalidOptionsException {
         readLock.lock();
 
         try {
-            for (OptionsVerifier optionsVerifier : optionsVerifiers) {
-                optionsVerifier.verifyOptions(options);
-            }
+            new PmdScanner(options);
+        } catch (RuntimeException ex) {
+            throw new InvalidOptionsException(ex);
         } finally {
             readLock.unlock();
         }

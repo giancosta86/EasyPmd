@@ -67,21 +67,13 @@ public class EasyPmdOptionsPanelController extends OptionsPanelController {
                 pcs.firePropertyChange(EASY_PMD_OPTIONS_NAME_IN_EVENT, null, options);
             }
         });
-
-        optionsService.addOptionsVerifier((Options options) -> {
-            try {
-                new PmdScanner(options);
-            } catch (RuntimeException ex) {
-                throw new InvalidOptionsException(ex);
-            }
-        });
     }
 
     private void internalValidate() {
         logger.info(() -> "Internally validating the options, for the options controller...");
         try {
             Options activeOptions = easyPmdPanel.getProfileContextDTO().getProfileContext().getActiveOptions();
-            optionsService.verifyOptions(activeOptions);
+            optionsService.validateOptions(activeOptions);
             valid = true;
             logger.info("Options valid");
         } catch (InvalidOptionsException ex) {

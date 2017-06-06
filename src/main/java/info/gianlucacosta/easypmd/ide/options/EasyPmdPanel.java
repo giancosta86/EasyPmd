@@ -242,8 +242,8 @@ class EasyPmdPanel extends JPanel {
         return scanMessagesCache.clear();
     }
 
-    private void verifyOptions() throws InvalidOptionsException {
-        optionsService.verifyOptions(getOptions());
+    private void validatePanelOptions() throws InvalidOptionsException {
+        optionsService.validateOptions(getOptions());
     }
 
     /**
@@ -299,7 +299,7 @@ class EasyPmdPanel extends JPanel {
         showFacebookPageButton = new javax.swing.JButton();
         optionButtonsPanel = new javax.swing.JPanel();
         resetOptionsButton = new javax.swing.JButton();
-        verifyOptionsButton = new javax.swing.JButton();
+        validateOptionsButton = new javax.swing.JButton();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -657,11 +657,11 @@ class EasyPmdPanel extends JPanel {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         optionButtonsPanel.add(resetOptionsButton, gridBagConstraints);
 
-        org.openide.awt.Mnemonics.setLocalizedText(verifyOptionsButton, org.openide.util.NbBundle.getMessage(EasyPmdPanel.class, "EasyPmdPanel.verifyOptionsButton.text")); // NOI18N
-        verifyOptionsButton.setPreferredSize(new java.awt.Dimension(101, 30));
-        verifyOptionsButton.addActionListener(new java.awt.event.ActionListener() {
+        org.openide.awt.Mnemonics.setLocalizedText(validateOptionsButton, org.openide.util.NbBundle.getMessage(EasyPmdPanel.class, "EasyPmdPanel.validateOptionsButton.text")); // NOI18N
+        validateOptionsButton.setPreferredSize(new java.awt.Dimension(101, 30));
+        validateOptionsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                verifyOptionsButtonActionPerformed(evt);
+                validateOptionsButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -670,7 +670,7 @@ class EasyPmdPanel extends JPanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        optionButtonsPanel.add(verifyOptionsButton, gridBagConstraints);
+        optionButtonsPanel.add(validateOptionsButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -688,14 +688,14 @@ class EasyPmdPanel extends JPanel {
         }
     }//GEN-LAST:event_clearScanMessagesCacheButtonActionPerformed
 
-    private void verifyOptionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verifyOptionsButtonActionPerformed
+    private void validateOptionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_validateOptionsButtonActionPerformed
         try {
-            verifyOptions();
+            validatePanelOptions();
             dialogService.showInfo("Your EasyPmd options seem to be correct.");
         } catch (InvalidOptionsException ex) {
             dialogService.showWarning(String.format("The current EasyPmd options appear to be incorrect.\n%s", ex.getMessage()));
         }
-    }//GEN-LAST:event_verifyOptionsButtonActionPerformed
+    }//GEN-LAST:event_validateOptionsButtonActionPerformed
 
     private void resetOptionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetOptionsButtonActionPerformed
         Options defaultOptions = optionsFactory.createDefaultOptions();
@@ -819,6 +819,6 @@ class EasyPmdPanel extends JPanel {
     private javax.swing.JTextField targetJavaVersionField;
     private javax.swing.JLabel targetJavaVersionLabel;
     private javax.swing.JCheckBox useScanMessagesCacheCheckBox;
-    private javax.swing.JButton verifyOptionsButton;
+    private javax.swing.JButton validateOptionsButton;
     // End of variables declaration//GEN-END:variables
 }
