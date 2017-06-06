@@ -163,9 +163,10 @@ public class IdeScanner extends FileTaskScanner {
 
             annotationService.detachAnnotationsFrom(fileObject);
 
-            String filePath = file.getPath();
+            String filePath = file.getAbsolutePath();
 
             if (!options.getPathFilteringOptions().isPathValid(filePath)) {
+                logger.info(() -> String.format("Path to be skipped according to filtering rules: %s", filePath));
                 return Collections.emptyList();
             }
 
